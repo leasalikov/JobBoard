@@ -1,0 +1,38 @@
+
+generator client {
+    provider = "prisma-client-js"
+  }
+  
+  datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+  }
+
+    model Users {
+    id      String   @id @default(auto()) @map("_id") @db.ObjectId
+    username    String
+    phone   String
+    status  String?
+    email   String   @unique
+    name    String?
+    image   String?
+    password String?
+  }
+
+  model Jobs{
+    jobId                       String   @id @default(auto()) @map("_id") @db.ObjectId
+    geographicalLocation        String?
+    requiredExperienceLevel     String
+    salaryOffered               String
+    jobType                     String
+    field???????????????????????????????????????????????????????????????????????????
+    jobTitle                    String
+    requirements                String
+    jobDescription              String 
+    status                      String
+  }
+  
+  
+
+
+

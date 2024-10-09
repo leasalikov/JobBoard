@@ -1,10 +1,10 @@
+import prisma from "@/prisma/client";
 import type { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+// import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import prisma from "../../../../prisma/client";
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -33,10 +33,10 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
-    GoogleProvider({
-      clientId: GOOGLE_CLIENT_ID!,
-      clientSecret: GOOGLE_CLIENT_SECRET!,
-    }),
+    // GoogleProvider({
+    //   clientId: GOOGLE_CLIENT_ID!,
+    //   clientSecret: GOOGLE_CLIENT_SECRET!,
+    // }),
   ],
   callbacks: {
     async signIn({ user, account }) {

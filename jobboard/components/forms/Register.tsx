@@ -5,7 +5,7 @@ import React, { FormEvent, useState } from "react";
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-const [moreDetails, setMoreDetails]=useState<boolean>(true);
+const [moreDetails, setMoreDetails]=useState<boolean>(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -60,7 +60,7 @@ const [moreDetails, setMoreDetails]=useState<boolean>(true);
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form onSubmit={isLogin ? handleSubmit : register} className="space-y-6" action="#" method="POST">
+        <form onSubmit={register} className="space-y-6" action="#" method="POST">
           {!isLogin && <div>
             <label htmlFor="userName" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
             <div className="mt-2">
@@ -87,7 +87,7 @@ const [moreDetails, setMoreDetails]=useState<boolean>(true);
 
           <div>
             <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isLogin ?"Sign in" :"Sign up"}</button>
+            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isLogin ?"Sign in" :"Continue"}</button>
           </div>
         </form>
 

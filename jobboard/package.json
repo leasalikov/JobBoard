@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
+    "@tailwindcss/forms": "^0.5.9",
     "next": "14.2.15",
-    "next-auth": "^4.24.8",
+    "next-auth": "^3.29.10",
     "prisma": "^5.20.0",
     "react": "^18",
     "react-dom": "^18"

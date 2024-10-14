@@ -1,12 +1,13 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
+import { useRouter } from 'next/navigation'
 // import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
 const [moreDetails, setMoreDetails]=useState<boolean>(true);
-
+const router=useRouter()
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
@@ -36,6 +37,9 @@ const [moreDetails, setMoreDetails]=useState<boolean>(true);
       name: target.name.value,
     };
     try {
+
+      
+      router.push('/Register')
       //   const response = await fetch("http://localhost:3000/api/register", {
       //     method: "POST",
       //     body: JSON.stringify(values),
@@ -87,7 +91,7 @@ const [moreDetails, setMoreDetails]=useState<boolean>(true);
 
           <div>
             <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isLogin ?"Sign in" :"Sign up"}</button>
+            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isLogin ?"Sign in" :"Continue"}</button>
           </div>
         </form>
 

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import prisma from "../../../prisma/client"
 
 
-export async function Post(request: Request) {
+export async function POST(request: Request) {
     try {
         const body = await request.json();
         const job = await prisma.jobs.create({
@@ -22,18 +22,6 @@ export async function DELETE(request: Request) {
         })
     } catch (error) {
         return NextResponse.json({ message: "Failed to delete job", success: false })
-
-    }
-}
-
-export async function PUT(request: Request) {
-    try {
-        const body = await request.json();
-        const response = await prisma.jobs.put({
-            data: body
-        })
-    } catch (error) {
-        return NextResponse.json({ message: "Failed to update job", success: false })
 
     }
 }

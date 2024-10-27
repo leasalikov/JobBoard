@@ -7,7 +7,6 @@ export default function EmploiesSearch() {
 
     return (
         <div>
-            <Nav />
             <br /><br /><br /><br /><br />
             <p>Employee Search</p>
         </div>

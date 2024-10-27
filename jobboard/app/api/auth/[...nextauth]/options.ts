@@ -2,7 +2,8 @@ import prisma from "@/prisma/client";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-
+import bcrypt from "bcrypt"
+import { use } from "react";
 // const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 // const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
@@ -23,10 +24,10 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
-
         if (!user) throw new Error('Incorrect details');
-
-        ///check the password
+        // @ts-ignore
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+        if (!passwordMatch) throw new Error('Incorrect details');
 
         return {
           id: user.id,
@@ -64,13 +65,13 @@ export const authOptions: NextAuthOptions = {
       console.log({ session, token, user });
       return {
         ...session,
-        user:{
+        user: {
           ...session.user,
-          id:token.id
+          id: token.id
         }
       };
     },
-    async jwt({ user,token, account, profile }) {
+    async jwt({ user, token, account, profile }) {
       if (user) return {
         ...token,
         id: user.id

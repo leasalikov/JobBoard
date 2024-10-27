@@ -1,7 +1,4 @@
-// import HomePage from "../HomePage";
-// import EmploiesSearch from "../EmploiesSearch";
-// import JobSearch from "../JobSearch";
-// import Proffil from "../EmploeeProfile";
+
 import Home from "@/app/page";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +8,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 export default async function Nav() {
 
     const session = await getServerSession(authOptions)
-    console.log(session)
+    console.log("aaaaaaaaa ", session)
     return (
 
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">

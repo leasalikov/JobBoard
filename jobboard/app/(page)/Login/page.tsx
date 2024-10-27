@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useState } from "react";
 import { useRouter } from 'next/navigation'
-// import { signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -18,8 +18,8 @@ export default function LoginForm() {
     };
     try {
 
-      //   const credential = await signIn("credentials", { ...values });
-      //   console.log("credential", credential);
+        const credential = await signIn("credentials", { ...values ,callbackUrl:"/"});
+        console.log("credential", credential);
 
     } catch (error) {
       console.log(error);

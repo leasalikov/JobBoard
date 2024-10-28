@@ -3,9 +3,8 @@ import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
-import { use } from "react";
-// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -24,10 +23,10 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
-        // if (!user) throw new Error('Incorrect details');
-        // // @ts-ignore
-        // const passwordMatch = await bcrypt.compare(credentials.password, user.password)
-        // if (!passwordMatch) throw new Error('Incorrect details');
+        if (!user) throw new Error('Incorrect details');
+        // @ts-ignore
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+        if (!passwordMatch) throw new Error('Incorrect details');
 
         return {
           id: user.id,
@@ -36,29 +35,32 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
-    // GoogleProvider({
-    //   clientId: GOOGLE_CLIENT_ID!,
-    //   clientSecret: GOOGLE_CLIENT_SECRET!,
-    // }),
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID!,
+      clientSecret: GOOGLE_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
-      // if(account?.provider === "google"){
-      //   await prisma.users.upsert({
-      //     where:{
-      //       email:user.email
-      //     },
-      //     update: {
-      //       name: user.name,
-      //     },
-      //     create: {
-      //       image:user.image,
-      //       email:user.email,
-      //       name:user.name
-      //     },
-      //   })
-      // }
+      if(account?.provider === "google"){
+        await prisma.users.upsert({
+          where:{
+            email:user.email
+          },
+          update: {
+            name: user.name,
+          },
+          create: {
+            image:user.image as string,
+            email:user.email as string,
+            name:user.name as string,
+            phone:"",
+            status:"",
+            username:""
+          },
+        })
+      }
       return true;
     },
     async session({ session, token, user }) {

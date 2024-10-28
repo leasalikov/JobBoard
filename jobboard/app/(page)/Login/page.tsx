@@ -3,6 +3,7 @@
 import React, { FormEvent, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { signIn } from "next-auth/react";
+import { FaGoogle } from "react-icons/fa"
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -18,8 +19,8 @@ export default function LoginForm() {
     };
     try {
 
-        const credential = await signIn("credentials", { ...values ,callbackUrl:"/"});
-        console.log("credential", credential);
+      const credential = await signIn("credentials", { ...values, callbackUrl: "/" });
+      console.log("credential", credential);
 
     } catch (error) {
       console.log(error);
@@ -94,7 +95,19 @@ export default function LoginForm() {
             focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{isLogin ? "Sign in" : "Continue"}</button>
           </div>
         </form>
-
+        <div className="flex w-full flex-col justify-center items-center gap-4">
+          <button
+            onClick={() => signIn("google")}
+            className="flex w-[80%] items-center justify-center bg-white
+         dark:bg-gray-900 border border-gray-300 rounded-lg 
+         shadow-md px-6 py-2 text-sm font-medium text-gray-800
+          dark:text-white hover:bg-gray-200 focus:outline-none 
+          focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+          >
+            <FaGoogle className="h-6 w-6 mr-2" />
+            <span>Continue with Google</span>
+          </button>
+        </div>
         <p className="mt-10 text-center text-sm text-gray-500">
           <a onClick={() => setIsLogin((prev) => !prev)} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">{isLogin ? "You haven't Account? - Sign Up" : "You have Account? - Sign In"}</a>
         </p>
@@ -133,6 +146,7 @@ function InputLogin({ label, ...props }: InputLoginProps) {
                 dark:focus:border-blue-500"
         />
       </div>
+
     </>
   );
 }

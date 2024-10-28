@@ -1,88 +1,108 @@
 "use client"
-import React from "react";
-import Nav from "@/components/section/Nav";
-import { useEffect, useState } from "react";
-import { MultiSelect } from 'primereact/multiselect';
+// import prisma from "../../../prisma/client";
+import { Select, SelectItem } from "@nextui-org/select";
 
+async function searchJobs(values: any) {
 
-export default function JobsSearch() {
+    const jobs = await fetch("http://localhost:3000/api/jobs?category=software%7Ceducation&experienceLevel=jonior&location=1")
 
-    // const [jobs, setJobs] = useState([]);
+    return jobs;
+}
+
+export default function JobSearch({ searchParams }: any) {
+
     const jobsToShow = {
-        keyword: '',
-        category: '',
-        location: '',
-        experienceLevel: '',
-        jobType: '',
-        salary: ''
+        keyword: searchParams.keyword || "",
+        location: searchParams.location || "",
+        categories: searchParams.categories || "",
+        experienceLevel: searchParams.experienceLevel || "",
+        jobTypes: searchParams.jobTypes || "",
+        salary: searchParams.salary || "",
     };
 
+    const categoryOptions = [
+        { value: "software", label: "software" },
+        { value: "marketing", label: "merketing" },
+        { value: "sales", label: "sales" },
+        { value: "AI", label: "AI" },
+        { value: "syber", label: "syber" },
+        { value: "QA", label: "QA" },
+        { value: "hardware", label: "hardware" },
+        { value: "finance", label: "finance" },
+        { value: "network", label: "network" },
+        { value: "operating system", label: "operating system" },
+        { value: "information security", label: "information security" },
+        { value: "sport", label: "sport" },
+        { value: "design", label: "design" },
+        { value: "medicine", label: "medicine" },
+        { value: "touring", label: "touring" },
+    ];
 
-    useEffect(() => {
-        searchJobs();
-    }, []);
+    const experienceLevelOptions = [
+        { value: "junior", label: "junior" },
+        { value: "mid", label: "mid" },
+        { value: "senior", label: "senior" },
+    ];
 
-
-    const searchJobs = async () => {
-
-    };
-
-    const handleInputChange = (event: any) => {
-        // setJobsToShow({ ...jobsToShow, [event.target.name]: event.target.value })
-    }
-
+    const jobTypeOptions = [
+        { value: "full-time", label: "full time" },
+        { value: "part-time", label: "part time " },
+        { value: "freelance", label: "freelance" },
+    ];
 
     return (
         <div>
-            <Nav />
-
-
-            <p>jobsSearch</p>
-            {/* <MultiSelect >
-
-            </MultiSelect> */}
-            <div>
+            <h1>search jobs</h1>
+            <form method="get">
                 <input
                     type="text"
                     name="keyword"
                     placeholder="keyword"
-                    onChange={handleInputChange}
+                    defaultValue={jobsToShow.keyword}
                 />
                 <input
                     type="text"
                     name="location"
-                    placeholder="Where is your next career step taking you?"
-                    onChange={handleInputChange}
+                    placeholder="loction"
+                    defaultValue={jobsToShow.location}
                 />
-                <select name="category" onChange={handleInputChange}>
-                    <option value="">category</option>
-                    <option value="software">software</option>
-                    <option value="marketing">marketimg</option>
-                    <option value="sales">sales</option>
-                </select>
-                <select name="experienceLevel" onChange={handleInputChange}>
-                    <option value="">experience level</option>
-                    <option value="junior">junior</option>
-                    <option value="mid">mid</option>
-                    <option value="senior">senior</option>
-                </select>
-                <select name="jobType" onChange={handleInputChange}>
-                    <option value="">job type</option>
-                    <option value="full-time">full time</option>
-                    <option value="part-time">pert time</option>
-                    <option value="freelance">freelance</option>
-                </select>
+                <Select
+                    selectionMode="multiple"
+                    label="category"
+                    placeholder="choose category"
+                >{categoryOptions.map((category) => (
+                    <SelectItem key={category.value}>
+                        {category.label}
+                    </SelectItem>
+                ))}</Select>
+                <Select label="experienceLevel"
+                    selectionMode="multiple"
+                    placeholder="choose experience level"
+                >{experienceLevelOptions.map(level => (
+                    <SelectItem key={level.value}>
+                        {level.label}
+                    </SelectItem>
+                ))}</Select>
+                <Select
+                    label="jobType"
+                    selectionMode="multiple"
+                    placeholder="choose job type"
+                >{jobTypeOptions.map(jobType => (
+                    <SelectItem key={jobType.value}>
+                        {jobType.label}
+                    </SelectItem>
+                ))}</Select>
                 <input
                     type="number"
                     name="salary"
                     placeholder="salary"
-                    onChange={handleInputChange}
+                    defaultValue={jobsToShow.salary}
                 />
-                <button onClick={searchJobs}>search</button>
-            </div>
+                <button type="submit">search</button>
+            </form >
 
             {/* <div>
-                {jobs.map((job) => (
+                {jobs.map((job: any) => (
                     <div key={job.id}>
                         <h2>{job.title}</h2>
                         <p>{job.description}</p>
@@ -94,4 +114,5 @@ export default function JobsSearch() {
             </div> */}
         </div>
     );
+
 }

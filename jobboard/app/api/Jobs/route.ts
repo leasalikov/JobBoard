@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../prisma/client"
+import { Prisma } from "@prisma/client";
 
 
 export async function POST(request: Request) {
@@ -11,6 +12,56 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: "success add job", success: true, job })
     } catch (error) {
         return NextResponse.json({ message: "Failed to add job", success: false })
+    }
+}
+
+export async function GET(request: Request) {
+    try {
+        const queryParams = new URL(request.url).searchParams;
+
+        let whereConditions: Prisma.JobsWhereInput = {};
+
+        const location = queryParams.get('location');
+        if (location) {
+            whereConditions.location = location;
+        }
+
+        const experienceLevel = queryParams.get('experienceLevel');
+        if (experienceLevel) {
+            whereConditions.experienceLevel = experienceLevel;
+        }
+
+        const salary = queryParams.get('salary');
+        if (salary) {
+            whereConditions.salary = {
+                contains: salary,
+            };
+        }
+
+        const category = queryParams.get('category');
+        if (category) {
+            if (category.includes('|')) {
+                const categories = category.split('|');
+                whereConditions.category = {
+                    in: categories,
+                };
+            } else {
+                whereConditions.category = {
+                    equals: category,
+                };
+            }
+        }
+
+        const jobs = await prisma.jobs.findMany({
+            where: whereConditions,
+        });
+
+        if (jobs.length > 0)
+            return NextResponse.json({ message: "Success: Found jobs", success: true, jobs });
+        else
+            return NextResponse.json({ message: "There are no suitable jobs", success: false });
+    } catch (error) {
+        return NextResponse.json({ message: "Failed to fetch jobs", success: false });
     }
 }
 

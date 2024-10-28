@@ -25,3 +25,16 @@ body {
     text-wrap: balance;
   }
 }
+
+.dark-theme {
+  background-color: black;
+  color: white;
+}
+.dark-mode .nav-link {
+  color: white; /* Example style change for link text color in dark mode */
+}
+
+.dark-mode .nav-button {
+  background-color: black; /* Example style change for button background color in dark mode */
+  color: white; /* Example style change for button text color in dark mode */
+}

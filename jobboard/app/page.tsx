@@ -1,10 +1,11 @@
 
 import HomePage from "./(page)/home/page";
+import React from "react";
 
 export default function Home() {
   return (
-    <>
-      <HomePage/>
-    </>
+        <main className="dark text-foreground bg-background">
+          <HomePage/>
+        </main>
   );
 }

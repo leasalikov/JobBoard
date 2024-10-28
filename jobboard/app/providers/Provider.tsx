@@ -9,3 +9,4 @@ export default function Provider({ children }: PropsWithChildren) {
         </SessionProvider>
     );
 }
+

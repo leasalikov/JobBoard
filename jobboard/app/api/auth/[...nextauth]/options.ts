@@ -24,10 +24,10 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
-        if (!user) throw new Error('Incorrect details');
-        // @ts-ignore
-        const passwordMatch = await bcrypt.compare(credentials.password, user.password)
-        if (!passwordMatch) throw new Error('Incorrect details');
+        // if (!user) throw new Error('Incorrect details');
+        // // @ts-ignore
+        // const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+        // if (!passwordMatch) throw new Error('Incorrect details');
 
         return {
           id: user.id,

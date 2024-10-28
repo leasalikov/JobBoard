@@ -18,6 +18,7 @@ const config: Config = {
   },
 
   darkMode: "class",
-  plugins: [ nextui(),require('@tailwindcss/forms')],
+  plugins: [ nextui(),require('@tailwindcss/forms')]
+  // plugins: [ require('@tailwindcss/forms')]
 };
 export default config;

@@ -1,11 +1,11 @@
 
 import HomePage from "./(page)/home/page";
-import {NextUIProvider} from '@nextui-org/react'
+// import {NextUIProvider} from '@nextui-org/react'
 
 export default function Home() {
   return (
-    <NextUIProvider>
+    <main className="dark text-foreground bg-background">
       <HomePage/>
-    </NextUIProvider>
+    </main>
   );
 }

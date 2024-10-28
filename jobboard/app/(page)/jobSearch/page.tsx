@@ -2,19 +2,12 @@
 // import prisma from "../../../prisma/client";
 import { Select, SelectItem } from "@nextui-org/select";
 
-// async function searchJobs(values: any) {
+async function searchJobs(values: any) {
 
-//     const jobs = await prisma.jobs.findMany(
-//         {
-//             where: {
+    const jobs = await fetch("http://localhost:3000/api/jobs?category=software%7Ceducation&experienceLevel=jonior&location=1")
 
-//             }
-//         AND {}}
-//     )
-
-
-// return jobs;
-// }
+    return jobs;
+}
 
 export default function JobSearch({ searchParams }: any) {
 

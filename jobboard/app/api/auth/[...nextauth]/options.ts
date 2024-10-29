@@ -2,9 +2,9 @@ import prisma from "@/prisma/client";
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-
-// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+import bcrypt from "bcrypt"
+ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -23,10 +23,10 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.users.findUnique({
           where: { email: credentials.email },
         });
-
         if (!user) throw new Error('Incorrect details');
-
-        ///check the password
+        // @ts-ignore
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+        if (!passwordMatch) throw new Error('Incorrect details');
 
         return {
           id: user.id,
@@ -35,42 +35,45 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
-    // GoogleProvider({
-    //   clientId: GOOGLE_CLIENT_ID!,
-    //   clientSecret: GOOGLE_CLIENT_SECRET!,
-    // }),
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID!,
+      clientSecret: GOOGLE_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
-      // if(account?.provider === "google"){
-      //   await prisma.users.upsert({
-      //     where:{
-      //       email:user.email
-      //     },
-      //     update: {
-      //       name: user.name,
-      //     },
-      //     create: {
-      //       image:user.image,
-      //       email:user.email,
-      //       name:user.name
-      //     },
-      //   })
-      // }
+      if(account?.provider === "google"){
+        await prisma.users.upsert({
+          where:{
+            email:user.email
+          },
+          update: {
+            name: user.name,
+          },
+          create: {
+            image:user.image as string,
+            email:user.email as string,
+            name:user.name as string,
+            phone:"",
+            status:"",
+            username:""
+          },
+        })
+      }
       return true;
     },
     async session({ session, token, user }) {
       console.log({ session, token, user });
       return {
         ...session,
-        user:{
+        user: {
           ...session.user,
-          id:token.id
+          id: token.id
         }
       };
     },
-    async jwt({ user,token, account, profile }) {
+    async jwt({ user, token, account, profile }) {
       if (user) return {
         ...token,
         id: user.id

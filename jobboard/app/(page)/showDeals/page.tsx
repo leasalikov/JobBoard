@@ -27,12 +27,12 @@ const arr=[{
 }]
 //props=מעסיק
 function showDeals({props}:any) {
-  async function searchJobs(values: any) {
 
-    const jobs = await fetch(`http://localhost:3000/api/jobs?username=${props.username}`)
+    const jobs = 
+    // await fetch(`http://localhost:3000/api/jobs?username=${props.username}`)
   
     return jobs;
-  }
+
    
     return (
       

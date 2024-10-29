@@ -8,15 +8,16 @@ datasource db {
 }
 
 model Users {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  phone    String
-  status   String?
-  email    String     @unique
-  name     String?
-  image    String?
-  password String?
-  employer Employers?
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  username  String
+  phone     String
+  status    String?
+  email     String        @unique
+  name      String?
+  image     String?
+  password  String?
+  employer  Employers?
+  candidacy Candidacies[]
 }
 
 model Employers {
@@ -29,9 +30,9 @@ model Employers {
 }
 
 model Jobs {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
-  employerId      String    @db.ObjectId
-  employer        Employers @relation(fields: [employerId], references: [id])
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  employerId      String        @db.ObjectId
+  employer        Employers     @relation(fields: [employerId], references: [id])
   location        String?
   experienceLevel String
   salary          Int
@@ -42,6 +43,7 @@ model Jobs {
   requirements    String
   description     String
   status          String
+  candidacies     Candidacies[]
 }
 
 model Companies {
@@ -52,4 +54,14 @@ model Companies {
   size        String
   links       String[]
   employers   Employers[]
+}
+
+model Candidacies {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
+  jobId  String @db.ObjectId
+  job    Jobs   @relation(fields: [jobId], references: [id])
+  resume ///לבדוק איזה סוג ולדחוף ע"י הפקודה: prisma db push
+  coverLetter String?
 }

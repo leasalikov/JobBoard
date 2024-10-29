@@ -1,4 +1,4 @@
-import React from 'react'
+
 import JobCard from '../jobCard/page'
 
 
@@ -25,11 +25,17 @@ const arr=[{
     "jobDescription": "String",
     "status": "String"
 }]
+//props=מעסיק
+function showDeals({props}:any) {
+  async function searchJobs(values: any) {
 
-function showDeals() {
-    
+    const jobs = await fetch(`http://localhost:3000/api/jobs?username=${props.username}`)
+  
+    return jobs;
+  }
    
     return (
+      
         <div>
           <div className="bg-white py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -38,6 +44,7 @@ function showDeals() {
                 <p className="mt-2 text-lg leading-8 text-gray-600">Learn how to grow your business with our expert advice.</p>
               </div>
               <div className="flex flex-wrap -mx-3"> {/* קונטיינר עם Flexbox */}
+             
                 {arr.map((i, index) => (
                   <div className="w-1/3 px-3 mb-6"> {/* אלמנט עם רוחב של 1/3 */}
                     <JobCard key={index} props={arr[index]} />

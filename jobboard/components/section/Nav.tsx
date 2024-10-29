@@ -5,8 +5,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import ThemeToggle from "../ThemeToggle";
-import * as Avatar from "@radix-ui/react-avatar";
-import { PersonIcon } from "@radix-ui/react-icons";
+import ProfileImage from "../ProfileImage";
 
 
 //in layout
@@ -14,8 +13,6 @@ export default async function Nav() {
 
     const session = await getServerSession(authOptions)
     console.log("my session ", session)
-
-    const userImg = session?.user?.image ? session.user.image : "PersonIcon";
 
     return (
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
@@ -27,7 +24,6 @@ export default async function Nav() {
                 <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                     <ThemeToggle />
                     {!session && <Link href={"../Login"}>
-
                         <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Log In</button>
                     </Link>}
                     <Link href={"../PostJob"}>
@@ -52,16 +48,7 @@ export default async function Nav() {
                         <li><a href="/contact" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a></li>
                     </ul>
                 </div>
-                <div className="flex gap-5">
-                    <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-blackA1 align-middle">
-                        <Avatar.Image
-                            className="size-full rounded-[inherit] object-cover"
-                            src={userImg}
-                            alt="Colm Tuite"
-                        />
-                    </Avatar.Root>
-                </div>
-
+                {session && <ProfileImage></ProfileImage>}
             </div>
         </nav>
     );

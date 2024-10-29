@@ -39,7 +39,6 @@ export default function LoginForm() {
     };
     try {
 
-
       router.push('/Register')
       //   const response = await fetch("http://localhost:3000/api/register", {
       //     method: "POST",

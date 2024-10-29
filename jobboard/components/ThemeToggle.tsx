@@ -12,7 +12,7 @@ export default function ThemeToggle() {
         <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
                 <button className="inline-flex size-[35px] items-center justify-center rounded-full bg-white text-violet11 shadow-[0_2px_10px] shadow-blackA4 outline-none hover:bg-violet3 focus:shadow-[0_0_0_2px] focus:shadow-black">
-                    {theme === 'light' ? (
+                    {theme === 'dark' ? (
                         <SunIcon color="black"></SunIcon>) : 
                         (<MoonIcon color="black"></MoonIcon>)}
                 </button>

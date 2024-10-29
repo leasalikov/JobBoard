@@ -4,39 +4,33 @@ import React, { FormEvent, useState } from "react";
 // import { signIn } from "next-auth/react";
 
 export default function PostJobForm() {
-    const [isLogin, setIsLogin] = useState<boolean>(true);
-    const [moreDetails, setMoreDetails] = useState<boolean>(false);
-
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const target = e.currentTarget;
-
-        const values = {
-            email: target.email.value,
-            password: target.password.value,
-        };
-        try {
-
-            //   const credential = await signIn("credentials", { ...values });
-            //   console.log("credential", credential);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
+    const details = [
+        { name: "geographicalLocation", label: "geographical Location" },
+        { name: "requiredExperienceLevel", label: "required Experience Level" },
+        { name: "salaryOffered", label: "salary Offered" },
+        { name: "jobType", label: "job Type" },
+        { name: "field", label: "field" },
+        { name: "jobTitle", label: "job Title" },
+        { name: "jobDescription", label: "job Description" },
+        { name: "status", label: "status" }
+    ]
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
 
         const values = {
-            email: target.email.value,
-            password: target.password.value,
-            //@ts-ignore
-            name: target.name.value,
+            geographicalLocation: target.geographicalLocation.value,
+            requiredExperienceLevel: target.requiredExperienceLevel.value,
+            salaryOffered: target.salaryOffered.value,
+            jobType: target.jobType.value,
+            field: target.field.value,
+            jobTitle: target.jobTitle.value,
+            requirements: target.requirements.value,
+            jobDescription: target.jobDescription.value,
+            status: target.status.value
         };
         try {
-            //   const response = await fetch("http://localhost:3000/api/register", {
+            //   const response = await fetch("http://localhost:3000/api/postJob", {
             //     method: "POST",
             //     body: JSON.stringify(values),
             //     headers: {
@@ -61,19 +55,77 @@ export default function PostJobForm() {
                 </h2>
             </div>
 
+
+
+
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={postjob} className="space-y-6" action="#" method="POST">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        {details.map((i, index) =>
+                            <div key={index}>
+                                <label htmlFor={details[index].name} className="block text-sm font-medium leading-6 text-gray-900">{details[index].label}</label>
+                                <div className="mt-2">
+                                    <input id={details[index].name} name={details[index].name} type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
-                    <div>
-                        <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+
+
+
+                    {/* <div>
+                        <label htmlFor="geographicalLocation" className="block text-sm font-medium leading-6 text-gray-900">geographical Location</label>
                         <div className="mt-2">
-                            <input id="phone" name="phone" type="tel" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <input id="geographicalLocation" name="geographicalLocation" type="gf" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
-                    {/* <div>
-                        <label htmlFor="userName" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
+                    <div>
+                        <label htmlFor="requiredExperienceLevel" className="block text-sm font-medium leading-6 text-gray-900">required Experience Level</label>
                         <div className="mt-2">
-                            <input id="userName" name="userName" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <input id="requiredExperienceLevel" name="requiredExperienceLevel" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="salaryOffered" className="block text-sm font-medium leading-6 text-gray-900">salary Offered</label>
+                        <div className="mt-2">
+                            <input id="salaryOffered" name="salaryOffered" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="jobType" className="block text-sm font-medium leading-6 text-gray-900">jobType</label>
+                        <div className="mt-2">
+                            <input id="jobType" name="jobType" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="field" className="block text-sm font-medium leading-6 text-gray-900">field</label>
+                        <div className="mt-2">
+                            <input id="field" name="field" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="jobTitle" className="block text-sm font-medium leading-6 text-gray-900">job Title</label>
+                        <div className="mt-2">
+                            <input id="jobTitle" name="jobTitle" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="requirements" className="block text-sm font-medium leading-6 text-gray-900">requirements</label>
+                        <div className="mt-2">
+                            <input id="requirements" name="requirements" type="string" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="jobDescription" className="block text-sm font-medium leading-6 text-gray-900">job Description</label>
+                        <div className="mt-2">
+                            <input id="jobDescription" name="jobDescription" type="tel" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">status</label>
+                        <div className="mt-2">
+                            <input id="status" name="status" type="tel" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div> */}
                     <div className="col-span-full">
@@ -93,7 +145,7 @@ export default function PostJobForm() {
                             {/* <button type="button" className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Change</button> */}
                         </div>
                     </div>
-                    <div className="flex items-center justify-center w-full">
+                    {/* <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col items-center justify-center w-full h-50 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                 <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -104,7 +156,7 @@ export default function PostJobForm() {
                             </div>
                             <input id="dropzone-file" type="file" className="hidden" />
                         </label>
-                    </div>
+                    </div> */}
 
                     <div className="sm:col-span-3">
                         <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">Experience</label>
@@ -117,30 +169,21 @@ export default function PostJobForm() {
                             </select>
                         </div>
                     </div>
-                    {/* <div>
-                        <div className="flex items-center justify-between">
-                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
-
-                        </div>
-                        <div className="mt-2">
-                            <input id="password" name="password" type="password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                        </div>
-                    </div> */}
 
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
-            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign up</button>
+            focus-visible:outline-offset-2 focus-visible:outline-indigo-600">post</button>
                     </div>
                 </form>
 
 
-
+                {/* 
 
                 <p className="mt-10 text-center text-sm text-gray-500">
                     You can set and edit your profile information at any time<br />
                     <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Skip</a>
 
-                </p>
+                </p> */}
             </div>
         </div>
 

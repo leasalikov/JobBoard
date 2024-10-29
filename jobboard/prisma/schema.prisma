@@ -22,10 +22,11 @@ model Jobs {
   jobId           String  @id @default(auto()) @map("_id") @db.ObjectId
   location        String?
   experienceLevel String
-  salary          String
+  salary          Int
   category        String
+  type            String
   field           String?
-  jobTitle        String
+  title           String
   requirements    String
   description     String
   status          String

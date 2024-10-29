@@ -1,6 +1,13 @@
-function Candidates({id}:{id:string}) {
+import prisma from "../../../prisma/client";
+
+
+async function Candidates({id}:{id:string}) {
+    const candidates=await prisma.candidates.findMany( {
+        where:{jobId:id},
+       }
+    )
   return (
-    //(לפי ה id )להביא את כל המועמדים של העבודה הנוכחית
+
         <div className="mt-5">
             <h4 className="text-lg font-semibold">Candidates List</h4>
             {/* הצג את המועמדים כאן */}

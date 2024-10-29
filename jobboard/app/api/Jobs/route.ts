@@ -23,7 +23,16 @@ export async function GET(request: Request) {
 
         const location = queryParams.get('location');
         if (location) {
-            whereConditions.location = location;
+            if (location.includes(',')) {
+                const locations = location.split(',');
+                whereConditions.category = {
+                    in: locations,
+                };
+            } else {
+                whereConditions.location = {
+                    equals: location,
+                };
+            }
         }
 
         const experienceLevel = queryParams.get('experienceLevel');
@@ -34,14 +43,22 @@ export async function GET(request: Request) {
         const salary = queryParams.get('salary');
         if (salary) {
             whereConditions.salary = {
-                contains: salary,
+                gte: parseInt(salary),
+            };
+        }
+
+        const keyword = queryParams.get('keyword');
+        if (keyword) {
+            whereConditions.title = {
+                mode: 'insensitive',
+                contains: keyword,
             };
         }
 
         const category = queryParams.get('category');
         if (category) {
-            if (category.includes('|')) {
-                const categories = category.split('|');
+            if (category.includes(',')) {
+                const categories = category.split(',');
                 whereConditions.category = {
                     in: categories,
                 };

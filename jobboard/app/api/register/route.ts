@@ -1,7 +1,6 @@
 import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt"
-import { log } from "console";
 import { objectEnumNames } from "@prisma/client/runtime/library";
 
 export async function POST(request: Request) {

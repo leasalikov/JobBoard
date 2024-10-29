@@ -2,7 +2,7 @@ import prisma from "../../../prisma/client";
 
 
 async function Candidates({id}:{id:string}) {
-    const candidates=await prisma.candidates.findMany( {
+    const candidates=await prisma.candidacies.findMany( {
         where:{jobId:id},
        }
     )

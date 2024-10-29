@@ -17,6 +17,7 @@ model Users {
   image     String?
   password  String?
   employer  Employers?
+  
   candidacy Candidacies[]
 }
 
@@ -62,6 +63,5 @@ model Candidacies {
   user   Users  @relation(fields: [userId], references: [id])
   jobId  String @db.ObjectId
   job    Jobs   @relation(fields: [jobId], references: [id])
-  resume ///לבדוק איזה סוג ולדחוף ע"י הפקודה: prisma db push
   coverLetter String?
 }

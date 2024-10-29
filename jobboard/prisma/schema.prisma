@@ -8,18 +8,31 @@ datasource db {
 }
 
 model Users {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  phone    String
-  status   String?
-  email    String  @unique
-  name     String?
-  image    String?
-  password String?
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  username  String
+  phone     String
+  status    String?
+  email     String        @unique
+  name      String?
+  image     String?
+  password  String?
+  employer  Employers?
+  candidacy Candidacies[]
+}
+
+model Employers {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @unique @db.ObjectId
+  user      Users     @relation(fields: [userId], references: [id])
+  companyId String    @db.ObjectId
+  company   Companies @relation(fields: [companyId], references: [id])
+  jobs      Jobs[]
 }
 
 model Jobs {
-  jobId           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  employerId      String        @db.ObjectId
+  employer        Employers     @relation(fields: [employerId], references: [id])
   location        String?
   experienceLevel String
   salary          Int
@@ -30,4 +43,25 @@ model Jobs {
   requirements    String
   description     String
   status          String
+  candidacies     Candidacies[]
+}
+
+model Companies {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  logo        String
+  size        String
+  links       String[]
+  employers   Employers[]
+}
+
+model Candidacies {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   Users  @relation(fields: [userId], references: [id])
+  jobId  String @db.ObjectId
+  job    Jobs   @relation(fields: [jobId], references: [id])
+  resume ///לבדוק איזה סוג ולדחוף ע"י הפקודה: prisma db push
+  coverLetter String?
 }

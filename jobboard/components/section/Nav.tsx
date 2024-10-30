@@ -9,7 +9,7 @@ import ProfileImage from "../ProfileImage";
 // import { useState } from "react";
 
 //in layout
-export default async function DefoultNav() {
+export default async function Nav() {
 
     const session = await getServerSession(authOptions);
     console.log("my session ", session)
@@ -86,7 +86,6 @@ export default async function DefoultNav() {
                     </div>
                 </div >
             </nav >  */}
-
         </>
     );
 }

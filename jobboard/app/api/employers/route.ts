@@ -1,21 +1,27 @@
-import prisma from "@/prisma/client";
+import prisma from "../../../prisma/client";
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt"
 
-export async function POST(request: Request) {
+export async function PUT(request: Request) {
     try {
+        const queryParams = new URL(request.url).searchParams;
+        const id = queryParams.get('id') as string;
         const body = await request.json();
-        const password = body.password;
-        const hashPassword = await bcrypt.hash(password, 10).then(function (hash: string) { return hash });
-        const user = await prisma.users.create({
+        const {phone, image, ...leftBody}= body;
+
+        const responseFromUser = await prisma.users.update({
+            where: { id: id },
             data: {
-                ...body,
-                password: hashPassword
+                phone:phone,
+                image:image,
             }
         })
-        return NextResponse.json({ message: "success register user", success: true, user });
+        const responseFromEmployers = await prisma.employers.update({
+            where: { userId: id },
+            data: leftBody
+        })
+         return NextResponse.json({ message: "success update employer", success: true, responseFromUser, responseFromEmployers});
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ message: "not success register user", success: false });
+        return NextResponse.json({ message: "not success register employer", success: false });
     }
 }

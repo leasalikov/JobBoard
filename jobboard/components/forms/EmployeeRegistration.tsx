@@ -54,6 +54,7 @@ export default function EmployeeRegistration() {
             experience: formData.get('experience'),
             Recommendations: PreviousWorks,
         };
+        
 
         try {
 
@@ -146,7 +147,6 @@ export default function EmployeeRegistration() {
                                 <p className="text-xs text-gray-500 dark:text-gray-400">PDF or DOC</p>
                             </div>
                             <input name="cv" id="dropzone-file" type="file" className="hidden" onChange={handleCVUpload} />
-
                         </label>
                     </div>}
 
@@ -159,12 +159,9 @@ export default function EmployeeRegistration() {
                             <div className="relative mb-3 ">
                                 <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p>
                             </div>
-
                         </div>
 
                     )}
-
-
 
                     <div className="sm:col-span-3">
                         <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">Experience</label>
@@ -186,40 +183,15 @@ export default function EmployeeRegistration() {
                     </div>
                     <p>Recommendations (Optional)</p>
 
-                    <div className="flex" id="onework">
-                        <InputLink
-                            ariaLabel="Email"
-                            icon={MdEmail}
-                            id="email"
-                            type="text"
-                            placeholder="name@company.com"
-                        />
-                        <InputLink
-                            ariaLabel="phone"
-                            icon={FaSquarePhone}
-                            id="phone"
-                            type="text"
-                            placeholder="000-000-0000"
-                        />
-                    </div>
                     <div className="flex">
-                        <InputLink
-                            ariaLabel="Email"
-                            icon={MdEmail}
-                            id="email"
-                            type="text"
-                            placeholder="name@company.com"
-                        />
-                        <InputLink
-                            ariaLabel="phone"
-                            icon={FaSquarePhone}
-                            id="phone"
-                            type="text"
-                            placeholder="000-000-0000"
-                        />
-
+                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
+                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
                     </div>
-x
+
+                    <div className="flex">
+                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
+                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
+                    </div>
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5
                          text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 

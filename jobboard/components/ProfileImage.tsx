@@ -1,25 +1,20 @@
-// "use client"
-import { getServerSession } from "next-auth/next"
+"use client"
+// import { getServerSession } from "next-auth/next"
 import * as Avatar from "@radix-ui/react-avatar"
-import { authOptions } from "@/app/api/auth/[...nextauth]/options"
+// import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 import { PersonIcon } from "@radix-ui/react-icons"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
-// import {destroyServerSession} from "next-auth/next"
-// import { signOut } from "next-auth/client"
-// import { withIronSession } from "next-iron-session";
+import { signOut, useSession } from 'next-auth/react';
 import Link from "next/link";
 
-export default async function ProfileImage() {
+export default function ProfileImage() {
 
-    const session = await getServerSession(authOptions);
+    const session = useSession();
+    
+    // const session = await getServerSession(authOptions);
     console.log("my session ", session)
-    const userImg = session?.user?.image ? session.user.image : "PersonIcon";
-    // console.log("userImg ", userImg)
-
-    // const Logout = async () => {
-    //     await destroyServerSession();
-    //     // await signOut({ redirect: false, callbackUrl: '/' });
-    // };
+    const userImg = session?.data?.user?.image ? session.data.user.image : "PersonIcon";
+    console.log("userImg ", userImg)
 
     return (
         <DropdownMenu.Root>
@@ -38,7 +33,7 @@ export default async function ProfileImage() {
                 <DropdownMenu.Item>
                     <a href="/Profile">My Profile</a>
                 </DropdownMenu.Item>
-                <DropdownMenu.Item>Log out</DropdownMenu.Item>
+                <DropdownMenu.Item><button onClick={() => signOut()}>Log out</button></DropdownMenu.Item>
             </DropdownMenu.Content>
             <DropdownMenu.Root />
         </DropdownMenu.Root>

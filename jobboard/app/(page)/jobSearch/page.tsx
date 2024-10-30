@@ -1,7 +1,7 @@
 "use client"
 // import prisma from "../../../prisma/client";
 import { Select, SelectItem } from "@nextui-org/select";
-
+// import ButtonWithModal from "../ButtonWithModal/page";
 async function searchJobs(values: any) {
 
     const jobs = await fetch("http://localhost:3000/api/jobs?category=software%7Ceducation&experienceLevel=jonior&location=1")
@@ -112,7 +112,12 @@ export default function JobSearch({ searchParams }: any) {
                     </div>
                 ))}
             </div> */}
+               <div>
+            <h1>ברוכים הבאים!</h1>
+           {/* <ButtonWithModal />  */}
         </div>
+        </div>
+        
     );
 
 }

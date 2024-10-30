@@ -3,7 +3,8 @@ import JobCard from '../jobCard/page'
 
 
 
-const arr=[{
+const jobs=[{
+  "jobId":"1",
 "geographicalLocation": "gf",
 "requiredExperienceLevel": "String",
 "salaryOffered": "String",
@@ -15,6 +16,7 @@ const arr=[{
 "status": "String"
 },
 {
+  "jobId":"2",
     "geographicalLocation": "jerusalem",
     "requiredExperienceLevel": "String",
     "salaryOffered": "String",
@@ -25,7 +27,7 @@ const arr=[{
     "jobDescription": "String",
     "status": "String"
 }]
-//props=מעסיק
+//props=id,image:מעסיק
 function showDeals({props}:any) {
   async function searchJobs(values: any) {
 
@@ -45,9 +47,9 @@ function showDeals({props}:any) {
               </div>
               <div className="flex flex-wrap -mx-3"> {/* קונטיינר עם Flexbox */}
              
-                {arr.map((i, index) => (
+                {jobs.map((i, index) => (
                   <div className="w-1/3 px-3 mb-6"> {/* אלמנט עם רוחב של 1/3 */}
-                    <JobCard key={index} props={arr[index]} />
+                    <JobCard key={index} job={jobs[index]} />
                   </div>
                 ))}
               </div>

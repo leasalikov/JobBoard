@@ -31,7 +31,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Nav/>
-        {/* <Provider>{children}</Provider> */}
         <ThemeProvider
           attribute="class"
           defaultTheme='dark'

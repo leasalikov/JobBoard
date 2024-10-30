@@ -16,15 +16,16 @@ model Users {
   name        String?
   image       String?
   password    String?
-  employer        Employers?
+  type        String?
+  employer    Employers?
   jobSearcher JobSearchers?
   candidacy   Candidacies[]
 }
 
 model JobSearchers {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  user   Users  @relation(fields: [userId], references: [id])
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId String   @unique @db.ObjectId
+  user   Users    @relation(fields: [userId], references: [id])
   resume String[]
 }
 

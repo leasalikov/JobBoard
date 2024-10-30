@@ -25,12 +25,26 @@ export async function GET(request: Request) {
         if (location) {
             if (location.includes(',')) {
                 const locations = location.split(',');
-                whereConditions.category = {
+                whereConditions.location = {
                     in: locations,
                 };
             } else {
                 whereConditions.location = {
                     equals: location,
+                };
+            }
+        }
+
+        const type = queryParams.get('type');
+        if (type) {
+            if (type.includes(',')) {
+                const types = type.split(',');
+                whereConditions.type = {
+                    in: types,
+                };
+            } else {
+                whereConditions.location = {
+                    equals: type,
                 };
             }
         }

@@ -1,9 +1,12 @@
 import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt"
-import { log } from "console";
 import { objectEnumNames } from "@prisma/client/runtime/library";
+import { signIn } from "next-auth/react";
 
+
+//שלב א
+//sign in - 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
@@ -15,10 +18,10 @@ export async function POST(request: Request) {
                 password: hashPassword
             }
         })
-
         return NextResponse.json({ message: "success register user", success: true, user });
     } catch (error) {
         console.log(error);
         return NextResponse.json({ message: "not success register user", success: false });
     }
 }
+

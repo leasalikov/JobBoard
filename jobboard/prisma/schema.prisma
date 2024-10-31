@@ -8,17 +8,25 @@ datasource db {
 }
 
 model Users {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
-  username  String
-  phone     String
-  status    String?
-  email     String        @unique
-  name      String?
-  image     String?
-  password  String?
-  employer  Employers?
-  
-  candidacy Candidacies[]
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  username    String
+  phone       String
+  status      String?
+  email       String        @unique
+  name        String?
+  image       String?
+  password    String?
+  type        String?
+  employer    Employers?
+  jobSearcher JobSearchers?
+  candidacy   Candidacies[]
+}
+
+model JobSearchers {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId String   @unique @db.ObjectId
+  user   Users    @relation(fields: [userId], references: [id])
+  resume String[]
 }
 
 model Employers {
@@ -27,7 +35,7 @@ model Employers {
   user      Users     @relation(fields: [userId], references: [id])
   companyId String    @db.ObjectId
   company   Companies @relation(fields: [companyId], references: [id])
-  jobs      Jobs[]
+  Jobs      Jobs[]
 }
 
 model Jobs {
@@ -58,10 +66,10 @@ model Companies {
 }
 
 model Candidacies {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
-  user   Users  @relation(fields: [userId], references: [id])
-  jobId  String @db.ObjectId
-  job    Jobs   @relation(fields: [jobId], references: [id])
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String  @db.ObjectId
+  user        Users   @relation(fields: [userId], references: [id])
+  jobId       String  @db.ObjectId
+  job         Jobs    @relation(fields: [jobId], references: [id])
   coverLetter String?
 }

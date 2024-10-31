@@ -157,7 +157,8 @@ export default function JobSearch() {
                     </div>
                 ))}
             </div>
-        </div>
+
+        </div>        
     );
 
 }

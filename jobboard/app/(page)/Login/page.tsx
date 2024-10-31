@@ -7,21 +7,17 @@ import { FaGoogle } from "react-icons/fa"
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [moreDetails, setMoreDetails] = useState<boolean>(true);
   const router = useRouter()
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
-
     const values = {
       email: target.email.value,
       password: target.password.value,
     };
     try {
-
       const credential = await signIn("credentials", { ...values, callbackUrl: "/" });
       console.log("credential", credential);
-
     } catch (error) {
       console.log(error);
     }
@@ -35,21 +31,26 @@ export default function LoginForm() {
       email: target.email.value,
       password: target.password.value,
       //@ts-ignore
-      name: target.name.value,
+      name: target.username.value,
+      username:"",
+      phone: "",
+      status: "",
+      image: "https://lh3.googleusercontent.com/a/ACg8ocIVIHgUTlkPWVcmC9I8_fTLCqJz9azWcFAm02xxQ-F0lvriRFfF=s96-c"
+
     };
     try {
 
-
+      const response = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log(data);
       router.push('/Register')
-      //   const response = await fetch("http://localhost:3000/api/register", {
-      //     method: "POST",
-      //     body: JSON.stringify(values),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   });
-      //   const data = await response.json();
-      //   console.log(data);
+
     } catch (error) {
       console.log(error);
     }
@@ -67,9 +68,9 @@ export default function LoginForm() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={isLogin ? handleSubmit : register} className="space-y-6" action="#" method="POST">
           {!isLogin && <div>
-            <label htmlFor="userName" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
+            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
             <div className="mt-2">
-              <input id="userName" name="userName" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input id="username" name="username" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>}
           <div>

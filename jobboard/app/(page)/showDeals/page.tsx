@@ -1,14 +1,37 @@
 import prisma from '../../../prisma/client';
 import JobCard from '../jobCard/page';
 
+// const jobs=[{
+//   "jobId":"1",
+// "geographicalLocation": "gf",
+// "requiredExperienceLevel": "String",
+// "salaryOffered": "String",
+// "jobType": "String",
+// "field": "String",
+// "jobTitle": "String",
+// "requirements": "String",
+// "jobDescription": "String",
+// "status": "String"
+// },
+// {
+//   "jobId":"2",
+//     "geographicalLocation": "jerusalem",
+//     "requiredExperienceLevel": "String",
+//     "salaryOffered": "String",
+//     "jobType": "String",
+//     "field": "String",
+//     "jobTitle": "String",
+//     "requirements": "String",
+//     "jobDescription": "String",
+//     "status": "String"
+// }]
+//props=id,image:מעסיק
 async function showDeals({ id }: { id: string }) {
-
+  console.log("id",id)
   const jobs = await prisma.jobs.findMany({
     where: { employerId: id }
   });
-
-  return (
-
+ return(
     <div>
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -26,9 +49,9 @@ async function showDeals({ id }: { id: string }) {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>)
+  };
 
-}
+
 
 export default showDeals

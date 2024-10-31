@@ -32,7 +32,6 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          type: user.type
         }
       }
     }
@@ -46,11 +45,9 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
       if (account?.provider === "google") {
-        const typedUser = user as { type?: string };
-        const type = typedUser.type || "user";
         await prisma.users.upsert({
           where: {
-            email: user.email
+            email: user.email,
           },
           update: {
             name: user.name,
@@ -59,7 +56,6 @@ export const authOptions: NextAuthOptions = {
             image: user.image as string,
             email: user.email as string,
             name: user.name as string,
-            type: type,
             phone: "",
             status: "",
             username: ""

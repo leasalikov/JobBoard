@@ -34,21 +34,21 @@ export default function JobSearch() {
     async function searchJobs(values: any) {
         console.log(typeof values)
         console.log('values     ' + values)
-        // const arr = values.map((value: any) => value != '')
-        // console.log('values222      ' + arr)
         const queryString = Object.entries(values)
-            .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(JSON.stringify(value))}`)
+            .map(([key, value]) => value ?
+                `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
+                : '')
+            .filter(Boolean)
             .join('&');
-        console.log('queryString       ' + queryString)
-        // const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
-        const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`);
+        console.log('queryString ' + queryString);
+        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
         console.log(response)
         const data = await response.json();
         console.log('Response data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        return data;
+        return data.jobs;
     }
 
 
@@ -98,7 +98,7 @@ export default function JobSearch() {
         <div>
             <h1>search jobs</h1>
             <form onSubmit={handleSubmit}>
-                <input 
+                <input
                     type="text"
                     name="keyword"
                     placeholder="keyword"
@@ -158,7 +158,7 @@ export default function JobSearch() {
                 ))}
             </div>
 
-        </div>        
+        </div>
     );
 
 }

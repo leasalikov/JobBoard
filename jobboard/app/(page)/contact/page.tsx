@@ -1,12 +1,10 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
-// import Nav from "@/components/section/Nav";
-// import Link from "next/link";
-// import { Suspense } from "react";
+import { Resend } from 'resend';
+
 
 export default function Contact() {
-
     const [isContact, setIsComtact] = useState(false)
 
     async function contact(e: FormEvent<HTMLFormElement>) {
@@ -20,23 +18,11 @@ export default function Contact() {
             //@ts-ignore
         };
         console.log("vaaaaa ", values)
-        try {
-            const response = await fetch("http://localhost:3000/api/sendEmail", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(values)
-            });
-
-            if (response.ok) {
-                console.log('Email sent successfully');
-            } else {
-                console.error('Failed to send email');
-            }
-        } catch (error) {
-            console.error('Error sending email:', error);
-        }
+        
+        // 
+        // Here we have to send email!!
+        //
+        
     }
 
     return (
@@ -68,7 +54,6 @@ export default function Contact() {
                         <p className="flex justify-center items-center font-bold tracking-tight text-gray-400 sm:text-3xl">Your details have been sent!</p>
                     </div>}
             </div>
-
         </div>
     );
 }

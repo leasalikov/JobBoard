@@ -1,24 +1,66 @@
 "use client"
-// import prisma from "../../../prisma/client";
 import { Select, SelectItem } from "@nextui-org/select";
+import { useState } from "react";
 
-async function searchJobs(values: any) {
 
-    const jobs = await fetch("http://localhost:3000/api/jobs?category=software%7Ceducation&experienceLevel=jonior&location=1")
+export default function JobSearch() {
 
-    return jobs;
-}
+    const [jobsToShow, setJobsToShow] = useState([]);
 
-export default function JobSearch({ searchParams }: any) {
 
-    const jobsToShow = {
-        keyword: searchParams.keyword || "",
-        location: searchParams.location || "",
-        categories: searchParams.categories || "",
-        experienceLevel: searchParams.experienceLevel || "",
-        jobTypes: searchParams.jobTypes || "",
-        salary: searchParams.salary || "",
+    const handleSelectionChange = (key: string, selectedItems: any) => {
+        console.log(selectedItems)
+        // const itemsArray = Array.isArray(selectedItems) ? selectedItems : Object.values(selectedItems);
+        setSelectedValues((prev: any) => ({
+            ...prev,
+            [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
+        }));
     };
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const values = Object.fromEntries(formData.entries());
+        values.categories = selectedValues.categories.map((categorySet: any) =>
+            Array.from(categorySet).join(',')).join(',');
+        values.jobTypes = selectedValues.jobTypes.map((jobTypeSet: any) =>
+            Array.from(jobTypeSet).join(',')).join(',');
+        const jobs = await searchJobs(values);
+        console.log(jobs)
+        setJobsToShow(jobs)
+    };
+
+
+    async function searchJobs(values: any) {
+        console.log(typeof values)
+        console.log('values     ' + values)
+        const queryString = Object.entries(values)
+            .map(([key, value]) => value ?
+                `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
+                : '')
+            .filter(Boolean)
+            .join('&');
+        console.log('queryString ' + queryString);
+        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
+        console.log(response)
+        const data = await response.json();
+        console.log('Response data:', data);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return data.jobs;
+    }
+
+
+    const [selectedValues, setSelectedValues] = useState({
+        keyword: "",
+        location: "",
+        categories: [],
+        experienceLevel: "",
+        jobTypes: [],
+        salary: ""
+    });
+
 
     const categoryOptions = [
         { value: "software", label: "software" },
@@ -42,6 +84,7 @@ export default function JobSearch({ searchParams }: any) {
         { value: "junior", label: "junior" },
         { value: "mid", label: "mid" },
         { value: "senior", label: "senior" },
+        { value: "lead", label: "lead" },
     ];
 
     const jobTypeOptions = [
@@ -50,44 +93,47 @@ export default function JobSearch({ searchParams }: any) {
         { value: "freelance", label: "freelance" },
     ];
 
+
     return (
         <div>
             <h1>search jobs</h1>
-            <form method="get">
+            <form onSubmit={handleSubmit}>
                 <input
                     type="text"
                     name="keyword"
                     placeholder="keyword"
-                    defaultValue={jobsToShow.keyword}
                 />
                 <input
                     type="text"
                     name="location"
                     placeholder="loction"
-                    defaultValue={jobsToShow.location}
                 />
                 <Select
                     selectionMode="multiple"
                     label="category"
                     placeholder="choose category"
-                >{categoryOptions.map((category) => (
-                    <SelectItem key={category.value}>
-                        {category.label}
-                    </SelectItem>
-                ))}</Select>
-                <Select label="experienceLevel"
-                    selectionMode="multiple"
-                    placeholder="choose experience level"
-                >{experienceLevelOptions.map(level => (
-                    <SelectItem key={level.value}>
+                    onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                >
+                    {categoryOptions.map((category) => (
+                        <SelectItem key={category.value}>
+                            {category.label}
+                        </SelectItem>
+                    ))}
+                </Select>
+                <label>choose experience level</label>
+                <select name="experienceLevel"
+                    defaultValue={selectedValues.experienceLevel}
+                >{experienceLevelOptions.map((level: any) => (
+                    <option key={level.value} value={level.value}>
                         {level.label}
-                    </SelectItem>
-                ))}</Select>
+                    </option>
+                ))}</select>
                 <Select
                     label="jobType"
                     selectionMode="multiple"
                     placeholder="choose job type"
-                >{jobTypeOptions.map(jobType => (
+                    onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
+                >{jobTypeOptions.map((jobType: any) => (
                     <SelectItem key={jobType.value}>
                         {jobType.label}
                     </SelectItem>
@@ -96,23 +142,24 @@ export default function JobSearch({ searchParams }: any) {
                     type="number"
                     name="salary"
                     placeholder="salary"
-                    defaultValue={jobsToShow.salary}
                 />
                 <button type="submit">search</button>
             </form >
 
-            {/* <div>
-                {jobs.map((job: any) => (
+            <div>
+                {jobsToShow && jobsToShow.map((job: any) => (
                     <div key={job.id}>
                         <h2>{job.title}</h2>
                         <p>{job.description}</p>
                         <p>{job.location}</p>
                         <p>{job.experienceLevel}</p>
-                        <p>שכר מוצע: {job.salary}</p>
+                        <p>salary : {job.salary}</p>
                     </div>
                 ))}
-            </div> */}
+            </div>
+
         </div>
     );
 
 }
+

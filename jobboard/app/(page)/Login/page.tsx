@@ -1,17 +1,25 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { signIn } from "next-auth/react";
 import { useSession } from 'next-auth/react';
 import { FaGoogle } from "react-icons/fa"
 import { Tabs, Tab } from "@nextui-org/react";
+import Cookies from 'js-cookie';
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [isJobSearcher, setIsJobSearcher] = useState<boolean>(true);
   const session = useSession();
   const router = useRouter()
+
+  useEffect(() => {
+    Cookies.set('user-type',
+      isJobSearcher ? "jobsearcher" : "employer")
+    return () => Cookies.remove('user-type');
+  }, [isJobSearcher]);
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
@@ -34,7 +42,6 @@ export default function LoginForm() {
     const values = {
       email: target.email.value,
       password: target.password.value,
-      //@ts-ignore
       name: target.username.value,
       username: "",
       phone: "",
@@ -67,26 +74,26 @@ export default function LoginForm() {
       console.log(error);
     }
   }
-  async function signUpGoogle() {
-    //  alert(session?.data?.user?.email)
-    try {
-      await signIn("google signUp")
-      alert("erereererer")
-      const response = await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
-        method: "PATCH",
-        body: JSON.stringify({ type: isJobSearcher ? "jobSearcher" : "employer" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("response", response)
-      router.push('/Register')
+  // async function signUpGoogle() {
+  //   //  alert(session?.data?.user?.email)
+  //   try {
+  //     await signIn("google")
+  //     alert("erereererer")
+  //     // const response = await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
+  //     //   method: "PATCH",
+  //     //   body: JSON.stringify({ type: isJobSearcher ? "jobSearcher" : "employer" }),
+  //     //   headers: {
+  //     //     "Content-Type": "application/json",
+  //     //   },
+  //     // });
+  //     // console.log("response", response)
+  //     // router.push('/Register')
 
-    } catch (error) {
-      console.log(error);
-    }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
 
-  }
+  // }
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className=" justify-center mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
@@ -145,7 +152,7 @@ export default function LoginForm() {
         </form>
         <div className="flex w-full flex-col justify-center items-center gap-4">
           <button
-            onClick={isLogin ? () => signIn("google signIn", { callbackUrl: "/" }) : signUpGoogle}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="flex w-[80%] items-center justify-center bg-white
          dark:bg-gray-900 border border-gray-300 rounded-lg 
          shadow-md px-6 py-2 text-sm font-medium text-gray-800

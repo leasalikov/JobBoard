@@ -3,8 +3,20 @@ import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt"
+import { cookies } from 'next/headers'
+import type { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+
+type UserType = 'employer' | 'jobSearcher'
+
+const getUserType = () => {
+  const cookieStore = cookies()
+  const userType: RequestCookie | undefined = cookieStore.get('user-type')
+  const type = (userType?.value ?? 'jobSearcher') as UserType
+  return type;
+}
+
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -24,14 +36,14 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email },
         });
         if (!user) throw new Error('Incorrect details');
-        // @ts-ignore
-        const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+        const passwordMatch = await bcrypt.compare(credentials.password, user.password!)
         if (!passwordMatch) throw new Error('Incorrect details');
 
         return {
           id: user.id,
           email: user.email,
           name: user.name,
+          type: user.type,
         }
       }
     }
@@ -44,32 +56,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
-      if (account?.provider === "google signIn") {
+      if (account?.provider === "google") {
+        const type = getUserType()
         try {
-          await prisma.users.update({
+          await prisma.users.upsert({
             where: {
               email: user.email,
             },
-            data: {
+            update: {
               name: user.name,
               image: user.image,
-            }
-          })
-        } catch (error) {
-          throw new Error(error as string)
-        }
-
-      }
-      if (account?.provider === "google signUp") {
-        try {
-          await prisma.users.create({
-            data: {
+              type: type
+            },
+            create: {
               image: user.image,
               email: user.email,
               name: user.name,
               phone: "",
               status: "",
-              username: ""
+              username: "",
+              type: type,
             }
           })
         } catch (error) {
@@ -82,7 +88,8 @@ export const authOptions: NextAuthOptions = {
       console.log({ session, token });
       return {
         ...session,
-        user: session.user
+        user: session.user,
+        type: getUserType()
       };
     },
     async jwt({ user, token }) {

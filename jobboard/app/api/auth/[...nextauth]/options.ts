@@ -64,21 +64,15 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async session({ session, token, user }) {
-      console.log({ session, token, user });
+    async session({ session, token }) {
+      console.log({ session, token });
       return {
         ...session,
-        user: {
-          ...session.user,
-          id: user.id
-        }
+        user: session.user        
       };
     },
-    async jwt({ user, token, account, profile }) {
-      if (user) return {
-        ...token,
-        id: user.id
-      }
+    async jwt({ user, token }) {
+      if (user) return token
       return token
     },
   },

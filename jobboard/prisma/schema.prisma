@@ -73,3 +73,11 @@ model Candidacies {
   job         Jobs    @relation(fields: [jobId], references: [id])
   coverLetter String?
 }
+
+model Contacts {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String  
+  name  String
+  phone String
+  message String
+}

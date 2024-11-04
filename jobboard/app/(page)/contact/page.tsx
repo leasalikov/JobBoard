@@ -1,12 +1,10 @@
 "use client";
 
 import React, { FormEvent, useState } from "react";
-// import Nav from "@/components/section/Nav";
-// import Link from "next/link";
-// import { Suspense } from "react";
+import { Resend } from 'resend';
+
 
 export default function Contact() {
-
     const [isContact, setIsComtact] = useState(false)
 
     async function contact(e: FormEvent<HTMLFormElement>) {
@@ -17,26 +15,15 @@ export default function Contact() {
             name: target.username.value,
             phone: target.phone.value,
             email: target.email.value,
+            massage: target.massage.value,
             //@ts-ignore
         };
         console.log("vaaaaa ", values)
-        try {
-            const response = await fetch("http://localhost:3000/api/sendEmail", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(values)
-            });
-
-            if (response.ok) {
-                console.log('Email sent successfully');
-            } else {
-                console.error('Failed to send email');
-            }
-        } catch (error) {
-            console.error('Error sending email:', error);
-        }
+        
+        // 
+        // Here we have to send email!!
+        //
+        
     }
 
     return (
@@ -57,6 +44,7 @@ export default function Contact() {
                             <input placeholder="Your name" id="username" name="username" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                             <input placeholder="Phone" id="phone" name="phone" type="tel" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                             <input placeholder="Email" id="email" name="email" type="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <input placeholder="Your Massage" id="massage" name="massage" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                             <div>
                                 <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 
             focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Send</button>
@@ -68,7 +56,6 @@ export default function Contact() {
                         <p className="flex justify-center items-center font-bold tracking-tight text-gray-400 sm:text-3xl">Your details have been sent!</p>
                     </div>}
             </div>
-
         </div>
     );
 }

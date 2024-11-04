@@ -10,3 +10,8 @@ GOOGLE_CLIENT_ID="834259790590-8gc2kcak1hp51q4ti5evqfl3iqlffoht.apps.googleuserc
 
 npx prisma generate
 npx prisma db push
+
+
+EMAIL_MANAGER="achaiotbaam@gmail.com"
+EMAIL_APP="כל אחת תשים את המייל שלה"
+EMAIL_PASS="guyq iirx afyv eopp"

@@ -46,7 +46,7 @@ export default function LoginForm() {
       username: "",
       phone: "",
       status: "",
-      type: ""
+      type: isJobSearcher ? "jobsearcher" : "employer"
     };
     try {
       const response = await fetch("http://localhost:3000/api/register", {

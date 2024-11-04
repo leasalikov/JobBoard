@@ -6,6 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
     console.log("my session ", session)
+    
     return (
         <div>
             <div className="bg-white">
@@ -70,9 +71,6 @@ export default async function HomePage() {
                     </div> */}
                 {/* </header> */}
 
-
-
-           
 
                 <div className="relative isolate px-6 pt-14 lg:px-8">
                     <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">

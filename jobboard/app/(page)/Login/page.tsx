@@ -26,17 +26,15 @@ export default function LoginForm() {
   async function register(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
-
     const values = {
       email: target.email.value,
       password: target.password.value,
       //@ts-ignore
       name: target.username.value,
-      username:"",
+      username: "",
       phone: "",
       status: "",
       image: "https://lh3.googleusercontent.com/a/ACg8ocIVIHgUTlkPWVcmC9I8_fTLCqJz9azWcFAm02xxQ-F0lvriRFfF=s96-c"
-
     };
     try {
 
@@ -55,6 +53,7 @@ export default function LoginForm() {
       console.log(error);
     }
   }
+
 
   return (
 

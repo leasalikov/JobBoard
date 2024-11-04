@@ -8,7 +8,6 @@ export async function GET(req: Request, { params }: { params: { email: string } 
         const user = await prisma.users.findUnique({
             where: { email: email as string }
         });
-
         return NextResponse.json({ message: "success get user", success: true, user: { ...user } });
     } catch (error) {
         console.log(error);

@@ -19,10 +19,10 @@ export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
         subject: 'new contact from Joboard applaction',
         html: ` 
             <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
-                <h4>name, ${emailDetails.name}</h4>
-                <h4>phone, ${emailDetails.phone}</h4>
-                <h4>email, ${emailDetails.email}</h4>
-                <h4>message, ${emailDetails.message}</h4>
+                <h4>name: ${emailDetails.name}</h4>
+                <h4>phone: ${emailDetails.phone}</h4>
+                <h4>email: ${emailDetails.email}</h4>
+                <h4>message: ${emailDetails.message}</h4>
             </div> `
     };
 

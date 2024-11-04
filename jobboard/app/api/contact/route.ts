@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { sendHelpRequestEmail } from "@/lib/sendEmail";
 
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 const EMAIL_MANAGER = process.env.EMAIL_MANAGER
 const EMAIL_APP = process.env.EMAIL_APP
 

@@ -12,6 +12,7 @@ npx prisma generate
 npx prisma db push
 
 
-EMAIL_MANAGER="achaiotbaam@gmail.com"
+EMAIL_MANAGER="jjobBoard@gmail.com"
+EMAIL_MANAGER_PASSWORD="jobBoard@123"
 EMAIL_APP="כל אחת תשים את המייל שלה"
 EMAIL_PASS="guyq iirx afyv eopp"

@@ -3,10 +3,15 @@
 import React, { FormEvent, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { signIn } from "next-auth/react";
+import { useSession } from 'next-auth/react';
+
 import { FaGoogle } from "react-icons/fa"
+import { Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isJobSearcher, setIsJobSearcher] = useState<boolean>(true);
+  const session = useSession();
   const router = useRouter()
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -32,14 +37,12 @@ export default function LoginForm() {
       password: target.password.value,
       //@ts-ignore
       name: target.username.value,
-      username:"",
+      username: "",
       phone: "",
       status: "",
-      image: "https://lh3.googleusercontent.com/a/ACg8ocIVIHgUTlkPWVcmC9I8_fTLCqJz9azWcFAm02xxQ-F0lvriRFfF=s96-c"
-
+      type: ""
     };
     try {
-
       const response = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         body: JSON.stringify(values),
@@ -49,7 +52,17 @@ export default function LoginForm() {
       });
       const data = await response.json();
       console.log(data);
-      router.push('/Register')
+      const SignInvalues = {
+        email: target.email.value,
+        password: target.password.value,
+      };
+      try {
+        const credential = await signIn("credentials", { ...SignInvalues, callbackUrl: "/app/Register" });
+        console.log("credential", credential);
+      } catch (error) {
+        console.log(error);
+      }
+      // router.push('/Register')
 
     } catch (error) {
       console.log(error);
@@ -57,7 +70,6 @@ export default function LoginForm() {
   }
 
   return (
-
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         {/* <Image className="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> */}
@@ -66,6 +78,21 @@ export default function LoginForm() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <Tabs
+          className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
+          fullWidth
+          placement="top"
+          size="lg"
+          aria-label="Tabs form"
+          onSelectionChange={() => setIsJobSearcher(!isJobSearcher)}
+        >
+          <Tab className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+            key="jobSearcherrlogin" title="job searcher"></Tab>
+          <Tab className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+            key="employerlogin" title="employer">
+          </Tab>
+        </Tabs>
+
         <form onSubmit={isLogin ? handleSubmit : register} className="space-y-6" action="#" method="POST">
           {!isLogin && <div>
             <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
@@ -97,8 +124,26 @@ export default function LoginForm() {
           </div>
         </form>
         <div className="flex w-full flex-col justify-center items-center gap-4">
-          <button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+          {!isLogin && <button
+            onClick={async () => {
+           signIn("google signUp")
+          //  alert(session?.data?.user?.email)
+              try {
+                await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({ type: isJobSearcher ? "jobSearcher" : "employer" }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+            router.push('/Register')
+
+            } catch (error) {
+              console.log(error);
+            }
+      
+          
+            }}
             className="flex w-[80%] items-center justify-center bg-white
          dark:bg-gray-900 border border-gray-300 rounded-lg 
          shadow-md px-6 py-2 text-sm font-medium text-gray-800
@@ -107,14 +152,28 @@ export default function LoginForm() {
           >
             <FaGoogle className="h-6 w-6 mr-2" />
             <span>Continue with Google</span>
-          </button>
+          </button>}
+
+          {isLogin &&
+            <button
+              onClick={() => signIn("google signIn", { callbackUrl: "/" })}
+              className="flex w-[80%] items-center justify-center bg-white
+         dark:bg-gray-900 border border-gray-300 rounded-lg 
+         shadow-md px-6 py-2 text-sm font-medium text-gray-800
+          dark:text-white hover:bg-gray-200 focus:outline-none 
+          focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              <FaGoogle className="h-6 w-6 mr-2" />
+              <span>Continue with Google</span>
+            </button>}
         </div>
         <p className="mt-10 text-center text-sm text-gray-500">
           <a onClick={() => setIsLogin((prev) => !prev)} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">{isLogin ? "You haven't Account? - Sign Up" : "You have Account? - Sign In"}</a>
         </p>
       </div>
-    </div>
 
+
+    </div>
   );
 }
 

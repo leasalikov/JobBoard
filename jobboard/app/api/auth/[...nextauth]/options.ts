@@ -44,41 +44,40 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
-      if (account?.provider === "google") {
-        await prisma.users.upsert({
+      if (account?.provider === "google signIn") {
+        await prisma.users.update({
           where: {
             email: user.email,
           },
-          update: {
+          data: {
             name: user.name,
-          },
-          create: {
-            image: user.image as string,
-            email: user.email as string,
-            name: user.name as string,
+            image: user.image,
+          }
+        })
+      }
+      if (account?.provider === "google signUp") {
+        await prisma.users.create({
+          data: {
+            image: user.image,
+            email: user.email,
+            name: user.name,
             phone: "",
             status: "",
             username: ""
-          },
+          }
         })
       }
       return true;
     },
-    async session({ session, token, user }) {
-      console.log({ session, token, user });
+    async session({ session, token }) {
+      console.log({ session, token });
       return {
         ...session,
-        user: {
-          ...session.user,
-          id: user.id
-        }
+        user: session.user
       };
     },
-    async jwt({ user, token, account, profile }) {
-      if (user) return {
-        ...token,
-        id: user.id
-      }
+    async jwt({ user, token }) {
+      if (user) return token
       return token
     },
   },

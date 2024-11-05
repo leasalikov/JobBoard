@@ -17,7 +17,6 @@ const getUserType = () => {
   return type;
 }
 
-
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",

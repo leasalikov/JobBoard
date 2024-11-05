@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { EmailTemplateProps } from '../types/emailTemplate'
+
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -10,7 +11,6 @@ let transporter = nodemailer.createTransport({
         rejectUnauthorized: false
     }
 });
-
 
 export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
     let mailOptions = {
@@ -36,6 +36,7 @@ export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
 }
 
 
+
 export function sendPasswordChangeEmail(userEmail: string, otp: string) {
 
     let mailOptions = {
@@ -53,8 +54,6 @@ export function sendPasswordChangeEmail(userEmail: string, otp: string) {
           </div>
             `
     };
-
-
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);

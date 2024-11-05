@@ -6,8 +6,14 @@ import { Prisma } from "@prisma/client";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
+        let { salary, employerEmail, ...leftBody } = body
+        console.log(employerEmail);
+        const employer = await prisma.users.findUnique({
+            where: { email: employerEmail }
+        })
+        salary = parseInt(salary, 10);
         const job = await prisma.jobs.create({
-            data: body
+            data: { ...leftBody, salary: salary, employerId: employer?.id }
         })
         return NextResponse.json({ message: "success add job", success: true, job })
     } catch (error) {
@@ -105,7 +111,6 @@ export async function GET(request: Request) {
 //         })
 //     } catch (error) {
 //         return NextResponse.json({ message: "Failed to delete job", success: false })
-
 //     }
 // }
 
@@ -117,6 +122,5 @@ export async function GET(request: Request) {
 //         })
 //     } catch (error) {
 //         return NextResponse.json({ message: "Failed to update job", success: false })
-
 //     }
 // }

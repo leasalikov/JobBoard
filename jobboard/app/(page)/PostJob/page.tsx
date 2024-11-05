@@ -38,7 +38,7 @@ export default function PostJobForm() {
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
-        
+
 
 
         const values = {
@@ -51,7 +51,8 @@ export default function PostJobForm() {
             requirements: target.requirements.value,
             type: "",
             description: target.jobDescription.value,
-            status: target.status.value
+            status: target.status.value,
+            employerEmail:session.data?.user?.email
         };
         try {
             const response = await fetch("http://localhost:3000/api/jobs", {

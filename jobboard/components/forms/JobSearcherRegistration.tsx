@@ -175,7 +175,6 @@ export default function JobSearcherRegistration() {
                         >
                             {skills.map((skill) => (
                                 <SelectItem
-                                    //  isDisabled="true"
                                     // disabledKeys={selectedOptions.length >= 3}
                                     key={skill.value} value={skill.value}>
                                     {skill.label}

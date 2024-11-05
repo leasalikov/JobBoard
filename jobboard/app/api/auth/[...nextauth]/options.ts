@@ -16,10 +16,6 @@ const getUserType = () => {
   const type = (userType?.value ?? 'jobSearcher') as UserType
   return type;
 }
-const setUserWebsiteLoginForm = (type: string) => {
-  const cookieStore = cookies()
-  cookieStore.set("website-Login-Form", type)
-}
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -61,7 +57,6 @@ export const authOptions: NextAuthOptions = {
       if (!user || !user.email) return false;
       if (account?.provider === "google") {
         const type = getUserType()
-        setUserWebsiteLoginForm("google")
         try {
           await prisma.users.upsert({
             where: {
@@ -85,9 +80,6 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           throw new Error(error as string)
         }
-      }
-      else {
-        setUserWebsiteLoginForm("other");
       }
       return true;
     },

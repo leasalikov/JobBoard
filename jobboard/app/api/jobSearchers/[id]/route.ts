@@ -1,7 +1,7 @@
 import prisma from "../../../../prisma/client";
 import { NextResponse } from "next/server";
 
-export async function PUT(request: Request,  { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const body = await request.json();
@@ -12,7 +12,7 @@ export async function PUT(request: Request,  { params }: { params: { id: string 
             data: {
                 phone: phone,
                 image: image,
-            }
+             }
         })
         const responseFromJobSearcher = await prisma.jobSearchers.update({
             where: { userId: id },
@@ -25,7 +25,7 @@ export async function PUT(request: Request,  { params }: { params: { id: string 
     }
 }
 
-export  async function GET(req: Request,  { params }: { params: { id: string } }) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
 

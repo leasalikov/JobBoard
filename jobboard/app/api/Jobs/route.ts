@@ -11,6 +11,7 @@ export async function POST(request: Request) {
         })
         return NextResponse.json({ message: "success add job", success: true, job })
     } catch (error) {
+        console.log(error)
         return NextResponse.json({ message: "Failed to add job", success: false })
     }
 }

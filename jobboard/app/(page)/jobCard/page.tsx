@@ -4,6 +4,7 @@ import React from "react"
 import { useState } from "react";
 import Candidates from "../candidates/page";
 import { useSession } from 'next-auth/react';
+
 //category description employerId experienceLevel field id location requirements salary status title type
 
 //props=job
@@ -38,7 +39,7 @@ function JobCard({ job }: any) {
                 <button onClick={()=>setIsCandidates(!isCandidates)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
                 {isCandidates ? 'Hide Candidates' : 'Show Candidates'}
                 </button>
-                {isCandidates && <Candidates  jobId={job.id}/>}
+                {isCandidates &&<Candidates jobId={job.id}/>}
                 <div className="relative mt-8 flex items-center gap-x-4">
                     <img src={userImg} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                     <div className="text-sm leading-6">

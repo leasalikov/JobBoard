@@ -86,10 +86,11 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       console.log({ session, token });
+      const { user } = session
+      const type = getUserType()
       return {
         ...session,
-        user: session.user,
-        type: getUserType()
+        user: { ...user, type: type },
       };
     },
     async jwt({ user, token }) {

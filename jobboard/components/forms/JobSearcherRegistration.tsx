@@ -173,6 +173,9 @@ export default function JobSearcherRegistration() {
 
                         // onChange={handleSelectChange}
                         >
+
+
+                            
                             {skills.map((skill) => (
                                 <SelectItem
                                     // disabledKeys={selectedOptions.length >= 3}

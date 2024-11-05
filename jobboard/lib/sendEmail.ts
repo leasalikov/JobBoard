@@ -36,6 +36,33 @@ export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
 }
 
 
+export function sendPasswordChangeEmail(userEmail: string, otp: string) {
+
+    let mailOptions = {
+        from: process.env.EMAIL_MANAGER,
+        to: userEmail,
+        subject: 'password recovery in website',
+        html: `
+               <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
+              <p>Hello!</p>
+              <p>A password change request has been received by the system.</p>
+              <p>Your password recovery code is: <strong>${otp}</strong></p>
+              <p>the code on the password recovery page on the website to continue.</p>
+              <p>Greetings,</p>
+              <p>Site team</p>
+          </div>
+            `
+    };
+
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 
 

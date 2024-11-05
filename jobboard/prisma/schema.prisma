@@ -20,6 +20,7 @@ model Users {
   employer    Employers?
   jobSearcher JobSearchers?
   candidacy   Candidacies[]
+  OTP         String?
 }
 
 model JobSearchers {

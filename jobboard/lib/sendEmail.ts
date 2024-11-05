@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { EmailTemplateProps } from '../types/emailTemplate'
+
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -11,6 +12,15 @@ let transporter = nodemailer.createTransport({
     }
 });
 
+function transporterEmail(mailOptions: any) {
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
     let mailOptions = {
@@ -26,14 +36,10 @@ export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
             </div> `
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
+    transporterEmail(mailOptions)
+
 }
+
 
 
 export function sendPasswordChangeEmail(userEmail: string, otp: string) {
@@ -53,15 +59,14 @@ export function sendPasswordChangeEmail(userEmail: string, otp: string) {
           </div>
             `
     };
-
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
+    transporterEmail(mailOptions);
+    // transporter.sendMail(mailOptions, function (error, info) {
+    //     if (error) {
+    //         console.log(error);
+    //     } else {
+    //         console.log('Email sent: ' + info.response);
+    //     }
+    // });
 }
 
 

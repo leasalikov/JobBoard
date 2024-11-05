@@ -1,4 +1,4 @@
-"use client";
+use client";
 // import React from "react";
 // import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";

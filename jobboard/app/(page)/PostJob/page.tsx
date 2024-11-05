@@ -2,6 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import React, { FormEvent, useEffect, useState } from "react";
+
+
+
 // import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation'
 type User = {
@@ -38,9 +41,6 @@ export default function PostJobForm() {
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
-        
-
-
         const values = {
             location: target.geographicalLocation.value,
             experienceLevel: target.requiredExperienceLevel.value,
@@ -51,7 +51,8 @@ export default function PostJobForm() {
             requirements: target.requirements.value,
             type: "",
             description: target.jobDescription.value,
-            status: target.status.value
+            status: target.status.value,
+            employerEmail:session.data?.user?.email
         };
         try {
             const response = await fetch("http://localhost:3000/api/jobs", {

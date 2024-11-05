@@ -54,7 +54,7 @@ export default function EmployeeRegistration() {
             experience: formData.get('experience'),
             Recommendations: PreviousWorks,
         };
-
+        
 
         try {
 
@@ -184,13 +184,13 @@ export default function EmployeeRegistration() {
                     <p>Recommendations (Optional)</p>
 
                     <div className="flex">
-                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
+                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
                     </div>
 
                     <div className="flex">
-                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
+                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
                     </div>
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5

@@ -12,16 +12,6 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-function transporterEmail(mailOptions: any) {
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-}
-
 export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
     let mailOptions = {
         from: process.env.EMAIL_MANAGER,
@@ -36,8 +26,13 @@ export function sendHelpRequestEmail(emailDetails: EmailTemplateProps) {
             </div> `
     };
 
-    transporterEmail(mailOptions)
-
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 }
 
 
@@ -59,8 +54,13 @@ export function sendPasswordChangeEmail(userEmail: string, otp: string) {
           </div>
             `
     };
-    transporterEmail(mailOptions);
-
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 }
 
 

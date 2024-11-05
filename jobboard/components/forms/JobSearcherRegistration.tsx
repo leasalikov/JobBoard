@@ -8,15 +8,42 @@ import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbFileUpload } from "react-icons/tb";
-import { PiArrowArcRightBold } from "react-icons/pi";
+import { useSession } from "next-auth/react";
+import router from "next/router";
 
-export default function EmployeeRegistration() {
+
+export default function JobSearcherRegistration() {
+    const [selectedOptions, setSelectedOptions] = useState([]);
 
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
-    const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
-        "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
-    const skills: String[] = ["planning", "Brainstorming", "persuasion", "logic", "quick thinking", "decision making", "organization",
-        "professionalism", "reliability", "responsibility", "project management", "Recruitment"]
+    const session = useSession();
+
+    const specialization = [
+        { value: "software", label: "software" },
+        { value: "marketing", label: "merketing" },
+        { value: "sales", label: "sales" },
+        { value: "AI", label: "AI" },
+        { value: "syber", label: "syber" },
+        { value: "QA", label: "QA" },
+        { value: "hardware", label: "hardware" },
+        { value: "finance", label: "finance" },
+        { value: "network", label: "network" },
+        { value: "operating system", label: "operating system" },
+        { value: "information security", label: "information security" },
+        { value: "sport", label: "sport" },
+        { value: "design", label: "design" },
+        { value: "medicine", label: "medicine" },
+        { value: "touring", label: "touring" },
+    ];
+    // const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
+    //     "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
+    const skills = [{ value: "planning", label: "planning" }
+        , { value: "Brainstorming", label: "Brainstorming" },
+    { value: "persuasion", label: "persuasion" },
+    { value: "logic", label: "logic" },
+    { value: "quick thinking", label: "quick thinking" }];
+    // "decision making", "organization",
+    // "professionalism", "reliability", "responsibility", "project management", "Recruitment"]
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,16 +54,49 @@ export default function EmployeeRegistration() {
         }
     };
 
+
+
+    //   const [selectedOptions, setSelectedOptions] = useState([]);
+
+    //   const handleSelectChange = (value) => {
+    //     if (selectedOptions.length < 3 || selectedOptions.includes(value)) {
+    //       setSelectedOptions((prevSelected) => {
+    //         alert("va",value)
+    //         if (prevSelected.includes(value)) {
+    //           return prevSelected.filter((item) => item !== value);
+    //         } else {
+    //           return [...prevSelected, value];
+    //         }
+    //       });
+    //     }
+    //   };
+
+    //   return (
+    //     <Select
+    //       value={selectedOptions}
+    //       onChange={handleSelectChange}
+    //       multiple
+    //     >
+    //       <option value="option1">Option 1</option>
+    //       <option value="option2">Option 2</option>
+    //       <option value="option3">Option 3</option>
+    //       <option value="option4" disabled={selectedOptions.length >= 3}>Option 4</option>
+    //     </Select>
+    //   );
+
+
+
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setCvUploaded(true);
         }
     }
 
+
+
     async function register(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-
         const selectedSkills = formData.getAll('skills');
         const email = formData.getAll("email");
         const phone = formData.getAll("phone");
@@ -49,35 +109,32 @@ export default function EmployeeRegistration() {
             phone: formData.get('phone'),
             photo: formData.get('photo'),
             skills: selectedSkills,
-            cv: formData.get('cv'),
-            expertise: formData.get('expertise'),
+            resume: formData.get('cv'),
+            expertise: formData.getAll('expertise'),
             experience: formData.get('experience'),
             Recommendations: PreviousWorks,
         };
-        
 
         try {
+            const response = await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
+                method: "PATCH",
+                body: JSON.stringify(values),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            console.log(data)
+            router.push('/')
 
-            // alert("values");
-            console.log(values)
-            //   const response = await fetch("http://localhost:3000/api/register", {
-            //     method: "POST",
-            //     body: JSON.stringify(values),
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //   });
-            //   const data = await response.json();
-            //   console.log(data);
         } catch (error) {
             console.log(error);
         }
+
     }
 
     return (
-
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Your Profile
                 </h2>
@@ -105,16 +162,23 @@ export default function EmployeeRegistration() {
                     </div>
                     <div className="col-span-full">
                         <Select
+                            // value={selectedOptions}
+                            //  onChange={handleSelectChange}
                             label="Your prominent skills"
                             labelPlacement="outside-left"
                             placeholder="Select 3 skills"
                             selectionMode="multiple"
                             className="block w-full"
                             name="skills"
+
+                        // onChange={handleSelectChange}
                         >
                             {skills.map((skill) => (
-                                <SelectItem key={skill}>
-                                    {skill}
+                                <SelectItem
+                                    //  isDisabled="true"
+                                    // disabledKeys={selectedOptions.length >= 3}
+                                    key={skill.value} value={skill.value}>
+                                    {skill.label}
                                 </SelectItem>
                             ))}
                         </Select>
@@ -129,9 +193,9 @@ export default function EmployeeRegistration() {
                             className="block w-full"
                             name="expertise"
                         >
-                            {specialization.map((area) => (
-                                <SelectItem key={area}>
-                                    {area}
+                            {specialization.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    {option.label}
                                 </SelectItem>
                             ))}
                         </Select>
@@ -184,13 +248,13 @@ export default function EmployeeRegistration() {
                     <p>Recommendations (Optional)</p>
 
                     <div className="flex">
-                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
-                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
+                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
 
                     <div className="flex">
-                    <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
-                    <InputLink ariaLabel="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
+                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5

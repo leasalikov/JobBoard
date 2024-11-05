@@ -20,6 +20,10 @@ export default function LoginForm() {
     return () => Cookies.remove('user-type');
   }, [isJobSearcher]);
 
+
+
+
+  
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
@@ -63,12 +67,11 @@ export default function LoginForm() {
         password: target.password.value,
       };
       try {
-        const credential = await signIn("credentials", { ...SignInvalues, callbackUrl: "/app/Register" });
+        const credential = await signIn("credentials", { ...SignInvalues, callbackUrl: "/../Register" });
         console.log("credential", credential);
       } catch (error) {
         console.log(error);
       }
-      // router.push('/Register')
 
     } catch (error) {
       console.log(error);
@@ -106,12 +109,14 @@ export default function LoginForm() {
             tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
             cursor: "w-full bg-indigo-600",
             tab: "max-w-fit px-0 h-12",
-            tabContent: "group-data-[selected=true]:text-indigo-600"
+            // tabContent: "group-data-[selected=true]:text-indigo-600"
           }}
           onSelectionChange={() => setIsJobSearcher(!isJobSearcher)}
         >
           <Tab className="flex items-center space-x-2" key="jobSearcherrlogin" title="job searcher"></Tab>
           <Tab className="flex items-center space-x-2" key="employerlogin" title="employer"></Tab>
+
+
         </Tabs>
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-indigo-600">{isJobSearcher ? "Job searcher " : "Employer "}{isLogin ? "login" : "sign up"}
@@ -152,7 +157,7 @@ export default function LoginForm() {
         </form>
         <div className="flex w-full flex-col justify-center items-center gap-4">
           <button
-            onClick={() => signIn("google", { callbackUrl: "/" })}
+            onClick={() =>{isLogin ?signIn("google", { callbackUrl: "/" }):signIn("google", { callbackUrl: "/Register" })} }
             className="flex w-[80%] items-center justify-center bg-white
          dark:bg-gray-900 border border-gray-300 rounded-lg 
          shadow-md px-6 py-2 text-sm font-medium text-gray-800

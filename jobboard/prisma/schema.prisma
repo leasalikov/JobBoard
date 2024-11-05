@@ -20,6 +20,7 @@ model Users {
   employer    Employers?
   jobSearcher JobSearchers?
   candidacy   Candidacies[]
+  OTP         String?
 }
 
 model JobSearchers {
@@ -72,4 +73,12 @@ model Candidacies {
   jobId       String  @db.ObjectId
   job         Jobs    @relation(fields: [jobId], references: [id])
   coverLetter String?
+}
+
+model Contacts {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String  
+  name  String
+  phone String
+  message String
 }

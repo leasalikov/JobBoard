@@ -1,9 +1,29 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { FormEvent, useEffect, useState } from "react";
 // import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation'
+type User = {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    type?: string | null
+}
+
 
 export default function PostJobForm() {
+    const session = useSession()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!session)
+            router.push('/Login')
+        // const { type } = session.data?.user as User
+        // if (type!="employer") 
+        //     alert()
+
+    }, [session])
     const details = [
         { name: "geographicalLocation", label: "geographical Location" },
         { name: "requiredExperienceLevel", label: "required Experience Level" },
@@ -12,33 +32,37 @@ export default function PostJobForm() {
         { name: "field", label: "field" },
         { name: "jobTitle", label: "job Title" },
         { name: "jobDescription", label: "job Description" },
+        { name: "requirements", label: "requirements" },
         { name: "status", label: "status" }
     ]
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
+        
+
 
         const values = {
-            geographicalLocation: target.geographicalLocation.value,
-            requiredExperienceLevel: target.requiredExperienceLevel.value,
-            salaryOffered: target.salaryOffered.value,
-            jobType: target.jobType.value,
+            location: target.geographicalLocation.value,
+            experienceLevel: target.requiredExperienceLevel.value,
+            salary: target.salaryOffered.value,
+            category: target.jobType.value,
             field: target.field.value,
-            jobTitle: target.jobTitle.value,
+            title: target.jobTitle.value,
             requirements: target.requirements.value,
-            jobDescription: target.jobDescription.value,
+            type: "",
+            description: target.jobDescription.value,
             status: target.status.value
         };
         try {
-            //   const response = await fetch("http://localhost:3000/api/postJob", {
-            //     method: "POST",
-            //     body: JSON.stringify(values),
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //   });
-            //   const data = await response.json();
-            //   console.log(data);
+            const response = await fetch("http://localhost:3000/api/jobs", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            console.log(data);
         } catch (error) {
             console.log(error);
         }
@@ -47,16 +71,11 @@ export default function PostJobForm() {
     return (
 
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-
-
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 {/* <Image className="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> */}
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Post New Job
                 </h2>
             </div>
-
-
-
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={postjob} className="space-y-6" action="#" method="POST">
@@ -70,9 +89,6 @@ export default function PostJobForm() {
                             </div>
                         )}
                     </div>
-
-
-
 
                     {/* <div>
                         <label htmlFor="geographicalLocation" className="block text-sm font-medium leading-6 text-gray-900">geographical Location</label>

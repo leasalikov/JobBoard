@@ -2,11 +2,9 @@
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
 
-
 export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
-
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
@@ -95,71 +93,79 @@ export default function JobSearch() {
 
 
     return (
-        <div>
-            <h1>search jobs</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="keyword"
-                    placeholder="keyword"
-                />
-                <input
-                    type="text"
-                    name="location"
-                    placeholder="loction"
-                />
-                <Select
-                    selectionMode="multiple"
-                    label="category"
-                    placeholder="choose category"
-                    onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
-                >
-                    {categoryOptions.map((category) => (
-                        <SelectItem key={category.value}>
-                            {category.label}
+        <>
+            <br />
+            <br />
+            <br />
+            <div
+                className="relative flex h-[calc(100vh-2rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5">
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <input
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        type="text"
+                        name="keyword"
+                        placeholder="Keyword"
+                    />
+                    <input
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        type="text"
+                        name="location"
+                        placeholder="Loction"
+                    />
+                    <Select
+                        selectionMode="multiple"
+                        label="category"
+                        placeholder="choose category"
+                        onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                    >
+                        {categoryOptions.map((category) => (
+                            <SelectItem key={category.value}>
+                                {category.label}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                    <Select name="experienceLevel"
+                        placeholder="choose experience level"
+                        label="Level"
+                    // defaultValue={selectedValues.experienceLevel}
+                    >{experienceLevelOptions.map((level: any) => (
+                        <SelectItem key={level.value} value={level.value}>
+                            {level.label}
                         </SelectItem>
+                    ))}</Select>
+                    <Select
+                        label="jobType"
+                        selectionMode="multiple"
+                        placeholder="choose job type"
+                        onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
+                    >{jobTypeOptions.map((jobType: any) => (
+                        <SelectItem key={jobType.value}>
+                            {jobType.label}
+                        </SelectItem>
+                    ))}</Select>
+                    <input
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        type="number"
+                        name="salary"
+                        placeholder="salary"
+                    />
+                    <br />
+                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">search</button>
+                </form >
+
+                <div>
+                    {jobsToShow && jobsToShow.map((job: any) => (
+                        <div key={job.id}>
+                            <h2>{job.title}</h2>
+                            <p>{job.description}</p>
+                            <p>{job.location}</p>
+                            <p>{job.experienceLevel}</p>
+                            <p>salary : {job.salary}</p>
+                        </div>
                     ))}
-                </Select>
-                <label>choose experience level</label>
-                <select name="experienceLevel"
-                    defaultValue={selectedValues.experienceLevel}
-                >{experienceLevelOptions.map((level: any) => (
-                    <option key={level.value} value={level.value}>
-                        {level.label}
-                    </option>
-                ))}</select>
-                <Select
-                    label="jobType"
-                    selectionMode="multiple"
-                    placeholder="choose job type"
-                    onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
-                >{jobTypeOptions.map((jobType: any) => (
-                    <SelectItem key={jobType.value}>
-                        {jobType.label}
-                    </SelectItem>
-                ))}</Select>
-                <input
-                    type="number"
-                    name="salary"
-                    placeholder="salary"
-                />
-                <button type="submit">search</button>
-            </form >
-
-            <div>
-                {jobsToShow && jobsToShow.map((job: any) => (
-                    <div key={job.id}>
-                        <h2>{job.title}</h2>
-                        <p>{job.description}</p>
-                        <p>{job.location}</p>
-                        <p>{job.experienceLevel}</p>
-                        <p>salary : {job.salary}</p>
-                    </div>
-                ))}
+                </div>
             </div>
-
-        </div>
-    );
-
+        </>
+    )
 }
 

@@ -1,13 +1,25 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/navigation'
 import { signIn } from "next-auth/react";
+import { useSession } from 'next-auth/react';
 import { FaGoogle } from "react-icons/fa"
+import { Tabs, Tab } from "@nextui-org/react";
+import Cookies from 'js-cookie';
 
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isJobSearcher, setIsJobSearcher] = useState<boolean>(true);
+  const session = useSession();
   const router = useRouter()
+
+  useEffect(() => {
+    Cookies.set('user-type',
+      isJobSearcher ? "jobsearcher" : "employer")
+    return () => Cookies.remove('user-type');
+  }, [isJobSearcher]);
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
@@ -30,16 +42,13 @@ export default function LoginForm() {
     const values = {
       email: target.email.value,
       password: target.password.value,
-      //@ts-ignore
       name: target.username.value,
-      username:"",
+      username: "",
       phone: "",
       status: "",
-      image: "https://lh3.googleusercontent.com/a/ACg8ocIVIHgUTlkPWVcmC9I8_fTLCqJz9azWcFAm02xxQ-F0lvriRFfF=s96-c"
-
+      type: isJobSearcher ? "jobsearcher" : "employer"
     };
     try {
-
       const response = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         body: JSON.stringify(values),
@@ -49,36 +58,81 @@ export default function LoginForm() {
       });
       const data = await response.json();
       console.log(data);
-      router.push('/Register')
+      const SignInvalues = {
+        email: target.email.value,
+        password: target.password.value,
+      };
+      try {
+        const credential = await signIn("credentials", { ...SignInvalues, callbackUrl: "/app/Register" });
+        console.log("credential", credential);
+      } catch (error) {
+        console.log(error);
+      }
+      // router.push('/Register')
 
     } catch (error) {
       console.log(error);
     }
   }
+  // async function signUpGoogle() {
+  //   //  alert(session?.data?.user?.email)
+  //   try {
+  //     await signIn("google")
+  //     alert("erereererer")
+  //     // const response = await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
+  //     //   method: "PATCH",
+  //     //   body: JSON.stringify({ type: isJobSearcher ? "jobSearcher" : "employer" }),
+  //     //   headers: {
+  //     //     "Content-Type": "application/json",
+  //     //   },
+  //     // });
+  //     // console.log("response", response)
+  //     // router.push('/Register')
 
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+
+  // }
   return (
-
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        {/* <Image className="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company"> */}
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">{isLogin ? "Login" : "Sign Up"}
-        </h2>
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className=" justify-center mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <Tabs
+          variant="underlined"
+          placement="top"
+          size="lg"
+          aria-label="Tabs form"
+          classNames={{
+            tabList: "gap-6 w-full relative rounded-none p-0 border-b border-divider",
+            cursor: "w-full bg-indigo-600",
+            tab: "max-w-fit px-0 h-12",
+            tabContent: "group-data-[selected=true]:text-indigo-600"
+          }}
+          onSelectionChange={() => setIsJobSearcher(!isJobSearcher)}
+        >
+          <Tab className="flex items-center space-x-2" key="jobSearcherrlogin" title="job searcher"></Tab>
+          <Tab className="flex items-center space-x-2" key="employerlogin" title="employer"></Tab>
+        </Tabs>
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="mt-10 mb-10 text-center text-2xl font-bold leading-9 tracking-tight text-indigo-600">{isJobSearcher ? "Job searcher " : "Employer "}{isLogin ? "login" : "sign up"}
+          </h2>
+        </div>
         <form onSubmit={isLogin ? handleSubmit : register} className="space-y-6" action="#" method="POST">
-          {!isLogin && <div>
-            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">User Name</label>
-            <div className="mt-2">
-              <input id="username" name="username" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div>
-          </div>}
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-            <div className="mt-2">
-              <input id="email" name="email" type="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-            </div>
-          </div>
+          {!isLogin &&
+            <InputLogin
+              label="User Name"
+              type="text"
+              id="username"
+              name="username"
+            />}
+
+          <InputLogin
+            label="Email address"
+            type="email"
+            id="email"
+            name="email"
+          />
+
           <div>
             <div className="flex items-center justify-between">
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
@@ -113,8 +167,9 @@ export default function LoginForm() {
           <a onClick={() => setIsLogin((prev) => !prev)} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">{isLogin ? "You haven't Account? - Sign Up" : "You have Account? - Sign In"}</a>
         </p>
       </div>
-    </div>
 
+
+    </div>
   );
 }
 
@@ -123,31 +178,17 @@ type InputLoginProps = {
   type: string;
   id: string;
   name: string;
-  placeholder: string;
 };
 
 function InputLogin({ label, ...props }: InputLoginProps) {
   return (
     <>
-      <div className="mb-6 w-full">
-        <label
-          htmlFor="default-input"
-          className="block w-[80%] mx-auto mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        >
-          {label}
-        </label>
-        <input
-          {...props}
-          className="bg-gray-50 border border-gray-300
-           text-gray-900 text-sm rounded-lg
-            focus:ring-blue-500 focus:border-blue-500
-             block w-[80%] mx-auto p-2.5 dark:bg-gray-700
-              dark:border-gray-600 dark:placeholder-gray-400
-               dark:text-white dark:focus:ring-blue-500
-                dark:focus:border-blue-500"
-        />
+      <div>
+        <label htmlFor={props.name} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
+        <div className="mt-2">
+          <input {...props} required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+        </div>
       </div>
-
     </>
   );
 }

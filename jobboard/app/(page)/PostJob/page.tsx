@@ -143,7 +143,7 @@ export default function PostJobForm() {
                 </form>
 
 
-                
+
 
                 <p className="mt-10 text-center text-sm text-gray-500">
                     You can set and edit your profile information at any time<br />

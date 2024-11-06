@@ -1,21 +1,22 @@
 import prisma from "../../../../prisma/client";
 import { NextResponse } from "next/server";
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request,  { params }: { params: { email: string } }) {
     try {
-        const { id } = params;
+        const { email } = params;
         const body = await request.json();
         const { phone, image, ...leftBody } = body;
 
         const responseFromUser = await prisma.users.update({
-            where: { id: id },
+            where: { email: email },
             data: {
                 phone: phone,
                 image: image,
-             }
+            }
         })
+
         const responseFromJobSearcher = await prisma.jobSearchers.update({
-            where: { userId: id },
+            where: { userId: responseFromUser.id },
             data: leftBody
         })
         return NextResponse.json({ message: "success update jobSearcher", success: true, responseFromUser, responseFromJobSearcher });
@@ -25,7 +26,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     }
 }
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export  async function GET(req: Request,  { params }: { params: { id: string } }) {
     try {
         const { id } = params;
 

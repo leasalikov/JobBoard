@@ -6,3 +6,4 @@ export interface EmailTemplateProps {
   message: string;
 }
 
+

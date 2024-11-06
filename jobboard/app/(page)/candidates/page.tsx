@@ -1,19 +1,28 @@
+"use client"
 import prisma from "../../../prisma/client";
 
 
- function Candidates({ jobId }: { jobId: string }) {
-    // const candidates = await prisma.candidacies.findMany({
-    //     where: { jobId: jobId },
-    // }
-    // )
-    return (
+async function Candidates({ jobId }: { jobId: string }) {
 
+    const response = await fetch(`http://localhost:3000/api/candidacies?jobId=${jobId}`);
+    const candidates = await response.json();
+    console.log(candidates);
+
+    return (
         <div className="mt-5">
             <h4 className="text-lg font-semibold">Candidates List</h4>
-          
-            {/* הצג את המועמדים כאן */}
 
-            <p>jobid={jobId}</p>
+            {/* Display candidates here */}
+            {candidates.map((candidate: any) => (
+                <div className="w-1/3 px-3 mb-6">
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">name: {candidate.user.username}</p>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">email: {candidate.user.email}</p>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">phone: {candidate.user.phone}</p>
+                    <div className="relative mt-8 flex items-center gap-x-4">
+                        <img src={candidate.user.image as string} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

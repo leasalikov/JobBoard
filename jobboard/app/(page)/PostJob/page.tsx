@@ -1,9 +1,32 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { FormEvent, useEffect, useState } from "react";
+
+
+
 // import { signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation'
+type User = {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    type?: string | null
+}
+
 
 export default function PostJobForm() {
+    const session = useSession()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!session)
+            router.push('/Login')
+        // const { type } = session.data?.user as User
+        // if (type!="employer") 
+        //     alert()
+
+    }, [session])
     const details = [
         { name: "geographicalLocation", label: "geographical Location" },
         { name: "requiredExperienceLevel", label: "required Experience Level" },
@@ -12,33 +35,35 @@ export default function PostJobForm() {
         { name: "field", label: "field" },
         { name: "jobTitle", label: "job Title" },
         { name: "jobDescription", label: "job Description" },
+        { name: "requirements", label: "requirements" },
         { name: "status", label: "status" }
     ]
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
-
         const values = {
-            geographicalLocation: target.geographicalLocation.value,
-            requiredExperienceLevel: target.requiredExperienceLevel.value,
-            salaryOffered: target.salaryOffered.value,
-            jobType: target.jobType.value,
+            location: target.geographicalLocation.value,
+            experienceLevel: target.requiredExperienceLevel.value,
+            salary: target.salaryOffered.value,
+            category: target.jobType.value,
             field: target.field.value,
-            jobTitle: target.jobTitle.value,
+            title: target.jobTitle.value,
             requirements: target.requirements.value,
-            jobDescription: target.jobDescription.value,
-            status: target.status.value
+            type: "",
+            description: target.jobDescription.value,
+            status: target.status.value,
+            employerEmail:session.data?.user?.email
         };
         try {
-            //   const response = await fetch("http://localhost:3000/api/postJob", {
-            //     method: "POST",
-            //     body: JSON.stringify(values),
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //   });
-            //   const data = await response.json();
-            //   console.log(data);
+            const response = await fetch("http://localhost:3000/api/jobs", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            console.log(data);
         } catch (error) {
             console.log(error);
         }

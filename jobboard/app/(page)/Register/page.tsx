@@ -4,12 +4,12 @@
 import React, { FormEvent, useState } from "react";
 // import { signIn } from "next-auth/react";
 import { Select, SelectItem, Input } from "@nextui-org/react";
-import EmployeeRegistration from "@/components/forms/EmployeeRegistration";
 import EmployerRegistration from "@/components/forms/EmployerRegistration";
+import JobSearcherRegistration from "@/components/forms/JobSearcherRegistration";
 
 export default function Register() {
-return (<EmployerRegistration/>)
-// return (<EmployeeRegistration/>)
+// return (<EmployerRegistration/>)
+return (<JobSearcherRegistration/>)
 
 }
 

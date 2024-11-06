@@ -1,9 +1,5 @@
 "use client";
-// import React from "react";
-"use client"
-// import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
-// import { signIn } from "next-auth/react";
 import { Select, SelectItem, Avatar } from "@nextui-org/react";
 import { SiFacebook } from "react-icons/si";
 import { FaTwitter } from "react-icons/fa6";
@@ -12,9 +8,12 @@ import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbWorld } from "react-icons/tb";
+import { signIn, useSession } from "next-auth/react";
 
 
 export default function EmployerRegistration() {
+    const session = useSession();
+
     const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
         "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
@@ -39,27 +38,28 @@ export default function EmployerRegistration() {
             }
         });
 
+
         const values = {
-            logo: formData.get('logo'),
+            logo: formData.get('logo')?.toString(),
             description: formData.get("CompanyDescription"),
             expertise: formData.getAll('expertise'),
-            teamSize: formData.get('teamSize'),
+            size: formData.get('teamSize'),
             links: LinkArray,
             email: formData.get('email'),
             phone: formData.get('phone'),
         };
-        try {
-            console.log("values", values)
 
-            //   const response = await fetch("http://localhost:3000/api/register", {
-            //     method: "POST",
-            //     body: JSON.stringify(values),
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //   });
-            //   const data = await response.json();
-            //   console.log(data);
+        try {
+            const response = await fetch(`http://localhost:3000/api/company/${session?.data?.user?.email}`, {
+                method: "PATCH",
+                body: JSON.stringify(values),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            console.log(data);
+
         } catch (error) {
             console.log(error);
         }
@@ -108,10 +108,10 @@ export default function EmployerRegistration() {
                     <InputIcon label="facebook" icon={SiFacebook} id="facebook" type="text" placeholder="name@company.com" />
                     <InputIcon label="Twitter" icon={FaTwitter} id="twitter" type="text" placeholder="name@company.com" />
                     <InputIcon label="Instgram" icon={AiFillInstagram} id="instgram" type="text" placeholder="name@company.com" />
-                    
+
                     <p>Contact information for jobs:</p>
-                    <InputIcon label="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com"/>
-                    <InputIcon label="phone"icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000"/>
+                    <InputIcon label="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                    <InputIcon label="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
 
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5

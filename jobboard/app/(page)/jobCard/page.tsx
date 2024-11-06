@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 function JobCard({ job }: any) {
     console.log("job",job)
     const [isCandidates, setIsCandidates] = useState(false);
+    const [isAvailable, setIsAvailable] = useState(false);
    
     const session = useSession();
     
@@ -38,6 +39,9 @@ function JobCard({ job }: any) {
                 </div>
                 <button onClick={()=>setIsCandidates(!isCandidates)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
                 {isCandidates ? 'Hide Candidates' : 'Show Candidates'}
+                </button>
+                <button onClick={()=>setIsAvailable(!isAvailable)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+                {isCandidates ? 'Job Available' : 'Job Not Available'}
                 </button>
                 {isCandidates &&<Candidates jobId={job.id}/>}
                 <div className="relative mt-8 flex items-center gap-x-4">

@@ -71,6 +71,7 @@ model Companies {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   email       String      @unique
+  phone       String
   description String
   logo        String
   size        String

@@ -32,14 +32,17 @@ async function ShowDeals() {
   const session = await getServerSession(authOptions);
 
   const user = await prisma.users.findFirst({
-    where: { email: session?.user?.email!}
+    where: { email: session?.user?.email! }
   });
   console.log(user)
   const jobs = await prisma.jobs.findMany({
-    where: { employerId: user?.id}
+    where: { employerId: user?.id }
   });
   // const jobs=["a","s","d"]
-
+  let isHaveDeals = false;
+  if (jobs.length == 0) {
+    isHaveDeals = true;
+  }
 
   console.log("my session ", session)
 
@@ -49,8 +52,8 @@ async function ShowDeals() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
             <h2 className="text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">The jobs you posted</h2>
-            <p className="mt-2 text-lg leading-8 text-gray-600">We invite you to follow the jobs you posted and post more jobs!</p>
-          </div>
+            {!isHaveDeals &&<p className="mt-2 text-lg leading-8 text-gray-600">We invite you to follow the jobs you posted and post more jobs!</p>
+}</div>
           <div className="flex flex-wrap -mx-3"> {/* קונטיינר עם Flexbox */}
 
             {jobs.map((job, index) => (
@@ -59,6 +62,11 @@ async function ShowDeals() {
               </div>
             ))}
           </div>
+          <br/>
+          <br/>
+          {isHaveDeals && <p className=" tracking-tight text-gray-900 sm:text-3xl">
+            You have not posted any jobs yet, <br/>
+            Start posting jobs and finding candidates!</p>}
         </div>
       </div>
     </div>)

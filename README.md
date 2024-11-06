@@ -14,5 +14,5 @@ npx prisma db push
 
 EMAIL_MANAGER="jjobBoard@gmail.com"
 EMAIL_MANAGER_PASSWORD="jobBoard@123"
-EMAIL_APP="כל אחת תשים את המייל שלה"
+EMAIL_APP="leasalikov@gmail.com
 EMAIL_PASS="guyqiirxafyveopp"

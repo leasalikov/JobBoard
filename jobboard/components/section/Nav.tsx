@@ -6,12 +6,14 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import ThemeToggle from "../ThemeToggle";
 import ProfileImage from "../ProfileImage";
+import ShowDeals from "@/app/(page)/showDeals/page";
+
 // import { useState } from "react";
 
 //in layout
 export default async function Nav() {
     const session = await getServerSession(authOptions);
-    console.log("my session ", session)
+    console.log("my session ", session)  
 
     type User = {
         name?: string | null;
@@ -69,6 +71,7 @@ export default async function Nav() {
                     </div>
                 </div>
             </nav>
+
             {/* <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     {session && <ProfileImage></ProfileImage>}

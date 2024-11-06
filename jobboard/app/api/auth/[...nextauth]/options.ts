@@ -65,7 +65,6 @@ export const authOptions: NextAuthOptions = {
             update: {
               name: user.name,
               image: user.image,
-              type: type
             },
             create: {
               image: user.image,
@@ -73,7 +72,6 @@ export const authOptions: NextAuthOptions = {
               name: user.name,
               phone: "",
               status: "",
-              username: "",
               type: type,
             }
           })
@@ -84,7 +82,6 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async session({ session, token }) {
-      console.log({ session, token });
       const { user } = session
       const type = getUserType()
       return {

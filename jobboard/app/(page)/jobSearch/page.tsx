@@ -135,7 +135,7 @@ export default function JobSearch() {
                         onSelectionChange={(items: any) => handleSelectionChange('experienceLevel', items)}
                         className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
                     focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"
-                    >{jobTypeOptions.map((level: any) => (
+                    >{experienceLevelOptions.map((level: any) => (
                         <SelectItem key={level.value}>
                             {level.label}
                         </SelectItem>

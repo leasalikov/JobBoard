@@ -25,6 +25,24 @@ body {
     text-wrap: balance;
   }
 }
+/* 
+.selectItem {
+  --background-light: #ffffff;
+  --text-light: #171717;
+  --background-dark: #0a0a0a;
+  --text-dark: #ededed;
+}
+
+.selectItem {
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.dark-mode .selectItem {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+} */
+
 
 /* .container {
   display: flex;

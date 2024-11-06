@@ -11,10 +11,9 @@ import { TbFileUpload } from "react-icons/tb";
 import { useSession } from "next-auth/react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { FaRegFileLines } from "react-icons/fa6";
-
 import router from "next/router";
-
-
+ import { CldUploadButton } from 'next-cloudinary';
+ 
 export default function JobSearcherRegistration() {
     // const [selectedOptions, setSelectedOptions] = useState([]);
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
@@ -40,7 +39,7 @@ export default function JobSearcherRegistration() {
         { value: "medicine", label: "medicine" },
         { value: "touring", label: "touring" },
     ];
-    
+
     const skills = [{ value: "planning", label: "planning" },
     { value: "Brainstorming", label: "Brainstorming" },
     { value: "persuasion", label: "persuasion" },
@@ -51,7 +50,7 @@ export default function JobSearcherRegistration() {
     { value: "reliability", label: "reliability" },
     { value: "responsibility", label: "responsibility" },
     { value: "project management", label: "project management" },
-    { value: "Recruitment", label: "Recruitment" } ];
+    { value: "Recruitment", label: "Recruitment" }];
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -94,9 +93,17 @@ export default function JobSearcherRegistration() {
 
 
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         if (e.target.files && e.target.files.length > 0) {
+            console.log("🐳🐳🐳🐳🐳🐳🐳",e.target.files[0])
             setCvUploaded(true);
             setFile(e.target.files[0])
+            cloudinary.v2.uploader
+                .upload(e.target.files[0].name, {
+                    asset_folder: 'cv',
+                    resource_type: 'image'
+                })
+                .then(console.log);
         }
     }
 
@@ -215,10 +222,11 @@ export default function JobSearcherRegistration() {
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                 </svg>
                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload CV</span> or drag and drop</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">PDF or DOC</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">PDF or DOCS</p>
                             </div>
                             <input name="cv" id="dropzone-file" type="file" accept="pdf, docx, PDF, DOC" className="hidden" onChange={handleCVUpload} />
                         </label>
+                        <CldUploadButton uploadPreset="<Upload Preset>" />
                     </div>}
 
                     {cvUploaded && (

@@ -112,47 +112,57 @@ export default function JobSearch() {
                         name="location"
                         placeholder="Loction"
                     />
-                    <Select
-                        selectionMode="multiple"
-                        label="category"
-                        placeholder="choose category"
-                        onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                    <select
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        // selectionMode="multiple"
+                        // label="category"
+                        // placeholder="choose category"
+                        // onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                        onChange={(e) => handleSelectionChange("categories", e.target.value)}
                     >
+                        <option value="" disabled selected hidden>Choose category</option>
                         {categoryOptions.map((category) => (
-                            <SelectItem key={category.value}>
+                            <option key={category.value}>
                                 {category.label}
-                            </SelectItem>
+                            </option>
                         ))}
-                    </Select>
-                    <Select name="experienceLevel"
-                        placeholder="choose experience level"
-                        label="Level"
+                    </select>
+
+                    <select
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        name="experienceLevel"
+                    // placeholder="choose experience level"
+                    // label="Level"
                     // defaultValue={selectedValues.experienceLevel}
-                    >{experienceLevelOptions.map((level: any) => (
-                        <SelectItem key={level.value} value={level.value}>
+                    >
+                        <option value="" disabled selected hidden>Choose experience level</option>
+                        {experienceLevelOptions.map((level: any) => (
+                        <option key={level.value} value={level.value}>
                             {level.label}
-                        </SelectItem>
-                    ))}</Select>
-                    <Select
-                        label="jobType"
-                        selectionMode="multiple"
-                        placeholder="choose job type"
-                        onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
-                    >{jobTypeOptions.map((jobType: any) => (
-                        <SelectItem key={jobType.value}>
+                        </option>
+                    ))}</select>
+                    <select
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        // label="jobType"
+                        // selectionMode="multiple"
+                        // placeholder="choose job type"
+                        // onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
+                        onChange={(e) => handleSelectionChange("jobTypes", e.target.value)}
+                    >
+                        <option value="" disabled selected hidden>Choose job type</option>
+                        {jobTypeOptions.map((jobType: any) => (
+                        <option key={jobType.value}>
                             {jobType.label}
-                        </SelectItem>
-                    ))}</Select>
+                        </option>
+                    ))}</select>
                     <input
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         type="number"
                         name="salary"
-                        placeholder="salary"
-                    />
+                        placeholder="salary"/>
                     <br />
                     <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">search</button>
                 </form >
-
                 <div>
                     {jobsToShow && jobsToShow.map((job: any) => (
                         <div key={job.id}>

@@ -1,4 +1,4 @@
-use client";
+"use client";
 // import React from "react";
 // import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
@@ -9,11 +9,16 @@ import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbFileUpload } from "react-icons/tb";
 import { useSession } from "next-auth/react";
+import { MdOutlineAddBox } from "react-icons/md";
+import { FaRegFileLines } from "react-icons/fa6";
+
 import router from "next/router";
 
 
 export default function JobSearcherRegistration() {
-    const [selectedOptions, setSelectedOptions] = useState([]);
+    // const [selectedOptions, setSelectedOptions] = useState([]);
+    const [cvUploaded, setCvUploaded] = useState<boolean>(false);
+    const [file, setFile] = useState<File>();
 
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
     const session = useSession();
@@ -35,16 +40,18 @@ export default function JobSearcherRegistration() {
         { value: "medicine", label: "medicine" },
         { value: "touring", label: "touring" },
     ];
-    // const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
-    //     "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
-    const skills = [{ value: "planning", label: "planning" }
-        , { value: "Brainstorming", label: "Brainstorming" },
+    
+    const skills = [{ value: "planning", label: "planning" },
+    { value: "Brainstorming", label: "Brainstorming" },
     { value: "persuasion", label: "persuasion" },
     { value: "logic", label: "logic" },
-    { value: "quick thinking", label: "quick thinking" }];
-    // "decision making", "organization",
-    // "professionalism", "reliability", "responsibility", "project management", "Recruitment"]
-    const [cvUploaded, setCvUploaded] = useState<boolean>(false);
+    { value: "decision making", label: "decision making" },
+    { value: "organization", label: "organization" },
+    { value: "professionalism", label: "professionalism" },
+    { value: "reliability", label: "reliability" },
+    { value: "responsibility", label: "responsibility" },
+    { value: "project management", label: "project management" },
+    { value: "Recruitment", label: "Recruitment" } ];
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -89,6 +96,7 @@ export default function JobSearcherRegistration() {
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setCvUploaded(true);
+            setFile(e.target.files[0])
         }
     }
 
@@ -104,10 +112,12 @@ export default function JobSearcherRegistration() {
         for (let i = 0; i < email.length; i++) {
             PreviousWorks.push({ email: email[i], phone: phone[i] })
         }
-
+        console.log(formData.get('photo'))
         const values = {
-            phone: formData.get('phone'),
+            phone: formData.get('userPhone'),
             photo: formData.get('photo'),
+            // image:"",
+            // photo:"",
             skills: selectedSkills,
             resume: formData.get('cv'),
             expertise: formData.getAll('expertise'),
@@ -116,8 +126,8 @@ export default function JobSearcherRegistration() {
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/api/users/${session?.data?.user?.email}`, {
-                method: "PATCH",
+            const response = await fetch(`http://localhost:3000/api/jobSearchers/${session?.data?.user?.email}`, {
+                method: "PUT",
                 body: JSON.stringify(values),
                 headers: {
                     "Content-Type": "application/json",
@@ -141,15 +151,12 @@ export default function JobSearcherRegistration() {
                 <p className="mt-5 text-center text-sm text-gray-500">
                     You can set and edit your profile information at any time
                     <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">skip
-                        {/* <PiArrowArcRightBold /> */}
                     </a>
                 </p>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={register} className="space-y-6" action="#" method="POST">
-
-
                     <div className="col-span-full">
                         <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Photo</label>
                         <div className="mt-2 flex items-center gap-x-3">
@@ -163,19 +170,17 @@ export default function JobSearcherRegistration() {
                     <div className="col-span-full">
                         <Select
                             // value={selectedOptions}
-                            //  onChange={handleSelectChange}
+                            // onChange={handleSelectChange}
                             label="Your prominent skills"
                             labelPlacement="outside-left"
                             placeholder="Select 3 skills"
                             selectionMode="multiple"
                             className="block w-full"
                             name="skills"
-
-                        // onChange={handleSelectChange}
                         >
 
 
-                            
+
                             {skills.map((skill) => (
                                 <SelectItem
                                     // disabledKeys={selectedOptions.length >= 3}
@@ -212,21 +217,24 @@ export default function JobSearcherRegistration() {
                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload CV</span> or drag and drop</p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">PDF or DOC</p>
                             </div>
-                            <input name="cv" id="dropzone-file" type="file" className="hidden" onChange={handleCVUpload} />
+                            <input name="cv" id="dropzone-file" type="file" accept="pdf, docx, PDF, DOC" className="hidden" onChange={handleCVUpload} />
                         </label>
                     </div>}
 
                     {cvUploaded && (
-                        <div className="flex bg-gray-50  text-gray-900 text-sm rounded-lg 
+                        <div className="flex border border-gray-400  text-sm rounded-lg 
                     focus:ring-indigo-500 focus:border-indigo-500 block ps-4 p-1.5">
-                            <div className="relative inset-y-0 start-0 flex items-center ps-3.5  text-3xl text-default-400 ">
-                                <TbFileUpload />
+                            <div className="relative inset-y-0 start-0 flex items-center text-5xl ">
+                                {/* <TbFileUpload /> */}
+                                <FaRegFileLines />
                             </div>
                             <div className="relative mb-3 ">
-                                <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p>
+                                <p className=" text-x ml-2 mt-2">  {file?.name}</p>
+                                <p className=" text-x ml-2 mt-2">  {file?.size} byts</p>
+
+                                {/* <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p> */}
                             </div>
                         </div>
-
                     )}
 
                     <div className="sm:col-span-3">
@@ -242,21 +250,21 @@ export default function JobSearcherRegistration() {
                     </div>
 
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                        <label htmlFor="userPhone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
                         <div className="mt-2">
-                            <input id="phone" name="phone" type="tel" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <input id="userPhone" name="userPhone" type="tel" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
                     <p>Recommendations (Optional)</p>
 
                     <div className="flex">
                         <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                        <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
 
                     <div className="flex">
                         <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                        <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5
@@ -286,10 +294,13 @@ function InputLink({ ...props }: InputProps) {
             <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none text-2xl text-default-400 pointer-events-none">
                 {<props.icon />}
             </div>
-            <input aria-label={props.ariaLabel} type={props.type} name={props.id} id={props.id} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+            <input aria-label={props.ariaLabel} type={props.type} name={props.id} id={props.id
+            }
+                className="bg-gray-50 border-underlined text-gray-900 text-sm rounded-lg 
                     focus:ring-indigo-500 focus:border-indigo-500 block w-full ps-10 p-2.5  
                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                     dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder={props.placeholder} />
+                     dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+                placeholder={props.placeholder} />
         </div>
     );
 }

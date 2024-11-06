@@ -9,7 +9,6 @@ datasource db {
 
 model Users {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
-  username    String
   phone       String
   status      String?
   email       String        @unique
@@ -24,10 +23,22 @@ model Users {
 }
 
 model JobSearchers {
-  id     String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId String   @unique @db.ObjectId
-  user   Users    @relation(fields: [userId], references: [id])
-  resume String[]
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String            @unique @db.ObjectId
+  user            Users             @relation(fields: [userId], references: [id])
+  skils           String[]
+  expertise       String[]
+  resume          String[]
+  experience      String
+  Recommendations Recommendations[]
+}
+
+model Recommendations {
+  id     String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId String       @db.ObjectId
+  user   JobSearchers @relation(fields: [userId], references: [id])
+  email  String
+  phone  String
 }
 
 model Employers {
@@ -59,6 +70,7 @@ model Jobs {
 model Companies {
   id          String      @id @default(auto()) @map("_id") @db.ObjectId
   name        String
+  email       String      @unique
   description String
   logo        String
   size        String
@@ -76,9 +88,9 @@ model Candidacies {
 }
 
 model Contacts {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String  
-  name  String
-  phone String
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  name    String
+  phone   String
   message String
 }

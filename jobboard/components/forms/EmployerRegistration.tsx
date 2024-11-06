@@ -76,7 +76,7 @@ export default function EmployerRegistration() {
                 <form onSubmit={register} className="space-y-6" action="#" method="POST">
                     <div>
                         <label htmlFor="CompanyDescription" className="block text-sm font-medium leading-6 text-gray-900">Company description</label>
-                        <textarea name="CompanyDescription" id="CompanyDescription" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-600 focus:border-indigo-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder="Write your description here..."></textarea>
+                        <textarea name="CompanyDescription" id="CompanyDescription" required className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-600 focus:border-indigo-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder="Write your description here..."></textarea>
                     </div>
 
                     <div className="col-span-full">
@@ -99,7 +99,7 @@ export default function EmployerRegistration() {
                     <div>
                         <label htmlFor="teamSize" className="block text-sm font-medium leading-6 text-gray-900">Team Size</label>
                         <div className="mt-2">
-                            <input id="teamSize" name="teamSize" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <input id="teamSize" name="teamSize" type="text" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                     </div>
 
@@ -121,7 +121,7 @@ export default function EmployerRegistration() {
                 </form>
                 <p className="mt-10 text-center text-sm text-gray-500">
                     You can set and edit your company profile information at any time<br />
-                    <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Skip</a>
+                    {/* <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Skip</a> */}
                 </p>
             </div>
         </div >

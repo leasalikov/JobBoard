@@ -31,6 +31,7 @@ async function showDeals({ id }: { id: string }) {
   const jobs = await prisma.jobs.findMany({
     where: { employerId: id }
   });
+  // const jobs=["a","s","d"]
  return(
     <div>
       <div className="bg-white py-24 sm:py-32">

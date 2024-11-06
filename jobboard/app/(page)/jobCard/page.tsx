@@ -28,12 +28,12 @@ function JobCard({ job }: any) {
                     </h3>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">category:{job.category}</p>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">description:{job.description}</p>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">employerId:{job.employerId}</p>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">experienceLevel:{job.experienceLevel}</p>
+                    {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">employerId:{job.employerId}</p> */}
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">experience Level:{job.experienceLevel}</p>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">field:{job.field}</p>
                     {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">jobTitle:{props.jobTitle}</p> */}
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">location:{job.location}</p>
-                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">job Description:{job.jobDescription}</p>
+                    {/* <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">job Description:{job.jobDescription}</p> */}
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">status:{job.status}</p>
                 </div>
                 <button onClick={()=>setIsCandidates(!isCandidates)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
@@ -46,7 +46,7 @@ function JobCard({ job }: any) {
                         <p className="font-semibold text-gray-900">
                             <a href="#">
                                 <span className="absolute inset-0"></span>
-                                Michael Foster
+                                {session.data?.user?.name}
                             </a>
                         </p>
                         <p className="text-gray-600">Co-Founder / CTO</p>

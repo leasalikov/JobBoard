@@ -12,7 +12,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
             data: {
                 phone: phone,
                 image: image,
-             }
+            }
         })
         const responseFromJobSearcher = await prisma.jobSearchers.update({
             where: { userId: id },

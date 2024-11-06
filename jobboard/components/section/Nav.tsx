@@ -6,13 +6,16 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import ThemeToggle from "../ThemeToggle";
 import ProfileImage from "../ProfileImage";
+import ShowDeals from "@/app/(page)/showDeals/page";
 // import { useState } from "react";
 
 //in layout
 export default async function Nav() {
     const session = await getServerSession(authOptions);
     console.log("my session ", session)
-
+    function showDeals(){
+        return <ShowDeals id={session?.user?.email as string}/>
+    }
     type User = {
         name?: string | null;
         email?: string | null;
@@ -60,7 +63,7 @@ export default async function Nav() {
                                 <li><a href="/jobSearch" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Job Search</a>
                                 </li>
                             }
-                            {type == "employer" && <li><a href="/showDeals" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Deals</a>
+                            {type == "employer" && <li><button onClick={showDeals} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Deals</button>
                             </li>}
                             <li><a href="/Profile" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My Profile</a>
                             </li>
@@ -69,6 +72,7 @@ export default async function Nav() {
                     </div>
                 </div>
             </nav>
+            
             {/* <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     {session && <ProfileImage></ProfileImage>}

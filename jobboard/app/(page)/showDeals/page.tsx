@@ -26,7 +26,7 @@ import JobCard from '../jobCard/page';
 //     "status": "String"
 // }]
 //props=id,image:מעסיק
-async function showDeals({ id }: { id: string }) {
+async function ShowDeals({ id }: { id: string }) {
   console.log("id",id)
   const jobs = await prisma.jobs.findMany({
     where: { employerId: id }
@@ -55,4 +55,4 @@ async function showDeals({ id }: { id: string }) {
 
 
 
-export default showDeals
+export default ShowDeals

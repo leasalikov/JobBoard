@@ -28,16 +28,19 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 //     "status": "String"
 // }]
 //props=id,image:מעסיק
-async function ShowDeals({ id }: { id: string }) {
+async function ShowDeals() {
+  const session = await getServerSession(authOptions);
 
-  console.log("id", id)
+  const user = await prisma.users.findFirst({
+    where: { email: session?.user?.email!}
+  });
+  console.log(user)
   const jobs = await prisma.jobs.findMany({
-    where: { employerId: id }
+    where: { employerId: user?.id}
   });
   // const jobs=["a","s","d"]
 
 
-  const session = await getServerSession(authOptions);
   console.log("my session ", session)
 
   return (

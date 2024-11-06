@@ -10,6 +10,7 @@ datasource db {
 model Users {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
   phone       String
+  username    String?
   status      String?
   email       String        @unique
   name        String?

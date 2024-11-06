@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa"
 import { Tabs, Tab } from "@nextui-org/react";
-
+import forgotPassword from "../forgotPassword/page";
 import Cookies from 'js-cookie';
 
 export default function LoginForm() {
@@ -35,12 +35,11 @@ export default function LoginForm() {
   async function register(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const target = e.currentTarget;
-
     const values = {
       email: target.email.value,
       password: target.password.value,
       name: target.username.value,
-      username: "",
+      username:"",
       phone: "",
       status: "",
       type: isJobSearcher ? "jobsearcher" : "employer"
@@ -115,7 +114,7 @@ export default function LoginForm() {
             <div className="flex items-center justify-between">
               <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">Password</label>
               {isLogin && <div className="text-sm">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+                <a href="/forgotPassword" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
               </div>}
             </div>
             <div className="mt-2">

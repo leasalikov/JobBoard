@@ -43,7 +43,7 @@ export default function PostJobForm() {
         const target = e.currentTarget;
         const values = {
             location: target.geographicalLocation.value,
-            experienceLevel: target.requiredExperienceLevel.value,
+            experienceLevel: target.experience.value,
             salary: target.salaryOffered.value,
             category: target.jobType.value,
             field: target.field.value,
@@ -52,8 +52,9 @@ export default function PostJobForm() {
             type: "",
             description: target.jobDescription.value,
             status: target.status.value,
-            employerEmail:session.data?.user?.email
+            employerId:session.data?.user?.email
         };
+        console.log("level",values.experienceLevel)
         try {
             const response = await fetch("http://localhost:3000/api/jobs", {
                 method: "POST",
@@ -109,6 +110,18 @@ export default function PostJobForm() {
                         </div>
                     </div>
                   
+
+                    <div className="sm:col-span-3">
+                        <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">Experience</label>
+                        <div className="mt-2">
+                            <select id="experience" name="experience" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                <option>No experience</option>
+                                <option>1-2 years</option>
+                                <option>3-5 years</option>
+                                <option>5+ years</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div className="sm:col-span-3">
                         <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">Experience</label>

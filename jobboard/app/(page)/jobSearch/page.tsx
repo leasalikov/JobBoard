@@ -112,54 +112,51 @@ export default function JobSearch() {
                         name="location"
                         placeholder="Loction"
                     />
-                    <select
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        // selectionMode="multiple"
-                        // label="category"
-                        // placeholder="choose category"
-                        // onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
-                        onChange={(e) => handleSelectionChange("categories", e.target.value)}
+                    <Select
+                        selectionMode="multiple"
+                        label="Category"
+                        placeholder="choose category"
+                        onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                        className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
+                    focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 pb-0 mr-4"
                     >
-                        <option value="" disabled selected hidden>Choose category</option>
                         {categoryOptions.map((category) => (
-                            <option key={category.value}>
+                            <SelectItem key={category.value}>
                                 {category.label}
-                            </option>
+                            </SelectItem>
                         ))}
-                    </select>
+                    </Select>
+                    {/* className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" */}
 
-                    <select
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        name="experienceLevel"
-                    // placeholder="choose experience level"
-                    // label="Level"
-                    // defaultValue={selectedValues.experienceLevel}
-                    >
-                        <option value="" disabled selected hidden>Choose experience level</option>
-                        {experienceLevelOptions.map((level: any) => (
-                        <option key={level.value} value={level.value}>
+                    <Select
+                        label="Experience level"
+                        selectionMode="single"
+                        placeholder="choose level"
+                        onSelectionChange={(items: any) => handleSelectionChange('experienceLevel', items)}
+                        className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
+                    focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"
+                    >{jobTypeOptions.map((level: any) => (
+                        <SelectItem key={level.value}>
                             {level.label}
-                        </option>
-                    ))}</select>
-                    <select
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        // label="jobType"
-                        // selectionMode="multiple"
-                        // placeholder="choose job type"
-                        // onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
-                        onChange={(e) => handleSelectionChange("jobTypes", e.target.value)}
+                        </SelectItem>
+                    ))}</Select>
+                    <Select
+                        className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
+                        focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"                        label="jobType"
+                        selectionMode="multiple"
+                        placeholder="choose job type"
+                        onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
                     >
-                        <option value="" disabled selected hidden>Choose job type</option>
                         {jobTypeOptions.map((jobType: any) => (
-                        <option key={jobType.value}>
-                            {jobType.label}
-                        </option>
-                    ))}</select>
+                            <SelectItem key={jobType.value}>
+                                {jobType.label}
+                            </SelectItem>
+                        ))}</Select>
                     <input
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         type="number"
                         name="salary"
-                        placeholder="salary"/>
+                        placeholder="salary" />
                     <br />
                     <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">search</button>
                 </form >

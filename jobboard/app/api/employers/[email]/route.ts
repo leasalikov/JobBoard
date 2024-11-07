@@ -1,3 +1,4 @@
+import { Links } from "@prisma/client";
 import prisma from "../../../../prisma/client";
 import { NextResponse, } from "next/server";
 
@@ -21,18 +22,28 @@ export async function PUT(request: Request, { params }: { params: { email: strin
 
         if (user?.type != "employer")
             throw "user not allow to update"
+        const { links, ...leftCompany } = company
         let companyResulte;
         if (company)
             companyResulte = await prisma.companies.upsert({
                 where: { email: company.email },
                 update: {},
-                create: company
+                create: leftCompany
             })
+
+        links.map(async (link: { name: string, value: string }) => {
+            return await prisma.links.create({
+                data: { ...link, companyId: company.id }
+            })
+        })
+
         const employer = await prisma.employers.upsert({
             where: { userId: user.id },
             update: leftBody,
             create: { ...leftBody, userId: user.id, companyId: companyResulte?.id }
         })
+
+
         return NextResponse.json({ message: "success update employer", success: true, user, employer });
     } catch (error) {
         console.log(error);

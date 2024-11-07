@@ -12,8 +12,9 @@ import { useSession } from "next-auth/react";
 import { MdOutlineAddBox } from "react-icons/md";
 import { FaRegFileLines } from "react-icons/fa6";
 import router from "next/router";
- import { CldUploadButton } from 'next-cloudinary';
- 
+import { CldUploadButton } from 'next-cloudinary';
+import cloudinary from "@/lib/cloudinary";
+
 export default function JobSearcherRegistration() {
     // const [selectedOptions, setSelectedOptions] = useState([]);
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
@@ -91,17 +92,17 @@ export default function JobSearcherRegistration() {
     //   );
 
 
-
+    ///fix
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.files && e.target.files.length > 0) {
-            console.log("🐳🐳🐳🐳🐳🐳🐳",e.target.files[0])
+            console.log("🐳🐳🐳🐳🐳🐳🐳", e.target.files[0])
             setCvUploaded(true);
             setFile(e.target.files[0])
-            cloudinary.v2.uploader
+            cloudinary.uploader
                 .upload(e.target.files[0].name, {
                     asset_folder: 'cv',
-                    resource_type: 'image'
+                    resource_type: "auto"
                 })
                 .then(console.log);
         }

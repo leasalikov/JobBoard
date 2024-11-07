@@ -1,15 +1,13 @@
 "use client"
-import ApllyJob from "@/components/ApllyJob";
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
-import ButtonWithModal from "../ButtonWithModal/page";
+import ButtonWithModal from '../ButtonWithModal/page'
+import Modal from "../ButtonWithModal/page";
+import ApllyJob from "@/components/ApllyJob";
 
 export default function JobSearch() {
 
-    //useEffect של בקשת GET של כל העבודות עם pages.
     const [jobsToShow, setJobsToShow] = useState([]);
-    const [apllyJob, setApllyJob] = useState(false);
-
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
@@ -34,14 +32,19 @@ export default function JobSearch() {
 
 
     async function searchJobs(values: any) {
+        console.log(typeof values)
+        console.log('values     ' + values)
         const queryString = Object.entries(values)
             .map(([key, value]) => value ?
                 `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
                 : '')
             .filter(Boolean)
             .join('&');
-        const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
+        console.log('queryString ' + queryString);
+        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
+        console.log(response)
         const data = await response.json();
+        console.log('Response data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -97,7 +100,8 @@ export default function JobSearch() {
             <br />
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div
-                    className="relative flex h-[calc(100vh-2rem)] w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5">
+                    className="fixed top-16 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] flex flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5"
+                >
                     <form className="space-y-6" onSubmit={handleSubmit}>
                         <input
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -160,10 +164,14 @@ export default function JobSearch() {
                         <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">search</button>
                     </form >
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div
+                    // style={{ display: 'flex', flexDirection: 'row' }}
+                    className="mx-auto"
+                >
                     {jobsToShow && jobsToShow.map((job: any) => (
                         <div key={job.id}
-                            className="relative w-96 h-96 bg-white shadow-sm border border-slate-200 rounded-lg p-3 pb-6">
+                            className="relative w-[800px] h-[300px] bg-white shadow-sm border border-slate-200 rounded-lg p-3 pb-6"
+                            >
                             <div className="flex justify-center mb-4 mt-5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10 text-purple-500">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
@@ -174,7 +182,9 @@ export default function JobSearch() {
                                 <h2 className="text-slate-800 text-2xl font-semibold">{job.title}</h2>
                             </div>
                             <div className="p-3 mt-5 border-t border-slate-100 text-center max-h-60 overflow-y-auto [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100">
-                                <p className="block text-slate-600 leading-normal font-light mb-4 max-w-lg">
+                                <p
+                                // className="block text-slate-600 leading-normal font-light mb-4 max-w-lg"
+                                >
                                     {job.description}</p>
                                 <p className="block text-slate-600 leading-normal font-light mb-4 max-w-lg">
                                     {job.location}</p>
@@ -185,11 +195,6 @@ export default function JobSearch() {
                         </div>
                     ))}
                 </div>
-                {apllyJob &&
-                <h1 className="text-slate-800 text-4xl font-semibold">
-                    aplly!!
-                </h1>
-            }
             </div>
         </>
     )

@@ -65,7 +65,8 @@ export default function PostJobForm() {
             });
             const data = await response.json();
             console.log(data);
-            alert("jkhkjh")
+            alert("jjnj")
+            
         } catch (error) {
             console.log(error);
         }

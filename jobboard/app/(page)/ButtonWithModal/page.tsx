@@ -30,6 +30,7 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
 
         console.log('values   ' + values); // הדפסת הערכים לקונסולה
         apply(values);
+
         onClose(); // סגירת המודל
     };
 
@@ -114,9 +115,10 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
 };
 
 // ParentComponent.tsx
+export default Modal
 
 
-function ButtonWithModal({ job }: any) {
+export function ButtonWithModal({ job }: any) {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleCloseModal = () => {
@@ -164,6 +166,7 @@ function ButtonWithModal({ job }: any) {
 
 
 
+
 // סגנונות
 const modalStyles: React.CSSProperties = {
     position: 'fixed',
@@ -184,4 +187,4 @@ const modalContentStyles: React.CSSProperties = {
     textAlign: 'center',
 };
 
-export default ButtonWithModal;
+

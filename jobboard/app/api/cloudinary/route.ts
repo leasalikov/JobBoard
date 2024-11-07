@@ -16,10 +16,10 @@ const uploadToCloudinary = async (fileUri: string) => {
 export async function POST(req: NextRequest) {
     try {
         const formData: FormData = await req.formData();
-        const uploadedFiles = formData.getAll('filepond');
-        console.log(uploadedFiles)
-        let fileName = '';
-        let parsedText = '';
+        //const uploadedFiles = formData.getAll('filepond');
+        //console.log(uploadedFiles)
+        // let fileName = '';
+        // let parsedText = '';
         const file = formData.get("filepond") as File
         const fileBuffer = await file.arrayBuffer();
 

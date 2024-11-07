@@ -13,7 +13,10 @@ export async function POST(request: Request) {
         })
         salary = parseInt(salary, 10);
         const job = await prisma.jobs.create({
-            data: { ...leftBody, salary: salary, employerId: employer?.id }
+            data: { ...leftBody, salary: salary, employerId: employer?.id },
+            include: {
+                employer: true
+            }
         })
         return NextResponse.json({ message: "success add job", success: true, job })
     } catch (error) {

@@ -30,7 +30,7 @@ model JobSearchers {
   skils           String[]
   expertise       String[]
   resume          String[]
-  experience      String
+  experience      String?
   Recommendations Recommendations[]
 }
 

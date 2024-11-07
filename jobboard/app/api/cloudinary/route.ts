@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 const uploadToCloudinary = async (fileUri: string) => {
     try {
-        return await cloudinary.uploader.upload(fileUri)
+        return await cloudinary.uploader.upload(fileUri ,{
+            resource_type: "auto",
+            folder: "cv",
+          })
     }
     catch (err) {
         console.log(err);

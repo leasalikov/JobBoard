@@ -180,7 +180,7 @@ export default function JobSearch() {
                                     {job.location}</p>
                                 <p>{job.experienceLevel}</p>
                                 <p>salary : {job.salary}</p>
-                                <ButtonWithModal/>
+                                <ButtonWithModal job={job}/>
                             </div>
                         </div>
                     ))}

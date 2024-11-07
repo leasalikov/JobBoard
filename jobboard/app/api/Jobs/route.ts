@@ -8,12 +8,15 @@ export async function POST(request: Request) {
         const body = await request.json();
         let { salary, employerEmail, ...leftBody } = body
         console.log(employerEmail);
-        const employer = await prisma.users.findUnique({
-            where: { email: employerEmail }
+        const user = await prisma.users.findUnique({
+            where: { email: employerEmail },
+            include: {
+                employer: true
+            }
         })
         salary = parseInt(salary, 10);
         const job = await prisma.jobs.create({
-            data: { ...leftBody, salary: salary, employerId: employer?.id },
+            data: { ...leftBody, salary: salary, employerId: user?.employer?.id },
             include: {
                 employer: true
             }

@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
-    console.log("my session ", session)
+    // console.log("my session ", session)
     
     return (
         <div>

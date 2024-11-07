@@ -2,7 +2,7 @@
 import React, { FormEvent, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-const Modal: React.FC<{ onClose: () => void, apply: (values : any) => void }> = ({ onClose, apply }) => {
+const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = ({ onClose, apply }) => {
     const session = useSession();
 
 
@@ -23,12 +23,12 @@ const Modal: React.FC<{ onClose: () => void, apply: (values : any) => void }> = 
 
         e.preventDefault(); // מניעת ברירת מחדל
         const values = {
-            Email: userEmail,
-            CoverLetter: CoverLetter,
-            Resume: Resume
+            userEmail: userEmail,
+            coverLetter: CoverLetter,
+            resume: Resume
         };
 
-        console.log(values); // הדפסת הערכים לקונסולה
+        console.log('values   ' + values); // הדפסת הערכים לקונסולה
         apply(values);
         onClose(); // סגירת המודל
     };
@@ -123,19 +123,20 @@ function ButtonWithModal({ job }: any) {
         setModalOpen(false);
     };
 
-    async function apply(values : any) {
+    async function apply(values: any) {
         console.log('apply')
         console.log(job)
-        
+
         try {
-            const response = await fetch('http://localhost:3000/api/', {
+            const response = await fetch('http://localhost:3000/api/candidacies', {
                 method: 'POST',
-                body: JSON.stringify({ jobId: job.id, job: job, }),
+                body: JSON.stringify({ jobId: job.id, values: values }),
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            const data = await response.json()
+            const data = await response.json();
+            console.log('data    ' + data);
             return data;
         } catch (error) {
             console.log(error)

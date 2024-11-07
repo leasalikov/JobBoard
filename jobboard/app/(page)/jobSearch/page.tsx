@@ -1,5 +1,6 @@
 "use client"
 import ApllyJob from "@/components/ApllyJob";
+import Modal from "../ButtonWithModal/page";
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
 
@@ -7,7 +8,15 @@ export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
     const [apllyJob, setApllyJob] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
 
+    const handleOpenModal = () => {
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
@@ -189,8 +198,19 @@ export default function JobSearch() {
                                     Apply for a job</button>
                             </div>
                         </div>
+                        
                     ))}
                 </div>
+                <div>
+            <div className="bg-white py-24 sm:py-32">
+                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+
+                    <button onClick={handleOpenModal} className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-modal-example" data-hs-overlay="#hs-modal-example">Applying</button>
+
+                    {isModalOpen && <Modal onClose={handleCloseModal} />}
+                </div>
+            </div>
+        </div>
                 {apllyJob &&
                 <h1 className="text-slate-800 text-4xl font-semibold">
                     aplly!!

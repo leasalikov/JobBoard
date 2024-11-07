@@ -31,12 +31,11 @@ export async function POST(req: NextRequest) {
 
         // this will be used to upload the file
         const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
-
         const res = await uploadToCloudinary(fileUri);
 
-
+        console.log(res)
         return NextResponse.json({
-            message: "success", imgUrl: res?.result.secure_url
+            message: "success", imgUrl: res?.secure_url
         });
     } catch (error) {
         return NextResponse.json({ message: "failure" });

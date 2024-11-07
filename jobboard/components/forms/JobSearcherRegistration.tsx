@@ -14,6 +14,8 @@ import { FaRegFileLines } from "react-icons/fa6";
 import router from "next/router";
 import { CldUploadButton } from 'next-cloudinary';
 import cloudinary from "@/lib/cloudinary";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function JobSearcherRegistration() {
     // const [selectedOptions, setSelectedOptions] = useState([]);
@@ -22,7 +24,12 @@ export default function JobSearcherRegistration() {
 
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
     const session = useSession();
-
+    const router = useRouter()
+    const experience = [
+        { value: "No experience", label: "No experience" },
+        { value: "1-2 years", label: "1-2 years" },
+        { value: "3-5 years", label: "3-5 years" },
+        { value: "5+ years", label: "5+ years" }]
     const specialization = [
         { value: "software", label: "software" },
         { value: "marketing", label: "merketing" },
@@ -90,15 +97,26 @@ export default function JobSearcherRegistration() {
     //       <option value="option4" disabled={selectedOptions.length >= 3}>Option 4</option>
     //     </Select>
     //   );
-
+    // async function uploadResume(data:any) {
+    //     console.log(data)
+    //     const response = await fetch(`http://localhost:3000/api/cloudinary`, {
+    //         method: "POST",
+    //         body: data,
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //     });  
+    //     console.log(response)
+    // }
 
     ///fix
-    const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+     const  handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.files && e.target.files.length > 0) {
             console.log("🐳🐳🐳🐳🐳🐳🐳", e.target.files[0])
             setCvUploaded(true);
             setFile(e.target.files[0])
+            // uploadResume(e.target.files[0])
             cloudinary.uploader
                 .upload(e.target.files[0].name, {
                     asset_folder: 'cv',
@@ -107,8 +125,6 @@ export default function JobSearcherRegistration() {
                 .then(console.log);
         }
     }
-
-
 
     async function register(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -123,18 +139,17 @@ export default function JobSearcherRegistration() {
         console.log(formData.get('photo'))
         const values = {
             phone: formData.get('userPhone'),
-            photo: formData.get('photo'),
-            // image:"",
-            // photo:"",
+            // image: formData.get('photo'),
+            image: "formData.get('photo')",
             skills: selectedSkills,
-            resume: formData.get('cv'),
+            resume: ["formData.get('cv')"],
             expertise: formData.getAll('expertise'),
             experience: formData.get('experience'),
-            Recommendations: PreviousWorks,
+            recommendations: PreviousWorks,
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/api/jobSearchers/${session?.data?.user?.email}`, {
+            const response = await fetch(`http://localhost:3000/api/jobsearcher/${session?.data?.user?.email}`, {
                 method: "PUT",
                 body: JSON.stringify(values),
                 headers: {
@@ -186,12 +201,8 @@ export default function JobSearcherRegistration() {
                             className="block w-full"
                             name="skills"
                         >
-
-
-
                             {skills.map((skill) => (
                                 <SelectItem
-                                    // disabledKeys={selectedOptions.length >= 3}
                                     key={skill.value} value={skill.value}>
                                     {skill.label}
                                 </SelectItem>
@@ -238,24 +249,28 @@ export default function JobSearcherRegistration() {
                                 <FaRegFileLines />
                             </div>
                             <div className="relative mb-3 ">
-                                <p className=" text-x ml-2 mt-2">  {file?.name}</p>
-                                <p className=" text-x ml-2 mt-2">  {file?.size} byts</p>
-
-                                {/* <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p> */}
+                                <p className=" text-x ml-2 mt-2">{file?.name}</p>
+                                <p className=" text-x ml-2 mt-2">{file?.size} byts</p>
                             </div>
                         </div>
                     )}
 
                     <div className="sm:col-span-3">
-                        <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">Experience</label>
-                        <div className="mt-2">
-                            <Select id="experience" name="experience" className="block w-full">
-                                <SelectItem key="0">No experience</SelectItem>
-                                <SelectItem key="1">1-2 years</SelectItem>
-                                <SelectItem key="3">3-5 years</SelectItem>
-                                <SelectItem key="5">5+ years</SelectItem>
-                            </Select>
-                        </div>
+                        <Select
+                                label="Experience"
+                                labelPlacement="outside-left"
+                                placeholder="Your experience"
+                                selectionMode="single"
+                                className="block w-full"
+                                name="experience"
+                            >
+                                {experience.map((option) => (
+                                <SelectItem
+                                    key={option.value} value={option.value}>
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                                </Select>
                     </div>
 
                     <div>

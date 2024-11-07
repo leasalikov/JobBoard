@@ -35,7 +35,7 @@ export async function PUT(request: Request, { params }: { params: { email: strin
             dataToUpdate.phone = phone
 
         if (image)
-            dataToUpdate.image = phone
+            dataToUpdate.image = image
 
         const user = await prisma.users.update({
             where: { email: email },

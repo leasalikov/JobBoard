@@ -13,7 +13,7 @@ async function Candidates({ jobId }: { jobId: string }) {
             <h4 className="text-lg font-semibold">Candidates List</h4>
 
             {/* Display candidates here */}
-            {candidates.map((candidate: any) => (
+            {candidates.job.map((candidate: any) => (
                 <div className="w-1/3 px-3 mb-6">
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">name: {candidate.user.name}</p>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">email: {candidate.user.email}</p>

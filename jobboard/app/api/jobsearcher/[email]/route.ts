@@ -9,7 +9,7 @@ export async function GET(req: Request, { params }: { params: { email: string } 
             where: { email: email }
         });
 
-        if (user?.type != "jobSearcher")
+        if (user?.type != "jobsearcher")
             throw "user not found"
 
         const jobSearcher = await prisma.jobSearchers.findUnique({
@@ -34,14 +34,14 @@ export async function PUT(request: Request, { params }: { params: { email: strin
             dataToUpdate.phone = phone
 
         if (image)
-            dataToUpdate.phone = phone
+            dataToUpdate.image = phone
 
         const user = await prisma.users.update({
             where: { email: email },
             data: dataToUpdate,
         })
 
-        if (user?.type != "jobSearcher")
+        if (user?.type != "jobsearcher")
             throw "user not allow to update"
 
         const jobSearcher = await prisma.jobSearchers.upsert({

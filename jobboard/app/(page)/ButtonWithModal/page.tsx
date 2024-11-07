@@ -26,7 +26,10 @@ const Modal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             CoverLetter: CoverLetter,
             Resume: Resume
         };
-
+////שליחת בקשת Post להגשת מועמדות
+/////////////
+/////////////
+/////////////
         console.log(values); // הדפסת הערכים לקונסולה
 
         onClose(); // סגירת המודל
@@ -112,32 +115,32 @@ const Modal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 };
 
 // ParentComponent.tsx
+export default Modal
 
+// function ButtonWithModal() {
+//     const [isModalOpen, setModalOpen] = useState(false);
 
-function ButtonWithModal() {
-    const [isModalOpen, setModalOpen] = useState(false);
+//     const handleOpenModal = () => {
+//         setModalOpen(true);
+//     };
 
-    const handleOpenModal = () => {
-        setModalOpen(true);
-    };
+//     const handleCloseModal = () => {
+//         setModalOpen(false);
+//     };
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
+//     return (
+//         <div>
+//             <div className="bg-white py-24 sm:py-32">
+//                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
-    return (
-        <div>
-            <div className="bg-white py-24 sm:py-32">
-                <div className="mx-auto max-w-7xl px-6 lg:px-8">
+//                     <button onClick={handleOpenModal} className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-modal-example" data-hs-overlay="#hs-modal-example">Open Modal</button>
 
-                    <button onClick={handleOpenModal} className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-modal-example" data-hs-overlay="#hs-modal-example">Open Modal</button>
-
-                    {isModalOpen && <Modal onClose={handleCloseModal} />}
-                </div>
-            </div>
-        </div>
-    );
-};
+//                     {isModalOpen && <Modal onClose={handleCloseModal} />}
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// };
 
 
 
@@ -161,4 +164,4 @@ const modalContentStyles: React.CSSProperties = {
     textAlign: 'center',
 };
 
-export default ButtonWithModal;
+

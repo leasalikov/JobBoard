@@ -31,7 +31,7 @@ model JobSearchers {
   expertise       String[]
   resume          String[]
   experience      String?
-  Recommendations Recommendations[]
+  recommendations Recommendations[]
 }
 
 model Recommendations {
@@ -76,8 +76,16 @@ model Companies {
   description String
   logo        String
   size        String
-  links       String[]
+  links       Links[]
   employers   Employers[]
+}
+
+model Links {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  value       String
+  Company   Companies? @relation(fields: [companyId], references: [id])
+  companyId String?    @db.ObjectId
 }
 
 model Candidacies {

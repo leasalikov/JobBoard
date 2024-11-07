@@ -1,3 +1,4 @@
+import { Recommendations } from "@prisma/client";
 import prisma from "../../../../prisma/client";
 import { NextResponse } from "next/server";
 
@@ -14,7 +15,7 @@ export async function GET(req: Request, { params }: { params: { email: string } 
 
         const jobSearcher = await prisma.jobSearchers.findUnique({
             where: { userId: user?.id },
-            include: { Recommendations: true }
+            include: { recommendations: true }
         });
 
         return NextResponse.json({ message: "success get jobSearcher", success: true, jobSearcher: { ...user, ...jobSearcher } });
@@ -28,7 +29,7 @@ export async function PUT(request: Request, { params }: { params: { email: strin
     try {
         const { email } = params;
         const body = await request.json();
-        const { phone, image, ...leftBody } = body;
+        const { phone, image, recommendations, ...leftBody } = body;
         const dataToUpdate: { phone?: string, image?: string } = {}
         if (phone)
             dataToUpdate.phone = phone
@@ -44,10 +45,18 @@ export async function PUT(request: Request, { params }: { params: { email: strin
         if (user?.type != "jobsearcher")
             throw "user not allow to update"
 
+
+
         const jobSearcher = await prisma.jobSearchers.upsert({
             where: { userId: user.id },
             update: leftBody,
             create: { ...leftBody, userId: user.id },
+        })
+
+        recommendations.map(async (rec: { email: string, phone: string }) => {
+            return await prisma.recommendations.create({
+                data: { ...rec, userId: jobSearcher.id }
+            })
         })
         return NextResponse.json({ message: "success update jobSearcher", success: true, user, jobSearcher });
     } catch (error) {

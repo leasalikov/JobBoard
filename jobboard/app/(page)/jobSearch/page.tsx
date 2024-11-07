@@ -2,15 +2,12 @@
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
 import ButtonWithModal from '../ButtonWithModal/page'
-import Modal from "../ButtonWithModal/page";
-import ApllyJob from "@/components/ApllyJob";
 
 export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
-        console.log(selectedItems)
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
@@ -26,25 +23,19 @@ export default function JobSearch() {
         values.jobTypes = selectedValues.jobTypes.map((jobTypeSet: any) =>
             Array.from(jobTypeSet).join(',')).join(',');
         const jobs = await searchJobs(values);
-        console.log(jobs)
         setJobsToShow(jobs)
     };
 
 
     async function searchJobs(values: any) {
-        console.log(typeof values)
-        console.log('values     ' + values)
         const queryString = Object.entries(values)
             .map(([key, value]) => value ?
                 `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
                 : '')
             .filter(Boolean)
             .join('&');
-        console.log('queryString ' + queryString);
-        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
-        console.log(response)
+        const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
         const data = await response.json();
-        console.log('Response data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

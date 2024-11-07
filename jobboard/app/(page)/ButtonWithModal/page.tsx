@@ -28,8 +28,8 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
             resume: Resume
         };
 
-        console.log('values   ' + values); // הדפסת הערכים לקונסולה
-        apply(values);
+        console.log('values   ' + JSON.stringify(values)); // הדפסת הערכים לקונסולה
+        apply(JSON.stringify(values));
 
         onClose(); // סגירת המודל
     };
@@ -115,10 +115,10 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
 };
 
 // ParentComponent.tsx
-export default Modal
 
 
-export function ButtonWithModal({ job }: any) {
+
+export default function ButtonWithModal({ job }: any) {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleCloseModal = () => {
@@ -137,9 +137,11 @@ export function ButtonWithModal({ job }: any) {
                     "Content-Type": "application/json",
                 },
             });
-            const data = await response.json();
-            console.log('data    ' + data);
-            return data;
+            console.log(response)
+            // const data = await response.json();
+            // console.log('data    ' + JSON.stringify(data));
+            // return data;
+            return response;
         } catch (error) {
             console.log(error)
         }

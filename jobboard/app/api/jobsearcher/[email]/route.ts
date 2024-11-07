@@ -45,20 +45,18 @@ export async function PUT(request: Request, { params }: { params: { email: strin
         if (user?.type != "jobsearcher")
             throw "user not allow to update"
 
-        const recs: Recommendations[] =
-            recommendations.map(async (rec: { email: string, phone: string }) => {
-                return await prisma.recommendations.create({
-                    data: { ...rec, userId: user.id }
-                })
-            })
+
 
         const jobSearcher = await prisma.jobSearchers.upsert({
             where: { userId: user.id },
             update: leftBody,
-            create: { ...leftBody, userId: user.id, recommendations: recs },
-            include: {
-                recommendations: true
-            }
+            create: { ...leftBody, userId: user.id },
+        })
+
+        recommendations.map(async (rec: { email: string, phone: string }) => {
+            return await prisma.recommendations.create({
+                data: { ...rec, userId: jobSearcher.id }
+            })
         })
         return NextResponse.json({ message: "success update jobSearcher", success: true, user, jobSearcher });
     } catch (error) {

@@ -5,7 +5,6 @@ import { sendCandidaciesToEmployerEmail } from "@/lib/sendEmail";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        console.log("body----------------------", body);
         const { userEmail, ...leftBody } = body
 
         const user = await prisma.users.findUnique({
@@ -15,14 +14,15 @@ export async function POST(request: Request) {
             }
         })
 
+        if (user?.type != "jobsearcher")
+            throw "user not allow to add candidate"
+
         const candidates = await prisma.candidacies.create({
             data: { ...leftBody, jobSearcherId: user?.jobSearcher?.id },
             include: {
                 job: true
             },
         });
-
-        console.log("candidates----------------------", candidates)
 
         const employer = await prisma.employers.findUnique({
             where: { id: candidates.job.employerId },
@@ -31,16 +31,14 @@ export async function POST(request: Request) {
             },
         });
 
-        console.log("candidates----------------------", candidates)
-
         if (!employer) {
-            throw ""
+            throw "Failed to find employer"
         }
+
         sendCandidaciesToEmployerEmail(employer!.user.email, candidates)
         return NextResponse.json({ message: "success add candidate", success: true, candidates })
     } catch (error) {
         console.log(error);
-
         return NextResponse.json({ message: "Failed to add candidate", success: false, error })
     }
 }
@@ -57,6 +55,6 @@ export async function GET(request: Request) {
         })
         return NextResponse.json({ message: "success find candidate", success: true, candidacies })
     } catch (error) {
-        return NextResponse.json({ message: "Failed to find candidate", success: false })
+        return NextResponse.json({ message: "Failed to find candidate", success: false, error })
     }
 }

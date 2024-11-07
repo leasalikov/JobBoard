@@ -115,7 +115,9 @@ export async function GET(request: Request) {
         else
             return NextResponse.json({ message: "There are no suitable jobs", success: false });
     } catch (error) {
-        return NextResponse.json({ message: "Failed to fetch jobs", success: false });
+        console.log(error);
+        
+        return NextResponse.json({ message: "Failed to fetch jobs", success: false,error });
     }
 }
 

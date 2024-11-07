@@ -8,19 +8,28 @@ export default function JobSearch() {
     const [jobsToShow, setJobsToShow] = useState([]);
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
+        console.log(key, "       ", selectedItems);
+
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
         }));
+        console.log(selectedItems);
+
     };
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const formData = new FormData(event.target);
         const values = Object.fromEntries(formData.entries());
-        values.categories = selectedValues.categories.map((categorySet: any) =>
+        console.log("values: ", values);
+        ///this log instead of be 
+        ///{keyword: '', location: '', salary: '', category: 'software', type: 'full-time', 'experienceLevel': 'junior'}
+        ///is:{keyword: '', location: '', salary: '', category: 'software', type: 'full-time'}
+        ///what shoud i do?
+        values.category = selectedValues.category.map((categorySet: any) =>
             Array.from(categorySet).join(',')).join(',');
-        values.jobTypes = selectedValues.jobTypes.map((jobTypeSet: any) =>
+        values.type = selectedValues.type.map((jobTypeSet: any) =>
             Array.from(jobTypeSet).join(',')).join(',');
         const jobs = await searchJobs(values);
         setJobsToShow(jobs)
@@ -34,8 +43,8 @@ export default function JobSearch() {
                 : '')
             .filter(Boolean)
             .join('&');
-            console.log(queryString);
-            
+        console.log(queryString);
+
         const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
 
         const data = await response.json();
@@ -43,16 +52,16 @@ export default function JobSearch() {
             throw new Error('Network response was not ok');
         }
         console.log(data);
-        
+
         return data.jobs;
     }
 
     const [selectedValues, setSelectedValues] = useState({
         keyword: "",
         location: "",
-        categories: [],
+        category: [],
         experienceLevel: "",
-        jobTypes: [],
+        type: [],
         salary: ""
     });
 
@@ -115,7 +124,7 @@ export default function JobSearch() {
                             selectionMode="multiple"
                             label="Category"
                             placeholder="choose category"
-                            onSelectionChange={(selectedItems: any) => handleSelectionChange("categories", selectedItems)}
+                            onSelectionChange={(selectedItems: any) => handleSelectionChange("category", selectedItems)}
                             className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
                     focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"
                         >
@@ -141,10 +150,10 @@ export default function JobSearch() {
                         ))}</Select>
                         <Select
                             className="block rounded-md h-12 border-0 text-gray-900 placeholder:text-gray-400 
-                        focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"                        label="jobType"
+                        focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6 mt-10 mr-4"                        label="Job type"
                             selectionMode="multiple"
                             placeholder="choose job type"
-                            onSelectionChange={(items: any) => handleSelectionChange('jobTypes', items)}
+                            onSelectionChange={(items: any) => handleSelectionChange('type', items)}
                         >
                             {jobTypeOptions.map((jobType: any) => (
                                 <SelectItem key={jobType.value}>
@@ -167,7 +176,7 @@ export default function JobSearch() {
                     {jobsToShow && jobsToShow.map((job: any) => (
                         <div key={job.id}
                             className="relative w-[800px] h-[300px] bg-white shadow-sm border border-slate-200 rounded-lg p-3 pb-6"
-                            >
+                        >
                             <div className="flex justify-center mb-4 mt-5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10 text-purple-500">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
@@ -186,7 +195,7 @@ export default function JobSearch() {
                                     {job.location}</p>
                                 <p>{job.experienceLevel}</p>
                                 <p>salary : {job.salary}</p>
-                                <ButtonWithModal job={job}/>
+                                <ButtonWithModal job={job} />
                             </div>
                         </div>
                     ))}

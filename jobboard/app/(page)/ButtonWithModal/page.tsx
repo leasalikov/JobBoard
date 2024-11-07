@@ -28,8 +28,8 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
             resume: Resume
         };
 
-        console.log('values   ' + JSON.stringify(values)); // הדפסת הערכים לקונסולה
-        apply(JSON.stringify(values));
+        console.log('values   ' , values); // הדפסת הערכים לקונסולה
+        apply(values);
 
         onClose(); // סגירת המודל
     };
@@ -132,7 +132,7 @@ export default function ButtonWithModal({ job }: any) {
         try {
             const response = await fetch('http://localhost:3000/api/candidacies', {
                 method: 'POST',
-                body: JSON.stringify({ jobId: job.id, values: values }),
+                body: JSON.stringify({ jobId: job.id, ...values }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -188,5 +188,3 @@ const modalContentStyles: React.CSSProperties = {
     borderRadius: '8px',
     textAlign: 'center',
 };
-
-

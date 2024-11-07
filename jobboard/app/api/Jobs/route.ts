@@ -30,7 +30,12 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     try {
+        console.log("👌👌👌👌👌");
+
         const queryParams = new URL(request.url).searchParams;
+
+        console.log(queryParams);
+
 
         let whereConditions: Prisma.JobsWhereInput = {};
 
@@ -95,10 +100,15 @@ export async function GET(request: Request) {
                 };
             }
         }
+        console.log(whereConditions);
+
 
         const jobs = await prisma.jobs.findMany({
             where: whereConditions,
         });
+
+        console.log(jobs);
+
 
         if (jobs.length > 0)
             return NextResponse.json({ message: "Success: Found jobs", success: true, jobs });

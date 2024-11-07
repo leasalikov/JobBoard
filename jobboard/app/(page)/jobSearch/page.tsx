@@ -34,11 +34,16 @@ export default function JobSearch() {
                 : '')
             .filter(Boolean)
             .join('&');
+            console.log(queryString);
+            
         const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
+
         const data = await response.json();
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        console.log(data);
+        
         return data.jobs;
     }
 

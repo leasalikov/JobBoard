@@ -19,7 +19,6 @@ model Users {
   type        String?
   employer    Employers?
   jobSearcher JobSearchers?
-  candidacy   Candidacies[]
   OTP         String?
 }
 
@@ -27,11 +26,12 @@ model JobSearchers {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
   userId          String            @unique @db.ObjectId
   user            Users             @relation(fields: [userId], references: [id])
-  skils           String[]
+  skills           String[]
   expertise       String[]
   resume          String[]
   experience      String?
   recommendations Recommendations[]
+  Candidacies     Candidacies[]
 }
 
 model Recommendations {
@@ -81,20 +81,20 @@ model Companies {
 }
 
 model Links {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  value       String
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  value     String
   Company   Companies? @relation(fields: [companyId], references: [id])
   companyId String?    @db.ObjectId
 }
 
 model Candidacies {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String  @db.ObjectId
-  user        Users   @relation(fields: [userId], references: [id])
-  jobId       String  @db.ObjectId
-  job         Jobs    @relation(fields: [jobId], references: [id])
-  coverLetter String?
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  jobSearcherId String       @db.ObjectId
+  jobSearcher   JobSearchers @relation(fields: [jobSearcherId], references: [id])
+  jobId         String       @db.ObjectId
+  job           Jobs         @relation(fields: [jobId], references: [id])
+  coverLetter   String?
 }
 
 model Contacts {

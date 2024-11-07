@@ -52,6 +52,7 @@ export async function PUT(request: Request, { params }: { params: { email: strin
             update: leftBody,
             create: { ...leftBody, userId: user.id },
         })
+        console.log(recommendations)
 
         recommendations.map(async (rec: { email: string, phone: string }) => {
             return await prisma.recommendations.create({

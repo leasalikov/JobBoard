@@ -5,16 +5,16 @@ import { sendCandidaciesToEmployerEmail } from "@/lib/sendEmail";
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        console.log("i am here");
-        
+        console.log("body----------------------", body);
+
         const candidates = await prisma.candidacies.create({
             data: body,
             include: {
                 job: true
             },
         });
-        console.log("ggg",body)
-        console.log("vvvv",candidates)
+
+        console.log("candidates----------------------", candidates)
 
         const employer = await prisma.employers.findUnique({
             where: { id: candidates.job.employerId },
@@ -22,13 +22,18 @@ export async function POST(request: Request) {
                 user: true
             },
         });
+
+        console.log("candidates----------------------", candidates)
+
         if (!employer) {
-            return null
+            throw ""
         }
         sendCandidaciesToEmployerEmail(employer!.user.email, candidates)
-        return NextResponse.json({ message: "success add credential", success: true, candidates })
+        return NextResponse.json({ message: "success add candidate", success: true, candidates })
     } catch (error) {
-        return NextResponse.json({ message: "Failed to add credential", success: false })
+        console.log(error);
+
+        return NextResponse.json({ message: "Failed to add candidate", success: false, error })
     }
 }
 
@@ -39,11 +44,11 @@ export async function GET(request: Request) {
         const candidacies = await prisma.candidacies.findMany({
             where: { jobId: jobId },
             include: {
-                user: true
+                jobSearcher: true
             }
         })
-        return NextResponse.json({ message: "success find credential", success: true, candidacies })
+        return NextResponse.json({ message: "success find candidate", success: true, candidacies })
     } catch (error) {
-        return NextResponse.json({ message: "Failed to find credential", success: false })
+        return NextResponse.json({ message: "Failed to find candidate", success: false })
     }
 }

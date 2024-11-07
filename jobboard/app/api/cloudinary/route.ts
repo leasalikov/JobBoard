@@ -1,48 +1,57 @@
-import cloudinary from "@/lib/cloudinary";
-import { NextRequest, NextResponse } from "next/server";
+// import cloudinary from "@/lib/cloudinary";
+// import { NextRequest, NextResponse } from "next/server";
+// import PDFParser from 'pdf2json'; 
+
+// const uploadToCloudinary = async (fileUri: string) => {
+//     try {
+//         return await cloudinary.uploader.upload(fileUri)
+//     }
+//     catch (err) {
+//         console.log(err);
+//         return null;
+//     }
+// }
 
 
-const uploadToCloudinary = async (fileUri: string) => {
-    try {
-        return await cloudinary.uploader.upload(fileUri ,{
-            resource_type: "auto",
-            folder: "cv",
-          })
-    }
-    catch (err) {
-        console.log(err);
-        return null;
-    }
-}
+// export async function POST(req: NextRequest) {
 
+//     // your auth check here if required
+//     try {
+//         const formData = await req.formData();
+//         const file = formData.get("file") as File;
+//         console.log(file + "    🧓👴👨‍🦳file!!!!!!!!!!!!!!!!");
 
+//         const fileBuffer = await file.arrayBuffer();
+
+//         const mimeType = file.type;
+//         console.log(mimeType + "      👩‍🦰👩‍🦰👩‍🦰mimeType!!!!!!!!!!!!!!!!");
+
+//         const encoding = "base64";
+//         const base64Data = Buffer.from(fileBuffer).toString("base64");
+
+//         const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
+//         const res = await uploadToCloudinary(fileUri);
+
+//         console.log(res)
+//         return NextResponse.json({
+//             message: "success", imgUrl: res?.secure_url
+//         });
+//     } catch (error) {
+//         console.log(error);
+
+//         return NextResponse.json({ message: "failure" });
+//     }
+
+// }
+
+import { NextRequest, NextResponse } from 'next/server'; // To handle the request and response
 export async function POST(req: NextRequest) {
-
-    // your auth check here if required
-    try {
-        const formData = await req.formData();
-        const file = formData.get("file") as File;
-        console.log(file + "    🧓👴👨‍🦳file!!!!!!!!!!!!!!!!");
-
-        const fileBuffer = await file.arrayBuffer();
-
-        const mimeType = file.type;
-        console.log(mimeType + "      👩‍🦰👩‍🦰👩‍🦰mimeType!!!!!!!!!!!!!!!!");
-
-        const encoding = "base64";
-        const base64Data = Buffer.from(fileBuffer).toString("base64");
-
-        const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
-        const res = await uploadToCloudinary(fileUri);
-
-        console.log(res)
-        return NextResponse.json({
-            message: "success", imgUrl: res?.secure_url
-        });
-    } catch (error) {
-        console.log(error);
-
-        return NextResponse.json({ message: "failure" });
-    }
-
-}
+    const formData: FormData = await req.formData();
+    const uploadedFiles = formData.getAll('filepond');
+    console.log(uploadedFiles)
+    let fileName = '';
+    let parsedText = '';
+  
+    const response = new NextResponse(parsedText);
+    return response;
+  }

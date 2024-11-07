@@ -6,9 +6,17 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         console.log("body----------------------", body);
+        const { userEmail, ...leftBody } = body
+
+        const user = await prisma.users.findUnique({
+            where: { email: userEmail },
+            include: {
+                jobSearcher: true
+            }
+        })
 
         const candidates = await prisma.candidacies.create({
-            data: body,
+            data: { ...leftBody, jobSearcherId: user?.jobSearcher?.id },
             include: {
                 job: true
             },

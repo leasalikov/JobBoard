@@ -26,7 +26,7 @@ model JobSearchers {
   id              String            @id @default(auto()) @map("_id") @db.ObjectId
   userId          String            @unique @db.ObjectId
   user            Users             @relation(fields: [userId], references: [id])
-  skills           String[]
+  skills          String[]
   expertise       String[]
   resume          String[]
   experience      String?
@@ -95,6 +95,7 @@ model Candidacies {
   jobId         String       @db.ObjectId
   job           Jobs         @relation(fields: [jobId], references: [id])
   coverLetter   String?
+  resume        String?
 }
 
 model Contacts {

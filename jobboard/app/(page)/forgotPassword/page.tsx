@@ -1,12 +1,14 @@
 "use client"
 import React, { FormEvent, useEffect, useState } from "react";
-import {redirect, useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 
 function forgotPassword() {
     const [verify, setVerify] = useState(false)
     const [email, setEmail] = useState(null)
     const router = useRouter()
+    
     async function updatePassword(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
@@ -15,7 +17,6 @@ function forgotPassword() {
             newPassword: target.password.value
         }
         try {
-
             const response = await fetch(`http://localhost:3000/api/users/${email}`, {
                 method: "PUT",
                 body: JSON.stringify(values),
@@ -23,7 +24,13 @@ function forgotPassword() {
                     "Content-Type": "application/json",
                 },
             });
-            router.push('/')
+            try {
+                const credential = await signIn("credentials", { ...values, callbackUrl: "/" });
+                console.log("credential", credential);
+              } catch (error) {
+                console.log(error);
+              }
+            // router.push('/')
 
         } catch (error) {
             console.log(error);
@@ -38,7 +45,6 @@ function forgotPassword() {
                 },
             });
             console.log(response)
-
         } catch (error) {
             console.log(error);
         }
@@ -49,19 +55,6 @@ function forgotPassword() {
         console.log(target.email.value)
         setVerify(true);
         setEmail(target.email.value)
-        // try {
-        //     const response = await fetch(`http://localhost:3000/api/users/${target.email.value}`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //     });
-        //     console.log(response)
-
-        // } catch (error) {
-        //     console.log(error);
-        // }
-        // alert(email)
         sendEmail()
     }
     return (
@@ -105,7 +98,7 @@ function forgotPassword() {
             focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{verify ? "Update password" : "continue"}</button>
                     </div>
                 </form>
-                {verify && <p className="mt-10 text-center text-sm text-gray-500">Email not received?  <a onClick={sendEmail} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Send again!
+                {verify && <p className="mt-10 text-center text-sm text-gray-500">Email not received?  <a href="#" onClick={sendEmail} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Send again!
                 </a> </p>}
             </div>
         </div >

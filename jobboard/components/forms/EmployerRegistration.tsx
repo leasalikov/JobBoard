@@ -9,6 +9,7 @@ import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbWorld } from "react-icons/tb";
 import { signIn, useSession } from "next-auth/react";
+// import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function EmployerRegistration() {
@@ -19,6 +20,7 @@ export default function EmployerRegistration() {
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+
         if (e.target.files && e.target.files.length > 0) {
             const uploadedImage = URL.createObjectURL(e.target.files[0]);
             console.log(image)
@@ -40,18 +42,24 @@ export default function EmployerRegistration() {
 
 
         const values = {
-            logo: formData.get('logo')?.toString(),
-            description: formData.get("CompanyDescription"),
-            expertise: formData.getAll('expertise'),
-            size: formData.get('teamSize'),
-            links: LinkArray,
-            email: formData.get('email'),
-            phone: formData.get('phone'),
+            image: "formData.get('userImage')?.toString()",
+            phone: formData.get('userPhone'),
+            company: {
+                name: formData.get("companyName"),
+                phone: formData.get("companyphone"),
+                logo: "cgvh",
+                description: formData.get("CompanyDescription"),
+                expertise: formData.getAll('expertise'),
+                size: formData.get('teamSize'),
+                links: LinkArray,
+                email: formData.get('companyEmail')
+            }
+
         };
 
         try {
-            const response = await fetch(`http://localhost:3000/api/company/${session?.data?.user?.email}`, {
-                method: "PATCH",
+            const response = await fetch(`http://localhost:3000/api/employers/${session?.data?.user?.email}`, {
+                method: "PUT",
                 body: JSON.stringify(values),
                 headers: {
                     "Content-Type": "application/json",
@@ -62,18 +70,42 @@ export default function EmployerRegistration() {
 
         } catch (error) {
             console.log(error);
+
         }
     }
 
     return (
 
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Your Company Profile</h2>
-            </div>
-
-            <div className=" mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className=" mt-3 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={register} className="space-y-6" action="#" method="POST">
+                <h3 className="mt-10 text-left  text-2xl font-bold leading-9 tracking-tight text-indigo-600">Personal details</h3>
+
+                    <div className="col-span-full">
+                        <label htmlFor="userImage" className="block text-sm font-medium leading-6 text-gray-900">Your profile image</label>
+                        <div className="mt-2 flex items-center gap-x-3">
+                            <label className="mt-2 flex items-center gap-x-3 ">
+                                <Avatar isBordered showFallback src={image} />
+                                <a className="font-semibold text-indigo-600 hover:text-indigo-500">Choose image</a>
+                                <input id="add-img" name="userImage" type="file" className="hidden" onChange={handleImageUpload} />
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="userPhone" className="block text-sm font-medium leading-6 text-gray-900">Your phone</label>
+                        <div className="mt-2">
+                            <input id="userPhone" name="userPhone" type="tel" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
+
+                    <h2 className="mt-15 text-left  text-2xl font-bold leading-9 tracking-tight text-indigo-600">Company details:</h2>
+
+                    <div>
+                        <label htmlFor="companyName" className="block text-sm font-medium leading-6 text-gray-900">Company name</label>
+                        <div className="mt-2">
+                            <input id="companyName" name="companyName" type="text" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                    </div>
                     <div>
                         <label htmlFor="CompanyDescription" className="block text-sm font-medium leading-6 text-gray-900">Company description</label>
                         <textarea name="CompanyDescription" id="CompanyDescription" required className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-indigo-600 focus:border-indigo-600 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder="Write your description here..."></textarea>
@@ -90,7 +122,7 @@ export default function EmployerRegistration() {
                         </div>
                     </div>
                     <div>
-                        <Select label="Company areas of occupation" labelPlacement="outside-left" selectionMode="multiple" className="block w-full" name="expertise">
+                        <Select placeholder="select..." label="Company areas of occupation" labelPlacement="outside-left" selectionMode="multiple" className="block w-full" name="expertise">
                             {specialization.map((area) => (
                                 <SelectItem key={area}>{area}</SelectItem>
                             ))}
@@ -110,8 +142,8 @@ export default function EmployerRegistration() {
                     <InputIcon label="Instgram" icon={AiFillInstagram} id="instgram" type="text" placeholder="name@company.com" />
 
                     <p>Contact information for jobs:</p>
-                    <InputIcon label="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                    <InputIcon label="phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                    <InputIcon label="companyEmail" icon={MdEmail} id="companyEmail" type="email" placeholder="name@company.com" />
+                    <InputIcon label="companyphone" icon={FaSquarePhone} id="companyphone" type="text" placeholder="000-000-0000" />
 
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5
@@ -120,8 +152,7 @@ export default function EmployerRegistration() {
                     </div>
                 </form>
                 <p className="mt-10 text-center text-sm text-gray-500">
-                    You can set and edit your company profile information at any time<br />
-                    {/* <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Skip</a> */}
+                    You can set and edit the information at any time<br />
                 </p>
             </div>
         </div >

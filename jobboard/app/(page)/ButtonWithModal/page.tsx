@@ -26,7 +26,10 @@ const Modal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             CoverLetter: CoverLetter,
             Resume: Resume
         };
-
+////שליחת בקשת Post להגשת מועמדות
+/////////////
+/////////////
+/////////////
         console.log(values); // הדפסת הערכים לקונסולה
 
         onClose(); // סגירת המודל

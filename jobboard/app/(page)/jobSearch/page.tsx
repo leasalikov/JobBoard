@@ -2,9 +2,11 @@
 import ApllyJob from "@/components/ApllyJob";
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
+import ButtonWithModal from "../ButtonWithModal/page";
 
 export default function JobSearch() {
 
+    //useEffect של בקשת GET של כל העבודות עם pages.
     const [jobsToShow, setJobsToShow] = useState([]);
     const [apllyJob, setApllyJob] = useState(false);
 
@@ -178,9 +180,7 @@ export default function JobSearch() {
                                     {job.location}</p>
                                 <p>{job.experienceLevel}</p>
                                 <p>salary : {job.salary}</p>
-                                <button onClick={() => { setApllyJob(!apllyJob) }}
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Apply for a job</button>
+                                <ButtonWithModal/>
                             </div>
                         </div>
                     ))}

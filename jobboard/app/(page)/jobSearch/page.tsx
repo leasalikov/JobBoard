@@ -11,7 +11,6 @@ export default function JobSearch() {
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
-        // const itemsArray = Array.isArray(selectedItems) ? selectedItems : Object.values(selectedItems);
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
@@ -33,19 +32,14 @@ export default function JobSearch() {
 
 
     async function searchJobs(values: any) {
-        console.log(typeof values)
-        console.log('values     ' + values)
         const queryString = Object.entries(values)
             .map(([key, value]) => value ?
                 `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
                 : '')
             .filter(Boolean)
             .join('&');
-        console.log('queryString ' + queryString);
-        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
-        console.log(response)
+        const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
         const data = await response.json();
-        console.log('Response data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

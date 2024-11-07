@@ -3,11 +3,9 @@ import ApllyJob from "@/components/ApllyJob";
 import Modal from "../ButtonWithModal/page";
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
-import ButtonWithModal from "../ButtonWithModal/page";
 
 export default function JobSearch() {
 
-    //useEffect של בקשת GET של כל העבודות עם pages.
     const [jobsToShow, setJobsToShow] = useState([]);
     const [apllyJob, setApllyJob] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -22,6 +20,7 @@ export default function JobSearch() {
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
+        // const itemsArray = Array.isArray(selectedItems) ? selectedItems : Object.values(selectedItems);
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
@@ -43,14 +42,19 @@ export default function JobSearch() {
 
 
     async function searchJobs(values: any) {
+        console.log(typeof values)
+        console.log('values     ' + values)
         const queryString = Object.entries(values)
             .map(([key, value]) => value ?
                 `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
                 : '')
             .filter(Boolean)
             .join('&');
-        const response = await fetch(`http://localhost:3000/api/jobs?${queryString}`)
+        console.log('queryString ' + queryString);
+        const response = await fetch("http://localhost:3000/api/jobs?category=software&experienceLevel=junior&salary=25000")
+        console.log(response)
         const data = await response.json();
+        console.log('Response data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -189,7 +193,9 @@ export default function JobSearch() {
                                     {job.location}</p>
                                 <p>{job.experienceLevel}</p>
                                 <p>salary : {job.salary}</p>
-                                <ButtonWithModal/>
+                                <button onClick={() => { setApllyJob(!apllyJob) }}
+                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Apply for a job</button>
                             </div>
                         </div>
                         

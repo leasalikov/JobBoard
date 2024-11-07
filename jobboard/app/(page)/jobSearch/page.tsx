@@ -1,26 +1,16 @@
 "use client"
-import ApllyJob from "@/components/ApllyJob";
-import Modal from "../ButtonWithModal/page";
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
+import ButtonWithModal from '../ButtonWithModal/page'
+import Modal from "../ButtonWithModal/page";
+import ApllyJob from "@/components/ApllyJob";
 
 export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
-    const [apllyJob, setApllyJob] = useState(false);
-    const [isModalOpen, setModalOpen] = useState(false);
-
-    const handleOpenModal = () => {
-        setModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         console.log(selectedItems)
-        // const itemsArray = Array.isArray(selectedItems) ? selectedItems : Object.values(selectedItems);
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
@@ -200,21 +190,9 @@ export default function JobSearch() {
                                     {job.location}</p>
                                 <p>{job.experienceLevel}</p>
                                 <p>salary : {job.salary}</p>
-                                <button onClick={() => { setApllyJob(!apllyJob) }}
-                                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Apply for a job</button>
-                                <div className="bg-white py-24 sm:py-32">
-                                    <div className="mx-auto max-w-7xl px-6 lg:px-8">
-
-                                        <button onClick={handleOpenModal} className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-modal-example" data-hs-overlay="#hs-modal-example">Applying</button>
-
-                                        {isModalOpen && <Modal onClose={handleCloseModal} />}
-                                    </div>
-                                </div>
+                                <ButtonWithModal job={job}/>
                             </div>
-
                         </div>
-
                     ))}
                 </div>
             </div>

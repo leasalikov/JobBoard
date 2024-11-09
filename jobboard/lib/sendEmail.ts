@@ -71,7 +71,6 @@ export function sendCandidaciesToEmployerEmail(employerEmail: string, candidacie
                <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
               <p>Hello!</p>
               <p>Here are the details about the candidate</p>
-              <p><strong>${candidacies.jobId}</strong></p>
               <p><strong>${candidacies.coverLetter}</strong></p>
               <p><strong>${candidacies.resume}</strong></p>
               </div>

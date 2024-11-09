@@ -39,9 +39,9 @@ function JobCard({ job }: any) {
                     <button onClick={() => setIsCandidates(!isCandidates)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
                    {isCandidates ? 'Hide Candidates' : 'Show Candidates'}
                    </button>
-                   <button onClick={() => setIsAvailable(!isAvailable)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                   {isCandidates ? 'Job Available' : 'Job Not Available'}
-                   </button>
+                   {/* <button onClick={() => setIsAvailable(!isAvailable)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"> */}
+                   {/* {isCandidates ? 'Job Available' : 'Job Not Available'} */}
+                   {/* </button> */}
                    {isCandidates && <Candidates jobId={job.id} />}
         
                     {/* <button onClick={() => { setApllyJob(!apllyJob) }}

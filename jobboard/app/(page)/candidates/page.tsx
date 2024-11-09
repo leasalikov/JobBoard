@@ -1,19 +1,31 @@
 "use client"
+import { Candidacies, JobSearchers } from "@prisma/client";
 import prisma from "../../../prisma/client";
+import { useEffect, useState } from "react";
 
 
-async function Candidates({ jobId }: { jobId: string }) {
+function Candidates({ jobId }: { jobId: string }) {
 
-    const response = await fetch(`http://localhost:3000/api/candidacies?jobId=${jobId}`);
-    const candidates = await response.json();
-    console.log(candidates);
+    const [candidates, setCandidates] = useState([])
+
+    async function fetchCandidates() {
+        const response = await fetch(`http://localhost:3000/api/candidacies?jobId=${jobId}`);
+        const candidates = await response.json();
+        console.log(candidates.candidacies);
+
+        setCandidates(candidates.candidacies);
+    }
+
+    useEffect(() => {
+        fetchCandidates()
+    }, [])
 
     return (
         <div className="mt-5">
             <h4 className="text-lg font-semibold">Candidates List</h4>
 
             {/* Display candidates here */}
-            {candidates.job.map((candidate: any) => (
+            {candidates.length > 0 && candidates.map((candidate: any) => (
                 <div className="w-1/3 px-3 mb-6">
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">name: {candidate.user.name}</p>
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">email: {candidate.user.email}</p>

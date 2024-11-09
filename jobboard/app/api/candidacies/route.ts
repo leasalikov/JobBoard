@@ -9,16 +9,13 @@ export async function POST(request: Request) {
 
         const user = await prisma.users.findUnique({
             where: { email: userEmail },
-            include: {
-                jobSearcher: true
-            }
         })
 
         if (user?.type != "jobsearcher")
             throw "user not allow to add candidate"
 
         const candidates = await prisma.candidacies.create({
-            data: { ...leftBody, jobSearcherId: user?.jobSearcher?.id },
+            data: { ...leftBody, userId: user?.id },
             include: {
                 job: true
             },
@@ -50,7 +47,7 @@ export async function GET(request: Request) {
         const candidacies = await prisma.candidacies.findMany({
             where: { jobId: jobId },
             include: {
-                jobSearcher: true
+                user: true
             }
         })
         return NextResponse.json({ message: "success find candidate", success: true, candidacies })

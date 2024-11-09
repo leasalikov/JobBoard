@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     try {
         const body = await request.json();
         let { salary, employerEmail, ...leftBody } = body
-        console.log(employerEmail);
+        console.log("✅✅✅✅✅" + employerEmail);
         const user = await prisma.users.findUnique({
             where: { email: employerEmail },
             include: {
@@ -116,8 +116,8 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: "There are no suitable jobs", success: false });
     } catch (error) {
         console.log(error);
-        
-        return NextResponse.json({ message: "Failed to fetch jobs", success: false,error });
+
+        return NextResponse.json({ message: "Failed to fetch jobs", success: false, error });
     }
 }
 

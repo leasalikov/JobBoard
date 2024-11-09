@@ -41,6 +41,7 @@ export default function PostJobForm() {
     async function postjob(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const target = e.currentTarget;
+        console.log("✅✅✅✅✅" + session.data?.user?.email);
         const values = {
             location: target.geographicalLocation.value,
             experienceLevel: target.experience.value,
@@ -52,7 +53,7 @@ export default function PostJobForm() {
             type: "",
             description: target.jobDescription.value,
             status: target.status.value,
-            employerId: session.data?.user?.email
+            employerEmail: session.data?.user?.email
         };
         console.log("level", values.experienceLevel)
         try {
@@ -66,7 +67,7 @@ export default function PostJobForm() {
             const data = await response.json();
             console.log(data);
             alert("jjnj")
-            
+
         } catch (error) {
             console.log(error);
         }

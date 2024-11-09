@@ -20,6 +20,7 @@ model Users {
   employer    Employers?
   jobSearcher JobSearchers?
   OTP         String?
+  Candidacies Candidacies[]
 }
 
 model JobSearchers {
@@ -31,7 +32,6 @@ model JobSearchers {
   resume          String[]
   experience      String?
   recommendations Recommendations[]
-  Candidacies     Candidacies[]
 }
 
 model Recommendations {
@@ -90,13 +90,13 @@ model Links {
 }
 
 model Candidacies {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  jobSearcherId String       @db.ObjectId
-  jobSearcher   JobSearchers @relation(fields: [jobSearcherId], references: [id])
-  jobId         String       @db.ObjectId
-  job           Jobs         @relation(fields: [jobId], references: [id])
-  coverLetter   String?
-  resume        String?
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String  @db.ObjectId
+  user        Users   @relation(fields: [userId], references: [id])
+  jobId       String  @db.ObjectId
+  job         Jobs    @relation(fields: [jobId], references: [id])
+  coverLetter String?
+  resume      String?
 }
 
 model Contacts {

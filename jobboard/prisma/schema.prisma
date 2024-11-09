@@ -76,6 +76,7 @@ model Companies {
   description String
   logo        String
   size        String
+  expertise   String[]
   links       Links[]
   employers   Employers[]
 }

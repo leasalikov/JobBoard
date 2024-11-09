@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { EmailTemplateProps } from '../types/emailTemplate'
+import { Candidacies } from '@prisma/client';
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -60,7 +61,7 @@ export function sendPasswordChangeEmail(userEmail: string, otp: string) {
     });
 }
 
-export function sendCandidaciesToEmployerEmail(employerEmail: string, candidacies:any) {
+export function sendCandidaciesToEmployerEmail(employerEmail: string, candidacies:Candidacies) {
 
     let mailOptions = {
         from: process.env.EMAIL_MANAGER,

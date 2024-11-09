@@ -1,5 +1,5 @@
 "use client"
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = ({ onClose, apply }) => {
@@ -8,6 +8,22 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
 
     const [CoverLetter, setCoverLetter] = useState('');
     const [Resume, setResume] = useState('');
+    const [resumesSelect, setResumesSelect] = useState( [ ]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/jobsearchers/${session.data?.user?.email}`);
+                const data = await response.json();
+                setResumesSelect(data.jobSearcher.resume);
+               
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const ApplyJob = (e: FormEvent<HTMLFormElement>) => {
 
         console.log("session", session.data)
@@ -28,7 +44,7 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
             resume: Resume
         };
 
-        console.log('values   ' , values); // הדפסת הערכים לקונסולה
+        console.log('values   ', values); // הדפסת הערכים לקונסולה
         apply(values);
 
         onClose(); // סגירת המודל
@@ -67,11 +83,11 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
                                 onChange={(e) => setResume(e.target.value)}
                                 id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Choose a Resume</option>
-                                <option value="US">United States</option>
-                                <option value="CA">Canada</option>
-                                <option value="FR">France</option>
-                                <option value="DE">Germany</option>
+                                {resumesSelect.length>0 && resumesSelect.map((resume,index) => (
+                                    <option key={index} >{resume}</option>
+                                ))}
                             </select>
+                            
                             <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cover letter</label>
 
                             <div className="max-w-sm space-y-3">

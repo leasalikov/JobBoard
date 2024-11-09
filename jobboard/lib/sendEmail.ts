@@ -65,16 +65,13 @@ export function sendCandidaciesToEmployerEmail(employerEmail: string, candidacie
     let mailOptions = {
         from: process.env.EMAIL_MANAGER,
         to: employerEmail,
-        subject: 'password recovery in website',
+        subject: 'A new candidacy for the position that has been promoted',
         html: `
                <div style="font-family: Arial, sans-serif; text-align: right; direction: rtl; color: #0066cc;">
               <p>Hello!</p>
-              <p>A password change request has been received by the system.</p>
-              <p>Your password recovery code is: <strong>${candidacies}</strong></p>
-              <p>the code on the password recovery page on the website to continue.</p>
-              <p>Greetings,</p>
-              <p>Site team</p>
-          </div>
+              <p>Here are the details about the candidate</p>
+              <p><strong>${candidacies}</strong></p>
+              </div>
             `
     };
     transporter.sendMail(mailOptions, function (error, info) {

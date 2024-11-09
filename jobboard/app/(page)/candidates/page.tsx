@@ -33,6 +33,9 @@ function Candidates({ jobId }: { jobId: string }) {
                     <div className="relative mt-8 flex items-center gap-x-4">
                         <img src={candidate.user.image as string} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                     </div>
+                    <div className="relative mt-8 flex items-center gap-x-4">
+                        <a href={candidate.user.resume as string}  className="h-10 w-10 rounded-full bg-gray-50" />
+                    </div>
                 </div>
             ))}
         </div>

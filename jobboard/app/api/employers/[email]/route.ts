@@ -1,4 +1,3 @@
-import { Links } from "@prisma/client";
 import prisma from "../../../../prisma/client";
 import { NextResponse, } from "next/server";
 

@@ -1,5 +1,6 @@
 
 import cloudinary from '@/lib/cloudinary';
+import prisma from "../../../prisma/client";
 import { NextRequest, NextResponse } from 'next/server';
 
 const uploadToCloudinary = async (fileUri: string) => {
@@ -43,6 +44,29 @@ export async function POST(req: NextRequest) {
     }
 
 }
+
+// export async function GET(req: Request) {
+//     try {
+//         const { email } = params;
+//         const user = await prisma.users.findUnique({
+//             where: { email: email },
+//         });
+
+//         if (user?.type == "employer")
+//             throw "user not allow to get cv"
+
+//         const jobSearcher = await prisma.jobSearchers.findUnique({
+//             where: { userId: user?.id }
+//         });
+//         console.log("🐳🐳🐳🐳🐳🐳🐳🐳🐳🐳🐳🐳",jobSearcher?.resume)
+//         const cvUrl = jobSearcher?.resume
+//         return NextResponse.json({ message: "success get jobSearcher", success: true, employer: { ...user, ...jobSearcher } });
+//     } catch (error) {
+//         console.log(error);
+//         return NextResponse.json({ message: "not success get jobSearcher", success: false });
+//     }
+// }
+
 
 // const uploadToCloudinary = async (fileUri: string) => {
 //     try {

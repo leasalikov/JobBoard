@@ -9,7 +9,6 @@ import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbWorld } from "react-icons/tb";
 import { signIn, useSession } from "next-auth/react";
-// import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function EmployerRegistration() {

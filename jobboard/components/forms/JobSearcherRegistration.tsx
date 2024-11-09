@@ -1,27 +1,19 @@
 "use client";
-// import React from "react";
-// import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import React, { FormEvent, useState } from "react";
-// import { signIn } from "next-auth/react";
-import { Select, SelectItem, Input, Image, Avatar, Radio } from "@nextui-org/react";
+import { Select, SelectItem,  Avatar } from "@nextui-org/react";
 import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
-import { TbFileUpload } from "react-icons/tb";
 import { useSession } from "next-auth/react";
-import { MdOutlineAddBox } from "react-icons/md";
 import { FaRegFileLines } from "react-icons/fa6";
-import router from "next/router";
 import { CldUploadButton } from 'next-cloudinary';
-import cloudinary from "@/lib/cloudinary";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 export default function JobSearcherRegistration() {
-    // const [selectedOptions, setSelectedOptions] = useState([]);
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
-    const [file, setFile] = useState<File>();
-
+    const [profile, setProfile] = useState<string>("")
+const [file, setFile]=useState<File|null>(null)
+    const [resume, setResume] = useState<string>("");
     const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
     const session = useSession();
     const router = useRouter()
@@ -59,75 +51,47 @@ export default function JobSearcherRegistration() {
     { value: "responsibility", label: "responsibility" },
     { value: "project management", label: "project management" },
     { value: "Recruitment", label: "Recruitment" }];
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const uploadedImage = URL.createObjectURL(e.target.files[0]);
-            console.log(image)
-            setImage(uploadedImage);
+            const formData = new FormData();
+            formData.append("filepond", e.target.files[0]);
+            try {
+                const response = await fetch(`http://localhost:3000/api/cloudinary`, {
+                    method: "POST",
+                    body: formData
+                })
+                const data = await response.json();
+                setProfile(data.imgUrl)
+                setImage(uploadedImage);
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
-
-
-    //   const [selectedOptions, setSelectedOptions] = useState([]);
-
-    //   const handleSelectChange = (value) => {
-    //     if (selectedOptions.length < 3 || selectedOptions.includes(value)) {
-    //       setSelectedOptions((prevSelected) => {
-    //         alert("va",value)
-    //         if (prevSelected.includes(value)) {
-    //           return prevSelected.filter((item) => item !== value);
-    //         } else {
-    //           return [...prevSelected, value];
-    //         }
-    //       });
-    //     }
-    //   };
-
-    //   return (
-    //     <Select
-    //       value={selectedOptions}
-    //       onChange={handleSelectChange}
-    //       multiple
-    //     >
-    //       <option value="option1">Option 1</option>
-    //       <option value="option2">Option 2</option>
-    //       <option value="option3">Option 3</option>
-    //       <option value="option4" disabled={selectedOptions.length >= 3}>Option 4</option>
-    //     </Select>
-    //   );
-    // async function uploadResume(data:any) {
-    //     console.log(data)
-    //     const response = await fetch(`http://localhost:3000/api/cloudinary`, {
-    //         method: "POST",
-    //         body: data,
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //     });  
-    //     console.log(response)
-    // }
-
-    ///fix
-     const  handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCVUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.files && e.target.files.length > 0) {
-            console.log("🐳🐳🐳🐳🐳🐳🐳", e.target.files[0])
             setCvUploaded(true);
-            setFile(e.target.files[0])
-            // uploadResume(e.target.files[0])
-            cloudinary.uploader
-                .upload(e.target.files[0].name, {
-                    asset_folder: 'cv',
-                    resource_type: "auto"
+            const formData = new FormData();
+            formData.append("filepond", e.target.files[0]);
+            try {
+                const response = await fetch(`http://localhost:3000/api/cloudinary`, {
+                    method: "POST",
+                    body: formData
                 })
-                .then(console.log);
+                const data = await response.json();
+                setResume(data.imgUrl)
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
     async function register(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        console.log(profile, "p", resume, "re")
         const formData = new FormData(e.currentTarget);
         const selectedSkills = formData.getAll('skills');
         const email = formData.getAll("email");
@@ -136,13 +100,11 @@ export default function JobSearcherRegistration() {
         for (let i = 0; i < email.length; i++) {
             PreviousWorks.push({ email: email[i], phone: phone[i] })
         }
-        console.log(formData.get('photo'))
         const values = {
             phone: formData.get('userPhone'),
-            // image: formData.get('photo'),
-            image: "formData.get('photo')",
+            image: profile,
             skills: selectedSkills,
-            resume: ["formData.get('cv')"],
+            resume: [resume],
             expertise: formData.getAll('expertise'),
             experience: formData.get('experience'),
             recommendations: PreviousWorks,
@@ -192,8 +154,6 @@ export default function JobSearcherRegistration() {
                     </div>
                     <div className="col-span-full">
                         <Select
-                            // value={selectedOptions}
-                            // onChange={handleSelectChange}
                             label="Your prominent skills"
                             labelPlacement="outside-left"
                             placeholder="Select 3 skills"
@@ -238,7 +198,6 @@ export default function JobSearcherRegistration() {
                             </div>
                             <input name="cv" id="dropzone-file" type="file" accept="pdf, docx, PDF, DOC" className="hidden" onChange={handleCVUpload} />
                         </label>
-                        <CldUploadButton uploadPreset="<Upload Preset>" />
                     </div>}
 
                     {cvUploaded && (
@@ -246,7 +205,7 @@ export default function JobSearcherRegistration() {
                     focus:ring-indigo-500 focus:border-indigo-500 block ps-4 p-1.5">
                             <div className="relative inset-y-0 start-0 flex items-center text-5xl ">
                                 {/* <TbFileUpload /> */}
-                                <FaRegFileLines />
+                                <FaRegFileLines className="text-gray-600" />
                             </div>
                             <div className="relative mb-3 ">
                                 <p className=" text-x ml-2 mt-2">{file?.name}</p>
@@ -257,20 +216,20 @@ export default function JobSearcherRegistration() {
 
                     <div className="sm:col-span-3">
                         <Select
-                                label="Experience"
-                                labelPlacement="outside-left"
-                                placeholder="Your experience"
-                                selectionMode="single"
-                                className="block w-full"
-                                name="experience"
-                            >
-                                {experience.map((option) => (
+                            label="Experience"
+                            labelPlacement="outside-left"
+                            placeholder="Your experience"
+                            selectionMode="single"
+                            className="block w-full"
+                            name="experience"
+                        >
+                            {experience.map((option) => (
                                 <SelectItem
                                     key={option.value} value={option.value}>
                                     {option.label}
                                 </SelectItem>
                             ))}
-                                </Select>
+                        </Select>
                     </div>
 
                     <div>

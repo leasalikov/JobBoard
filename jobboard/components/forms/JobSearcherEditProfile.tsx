@@ -62,34 +62,7 @@ export default function JobSearcherEditProfile() {
             setImage(uploadedImage);
         }
     };
-    //   const [selectedOptions, setSelectedOptions] = useState([]);
-
-    //   const handleSelectChange = (value) => {
-    //     if (selectedOptions.length < 3 || selectedOptions.includes(value)) {
-    //       setSelectedOptions((prevSelected) => {
-    //         alert("va",value)
-    //         if (prevSelected.includes(value)) {
-    //           return prevSelected.filter((item) => item !== value);
-    //         } else {
-    //           return [...prevSelected, value];
-    //         }
-    //       });
-    //     }
-    //   };
-
-    //   return (
-    //     <Select
-    //       value={selectedOptions}
-    //       onChange={handleSelectChange}
-    //       multiple
-    //     >
-    //       <option value="option1">Option 1</option>
-    //       <option value="option2">Option 2</option>
-    //       <option value="option3">Option 3</option>
-    //       <option value="option4" disabled={selectedOptions.length >= 3}>Option 4</option>
-    //     </Select>
-    //   );
-
+   
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setCvUploaded(true);
@@ -147,7 +120,7 @@ export default function JobSearcherEditProfile() {
                 <div className="grid grid-col-4 grid-rows-2 gap-10 justify-stretch ">
                     <div className=" row-start-1 row-span-3 col-start-1 col-span-1">
                         {/* <div className="col-span-full"> */}
-                        <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Photo</label>
+                        <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Profile image</label>
                         <p className="font-semibold text-gray-900">Click on the image to change it.</p>
                         <label className="mt-10 flex items-center ">
                             <Avatar className="w-40 h-40 " isBordered showFallback src={image} />

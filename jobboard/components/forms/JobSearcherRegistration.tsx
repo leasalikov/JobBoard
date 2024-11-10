@@ -3,19 +3,21 @@ import React, { FormEvent, useState } from "react";
 import { Select, SelectItem,  Avatar } from "@nextui-org/react";
 import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
-import { IconType } from "react-icons";
 import { useSession } from "next-auth/react";
 import { FaRegFileLines } from "react-icons/fa6";
-import { CldUploadButton } from 'next-cloudinary';
 import { useRouter } from "next/navigation";
+import { InputLink } from "@/functions/formInputs";
 
 export default function JobSearcherRegistration() {
+
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
     const [profile, setProfile] = useState<string>("")
 const [file, setFile]=useState<File|null>(null)
     const [resume, setResume] = useState<string>("");
-    const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
     const session = useSession();
+    const profileImg = session.data?.user?.image as string;
+    const [image, setImage] = useState<string>(profileImg?profileImg:"https://images.unsplash.com/broken");
+
     const router = useRouter()
     const experience = [
         { value: "No experience", label: "No experience" },
@@ -74,6 +76,7 @@ const [file, setFile]=useState<File|null>(null)
 
         if (e.target.files && e.target.files.length > 0) {
             setCvUploaded(true);
+            setFile(e.target.files[0])
             const formData = new FormData();
             formData.append("filepond", e.target.files[0]);
             try {
@@ -91,7 +94,6 @@ const [file, setFile]=useState<File|null>(null)
 
     async function register(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log(profile, "p", resume, "re")
         const formData = new FormData(e.currentTarget);
         const selectedSkills = formData.getAll('skills');
         const email = formData.getAll("email");
@@ -133,21 +135,21 @@ const [file, setFile]=useState<File|null>(null)
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Your Profile
                 </h2>
-                <p className="mt-5 text-center text-sm text-gray-500">
+                <p className="mt-5 text-center text-sm text-gray-600">
                     You can set and edit your profile information at any time
-                    <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">skip
-                    </a>
+                    {/* <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">skip
+                    </a> */}
                 </p>
             </div>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={register} className="space-y-6" action="#" method="POST">
                     <div className="col-span-full">
-                        <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Photo</label>
+                        <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Profile image</label>
                         <div className="mt-2 flex items-center gap-x-3">
                             <label className="mt-2 flex items-center gap-x-3 ">
                                 <Avatar isBordered showFallback src={image} />
-                                <a className="font-semibold text-indigo-600 hover:text-indigo-500">Choose image</a>
+                                <a  className="font-semibold cursor-pointer text-indigo-600 hover:text-indigo-500">Choose image</a>
                                 <input id="add-img" name="photo" type="file" className="hidden" onChange={handleImageUpload} />
                             </label>
                         </div>
@@ -194,9 +196,9 @@ const [file, setFile]=useState<File|null>(null)
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                                 </svg>
                                 <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload CV</span> or drag and drop</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">PDF or DOCS</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">PDF</p>
                             </div>
-                            <input name="cv" id="dropzone-file" type="file" accept="pdf, docx, PDF, DOC" className="hidden" onChange={handleCVUpload} />
+                            <input name="cv" id="dropzone-file" required type="file" accept="pdf, docx, PDF, DOC" className="hidden" onChange={handleCVUpload} />
                         </label>
                     </div>}
 
@@ -241,13 +243,13 @@ const [file, setFile]=useState<File|null>(null)
                     <p>Recommendations (Optional)</p>
 
                     <div className="flex">
-                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                        <InputLink label="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                        <InputLink label="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
 
                     <div className="flex">
-                        <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                        <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                        <InputLink label="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                        <InputLink label="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
                     </div>
                     <div>
                         <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5
@@ -262,31 +264,8 @@ const [file, setFile]=useState<File|null>(null)
     );
 }
 
-type InputProps = {
-    ariaLabel: string;
-    icon: IconType;
-    id: string;
-    type: string;
-    placeholder: string;
-};
 
-function InputLink({ ...props }: InputProps) {
-    return (
 
-        <div className="relative mb-3  ml-1">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none text-2xl text-default-400 pointer-events-none">
-                {<props.icon />}
-            </div>
-            <input aria-label={props.ariaLabel} type={props.type} name={props.id} id={props.id
-            }
-                className="bg-gray-50 border-underlined text-gray-900 text-sm rounded-lg 
-                    focus:ring-indigo-500 focus:border-indigo-500 block w-full ps-10 p-2.5  
-                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                     dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
-                placeholder={props.placeholder} />
-        </div>
-    );
-}
 
 
 

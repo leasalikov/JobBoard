@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Select, SelectItem, Input, Image, Avatar, Radio } from "@nextui-org/react";
 import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
@@ -15,11 +15,14 @@ import router from "next/router";
 
 
 export default function JobSearcherEditProfile() {
-    // const [selectedOptions, setSelectedOptions] = useState([]);
     const [cvUploaded, setCvUploaded] = useState<boolean>(false);
     const [file, setFile] = useState<File>();
-    const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
-    const session = useSession();
+
+
+  const session = useSession();
+  const userImage = session?.data?.user?.image as string;
+  const [image, setImage] = useState<string>(userImage?userImage:"https://images.unsplash.com/broken");
+
     const experience = [
         { value: "No experience", label: "No experience" },
         { value: "1-2 years", label: "1-2 years" },
@@ -54,6 +57,24 @@ export default function JobSearcherEditProfile() {
     { value: "responsibility", label: "responsibility" },
     { value: "project management", label: "project management" },
     { value: "Recruitment", label: "Recruitment" }];
+    const [data, setUserData] = useState()
+    useEffect(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/jobsearcher/${session.data?.user?.email}`);
+                    const data = await response.json();
+                    setUserData(data);
+                   
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            };
+            if (session && session.data?.user?.email) {
+                fetchData();
+            }
+        }, [session]);
+
+
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -62,7 +83,7 @@ export default function JobSearcherEditProfile() {
             setImage(uploadedImage);
         }
     };
-   
+
     const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setCvUploaded(true);
@@ -110,14 +131,14 @@ export default function JobSearcherEditProfile() {
 
     return (
         // <div>
-        <div className=" mt-10 flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div className=" ml-10 mr-10 mt-10 flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             {/* <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Profile
                 </h2>
             </div> */}
             {/* flex flex-col items-center w-16 pb-4 overflow-auto  mt-10 sm:mx-auto sm:w-full sm:max-w-sm"> */}
             <form onSubmit={register} className="space-y-6" action="#" method="POST">
-                <div className="grid grid-col-4 grid-rows-2 gap-10 justify-stretch ">
+                <div className="grid grid-col-4 grid-rows-2 gap-10 justify-stretch mt-10">
                     <div className=" row-start-1 row-span-3 col-start-1 col-span-1">
                         {/* <div className="col-span-full"> */}
                         <label htmlFor="photo" className="block text-sm font-medium leading-6 text-gray-900">Profile image</label>
@@ -132,6 +153,11 @@ export default function JobSearcherEditProfile() {
                     <div className=" row-start-1 row-span-2 col-start-2 col-span-2">
                         <div className="grid grid-cols-2 gap-3 relative mt-20">
                             {/* <div className="col-span-full"> */}
+                            <div>
+                                <label htmlFor="userPhone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
+                                <input id="userPhone" name="userPhone" type="tel" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            </div>
+
                             <Select
                                 label="Your prominent skills"
                                 labelPlacement="outside-left"
@@ -182,10 +208,7 @@ export default function JobSearcherEditProfile() {
                             </Select>
                             {/* </div> */}
                             {/* <div> */}
-                            <div>
-                                <label htmlFor="userPhone" className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-                                <input id="userPhone" name="userPhone" type="tel" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            </div>
+
                             {/* </div> */}
                             {/* </div> */}
                         </div>
@@ -195,21 +218,21 @@ export default function JobSearcherEditProfile() {
                         <div>
                             <p className="mt-5">work:</p>
                             {/* <div className="flex"> */}
-                                <InputLink ariaLabel="Previous workplace" icon={FaBusinessTime} id="previousWorkplace" type="text" placeholder="Previous Workplace name" />
-                                <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                                <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
-                                {/* </div> */}
+                            <InputLink ariaLabel="Previous workplace" icon={FaBusinessTime} id="previousWorkplace" type="text" placeholder="Previous Workplace name" />
+                            <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                            <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                            {/* </div> */}
                             {/* </div> */}
                             <InputLink ariaLabel="short descraption" icon={FiAlignLeft} id="shortDescraption" type="text" placeholder="A brief description of the position" />
                         </div>
 
                         <div>
-                        <p className="mt-5">additional work</p>
+                            <p className="mt-5">additional work</p>
                             {/* <div className="flex"> */}
-                                <InputLink ariaLabel="Previous workplace" icon={FaBusinessTime} id="previousWorkplace" type="text" placeholder="Previous Workplace name" />
-                                <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
-                                <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
-                                {/* </div> */}
+                            <InputLink ariaLabel="Previous workplace" icon={FaBusinessTime} id="previousWorkplace" type="text" placeholder="Previous Workplace name" />
+                            <InputLink ariaLabel="Email" icon={MdEmail} id="email" type="text" placeholder="name@company.com" />
+                            <InputLink ariaLabel="Phone" icon={FaSquarePhone} id="phone" type="text" placeholder="000-000-0000" />
+                            {/* </div> */}
                             {/* </div> */}
                             <InputLink ariaLabel="short descraption" icon={FiAlignLeft} id="shortDescraption" type="text" placeholder="A brief description of the position" />
                         </div>
@@ -237,7 +260,7 @@ export default function JobSearcherEditProfile() {
                                     <FaRegFileLines />
                                 </div>
                                 <div className="relative mb-3 ">
-                                    <p className=" text-x ml-2 mt-2">{file?.name}</p>
+                                    <p className=" text-x ml-2 mt-2">resume_1.pdf</p>
                                     <p className=" text-x ml-2 mt-2">  {file?.size} byts</p>
                                 </div>
                             </div>
@@ -248,21 +271,8 @@ export default function JobSearcherEditProfile() {
                                     <FaRegFileLines />
                                 </div>
                                 <div className="relative mb-3 ">
-                                    <p className=" text-x ml-2 mt-2">  {file?.name}</p>
-                                    <p className=" text-x ml-2 mt-2">  {file?.size} byts</p>
-
-                                    {/* <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p> */}
-                                </div>
-                            </div>
-                            <div className="flex border border-gray-400  text-sm rounded-lg 
-                                 focus:ring-indigo-500 focus:border-indigo-500 block ps-4 p-1.5">
-                                <div className="relative inset-y-0 start-0 flex items-center text-5xl ">
-                                    {/* <TbFileUpload /> */}
-                                    <FaRegFileLines />
-                                </div>
-                                <div className="relative mb-3 ">
-                                    <p className=" text-x ml-2 mt-2">  {file?.name}</p>
-                                    <p className=" text-x ml-2 mt-2">  {file?.size} byts</p>
+                                    <p className=" text-x ml-2 mt-2">  resume_fullStak.pdf</p>
+                                    <p className=" text-x ml-2 mt-2">  73243 byts</p>
 
                                     {/* <p className="text-gray-600 text-2xl ml-2 mt-2">CV Uploaded Successfully!</p> */}
                                 </div>

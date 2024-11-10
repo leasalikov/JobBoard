@@ -8,25 +8,52 @@ import { MdEmail } from "react-icons/md";
 import { FaSquarePhone } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { TbWorld } from "react-icons/tb";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { InputIcon } from "@/functions/formInputs";
 
 
 export default function EmployerRegistration() {
     const session = useSession();
+    const profileImg = session.data?.user?.image as string;
 
     const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
         "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
-    const [image, setImage] = useState<string>("https://images.unsplash.com/broken");
-
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const [companyImage, setCompanyImage] = useState<string>("https://images.unsplash.com/broken");
+    const [userImg, setUserImg] = useState<string>(profileImg?profileImg:"https://images.unsplash.com/broken");
+    const handleUserImgUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
         if (e.target.files && e.target.files.length > 0) {
-            const uploadedImage = URL.createObjectURL(e.target.files[0]);
-            console.log(image)
-            setImage(uploadedImage);
+            const formData = new FormData();
+            formData.append("filepond", e.target.files[0]);
+            try {
+                const response = await fetch(`http://localhost:3000/api/cloudinary`, {
+                    method: "POST",
+                    body: formData
+                })
+                const data = await response.json();
+                setUserImg(data.imgUrl)
+            } catch (error) {
+                console.log(error)
+            }
+        };
+    }
+
+    const handleCompanyImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const formData = new FormData();
+            formData.append("filepond", e.target.files[0]);
+            try {
+                const response = await fetch(`http://localhost:3000/api/cloudinary`, {
+                    method: "POST",
+                    body: formData
+                })
+                const data = await response.json();
+                setCompanyImage(data.imgUrl);
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
-
 
     async function register(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -39,21 +66,19 @@ export default function EmployerRegistration() {
             }
         });
 
-
         const values = {
-            image: "formData.get('userImage')?.toString()",
+            image: userImg,
             phone: formData.get('userPhone'),
             company: {
                 name: formData.get("companyName"),
                 phone: formData.get("companyphone"),
-                logo: "cgvh",
+                logo: companyImage,
                 description: formData.get("CompanyDescription"),
                 expertise: formData.getAll('expertise'),
                 size: formData.get('teamSize'),
                 links: LinkArray,
                 email: formData.get('companyEmail')
             }
-
         };
 
         try {
@@ -78,15 +103,15 @@ export default function EmployerRegistration() {
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
             <div className=" mt-3 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={register} className="space-y-6" action="#" method="POST">
-                <h3 className="mt-10 text-left  text-2xl font-bold leading-9 tracking-tight text-indigo-600">Personal details</h3>
+                    <h3 className="mt-10 text-left  text-2xl font-bold leading-9 tracking-tight text-indigo-600">Personal details</h3>
 
                     <div className="col-span-full">
                         <label htmlFor="userImage" className="block text-sm font-medium leading-6 text-gray-900">Your profile image</label>
                         <div className="mt-2 flex items-center gap-x-3">
                             <label className="mt-2 flex items-center gap-x-3 ">
-                                <Avatar isBordered showFallback src={image} />
+                                <Avatar isBordered showFallback src={userImg} />
                                 <a className="font-semibold text-indigo-600 hover:text-indigo-500">Choose image</a>
-                                <input id="add-img" name="userImage" type="file" className="hidden" onChange={handleImageUpload} />
+                                <input id="add-img" name="userImage" type="file" className="hidden" onChange={handleUserImgUpload} />
                             </label>
                         </div>
                     </div>
@@ -114,9 +139,9 @@ export default function EmployerRegistration() {
                         <label htmlFor="logo" className="block text-sm font-medium leading-6 text-gray-900">Logo</label>
                         <div className="mt-2 flex items-center gap-x-3">
                             <label className="mt-2 flex items-center gap-x-3 ">
-                                <Avatar isBordered showFallback src={image} />
+                                <Avatar isBordered showFallback src={companyImage} />
                                 <a className="font-semibold text-indigo-600 hover:text-indigo-500">Choose image</a>
-                                <input id="add-img" name="logo" type="file" className="hidden" onChange={handleImageUpload} />
+                                <input id="add-img" name="logo" type="file" className="hidden" onChange={handleCompanyImageUpload} />
                             </label>
                         </div>
                     </div>
@@ -159,32 +184,32 @@ export default function EmployerRegistration() {
 }
 
 
-type InputProps = {
-    label: string;
-    icon: IconType;
-    id: string;
-    type: string;
-    placeholder: string;
-};
+// type InputProps = {
+//     label: string;
+//     icon: IconType;
+//     id: string;
+//     type: string;
+//     placeholder: string;
+// };
 
-function InputIcon({ label, ...props }: InputProps) {
-    return (
-        <>
-            <div>
-                {/* <label htmlFor={props.id} className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{label}</label> */}
-                <div className="relative mb-2">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none text-2xl text-default-400 pointer-events-none flex-shrink-0">
-                        {<props.icon />}
-                    </div>
-                    <input type={props.type} name={props.id} id={props.id} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                    focus:ring-indigo-500 focus:border-indigo-500 block w-full ps-10 p-2.5  
-                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                     dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder={props.placeholder} />
-                </div>
-            </div>
-        </>
-    );
-}
+// function InputIcon({ label, ...props }: InputProps) {
+//     return (
+//         <>
+//             <div>
+//                 {/* <label htmlFor={props.id} className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">{label}</label> */}
+//                 <div className="relative mb-2">
+//                     <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none text-2xl text-default-400 pointer-events-none flex-shrink-0">
+//                         {<props.icon />}
+//                     </div>
+//                     <input type={props.type} name={props.id} id={props.id} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+//                     focus:ring-indigo-500 focus:border-indigo-500 block w-full ps-10 p-2.5  
+//                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+//                      dark:text-white dark:focus:ring-indigo-500 dark:focus:border-indigo-500" placeholder={props.placeholder} />
+//                 </div>
+//             </div>
+//         </>
+//     );
+// }
 
 
 

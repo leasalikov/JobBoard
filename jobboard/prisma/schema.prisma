@@ -54,7 +54,7 @@ model Employers {
 model Jobs {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
   employerId      String        @db.ObjectId
-  employer        Employers     @relation(fields: [employerId], references: [id])
+  employer        Employers    @relation(fields: [employerId], references: [id])
   location        String?
   experienceLevel String
   salary          Int

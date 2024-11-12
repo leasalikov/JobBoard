@@ -8,14 +8,10 @@ export default function JobSearch() {
     const [jobsToShow, setJobsToShow] = useState([]);
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
-        console.log(key, "       ", selectedItems);
-
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
         }));
-        console.log(selectedItems);
-
     };
 
     const handleSubmit = async (event: any) => {
@@ -33,8 +29,9 @@ export default function JobSearch() {
             Array.from(jobTypeSet).join(',')).join(',');
         const jobs = await searchJobs(values);
         setJobsToShow(jobs)
+        let jobsEmpty = false;
+        if(jobs.length() == 0){jobsEmpty = true;}
     };
-
 
     async function searchJobs(values: any) {
         const queryString = Object.entries(values)
@@ -199,6 +196,7 @@ export default function JobSearch() {
                             </div>
                         </div>
                     ))}
+                    {!jobsToShow && <p>There are no jobs matching your search</p>}
                 </div>
             </div>
         </>

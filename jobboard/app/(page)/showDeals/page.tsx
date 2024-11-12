@@ -38,12 +38,22 @@ async function ShowDeals() {
     }
   });
   console.log(user)
-  const jobs = await prisma.jobs.findMany({
-    where: { employerId: user?.employer?.id },
-    include: {
-      candidacies: true
-    }
-  });
+
+  // const jobs = await prisma.jobs.findMany({
+  //   where: { employerId: user?.employer?.id },
+  //   include: {
+  //     candidacies: true
+  //   }
+  // })
+  
+  const jobs = user?.employer?.id
+    ? await prisma.jobs.findMany({
+        where: { employerId: user.employer.id },
+        include: {
+            candidacies: true
+        },
+    })
+    : [];
 
   console.log("💖💖💖💖💖" + JSON.stringify(jobs.length));
 

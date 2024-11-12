@@ -18,6 +18,7 @@ type User = {
 export default function PostJobForm() {
     const session = useSession()
     const router = useRouter()
+    const [showJobPosted, setShowJobPosted] = useState(false);
 
     useEffect(() => {
         if (!session)
@@ -67,6 +68,7 @@ export default function PostJobForm() {
             const data = await response.json();
             console.log(data);
             alert("succes post job")
+            setShowJobPosted(true);
 
         } catch (error) {
             console.log(error);
@@ -82,7 +84,7 @@ export default function PostJobForm() {
                 </h2>
             </div>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            {!showJobPosted && <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form onSubmit={postjob} className="space-y-6" action="#" method="POST">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {details.map((i, index) =>
@@ -143,16 +145,16 @@ export default function PostJobForm() {
             focus-visible:outline-offset-2 focus-visible:outline-indigo-600">post</button>
                     </div>
                 </form>
-
-
-
-
                 <p className="mt-10 text-center text-sm text-gray-500">
                     You can set and edit your profile information at any time<br />
                     <a href="/home" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Skip</a>
 
                 </p>
-            </div>
+            </div>}
+            {showJobPosted && 
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <p className="flex justify-center items-center font-bold tracking-tight text-gray-400 sm:text-3xl">The new job was successfully updated!</p>
+            </div>}
         </div>
 
     );

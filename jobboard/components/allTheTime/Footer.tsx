@@ -1,5 +1,4 @@
 
-
 export default function Footer() {
     return (
         <footer className="bottom-0 left-0 w-full bg-white z-50">

@@ -1,5 +1,5 @@
 import prisma from '../../../prisma/client';
-import JobCard from '../jobCard/page';
+import JobCard from '../../../components/jobCard';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 

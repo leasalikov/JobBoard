@@ -1,6 +1,6 @@
 "use client"
 import { Candidacies, JobSearchers } from "@prisma/client";
-import prisma from "../../../prisma/client";
+import prisma from "../prisma/client";
 import { useEffect, useState } from "react";
 
 

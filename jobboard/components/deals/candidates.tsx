@@ -12,7 +12,6 @@ function Candidates({ jobId }: { jobId: string }) {
         const response = await fetch(`http://localhost:3000/api/candidacies?jobId=${jobId}`);
         const candidates = await response.json();
         console.log(candidates.candidacies);
-
         setCandidates(candidates.candidacies);
     }
 
@@ -22,7 +21,7 @@ function Candidates({ jobId }: { jobId: string }) {
 
     return (
         <div className="mt-5">
-            <h4 className="text-lg font-semibold">Candidates List</h4>
+            {/* <h4 className="text-lg font-semibold">Candidates List</h4> */}
 
             {/* Display candidates here */}
             {candidates.length > 0 && candidates.map((candidate: any) => (
@@ -34,10 +33,15 @@ function Candidates({ jobId }: { jobId: string }) {
                         <img src={candidate.user.image as string} alt="" className="h-10 w-10 rounded-full bg-gray-50" />
                     </div>
                     <div className="relative mt-8 flex items-center gap-x-4">
-                        <a href={candidate.user.resume as string}  className="h-10 w-10 rounded-full bg-gray-50" />
+                        <a href={candidate.user.resume as string} className="h-10 w-10 rounded-full bg-gray-50" />
                     </div>
                 </div>
             ))}
+            {candidates.length == 0 &&
+                <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <p className="flex justify-center items-center font-bold tracking-tight text-gray-400 sm:text-1xl">You don't have candidates for this job yet!</p>
+                </div>
+            }
         </div>
     );
 }

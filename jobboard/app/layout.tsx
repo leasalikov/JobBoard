@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Nav from "@/components/section/Nav";
-import Footer from "@/components/Footer";
+import Nav from "@/components/allTheTime/Nav";
+import Footer from "@/components/allTheTime/Footer";
 import "./globals.css";
 import Provider from "./providers/Provider";
 import { ThemeProvider } from "next-themes";

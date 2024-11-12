@@ -2,7 +2,7 @@
 "use client"
 import React from "react"
 import { useState } from "react";
-import Candidates from "./candidates";
+import Candidates from "../deals/candidates";
 import { useSession } from 'next-auth/react';
 
 //category description employerId experienceLevel field id location requirements salary status title type

@@ -1,7 +1,7 @@
 "use client"
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
-import ButtonWithModal from '../../../components/ButtonWithModal'
+import ButtonWithModal from '../../../components/jobs/ButtonWithModal'
 
 export default function JobSearch() {
 

@@ -4,8 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import ThemeToggle from "../ThemeToggle";
-import ProfileImage from "../ProfileImage";
+import ThemeToggle from "../themes/ThemeToggle";
+import ProfileImage from "../registration/ProfileImage";
 import ShowDeals from "@/app/(page)/showDeals/page";
 import { useSession } from 'next-auth/react';
 

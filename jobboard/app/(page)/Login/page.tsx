@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa"
 import { Tabs, Tab } from "@nextui-org/react";
-import forgotPassword from "../forgotPassword/page";
+import forgotPassword from "../../../components/registration/forgotPassword";
 import Cookies from 'js-cookie';
 
 export default function LoginForm() {

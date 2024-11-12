@@ -1,7 +1,7 @@
 "use client"
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState } from "react";
-import ButtonWithModal from '../ButtonWithModal/page'
+import ButtonWithModal from '../../../components/jobs/ButtonWithModal'
 
 export default function JobSearch() {
 
@@ -29,8 +29,8 @@ export default function JobSearch() {
             Array.from(jobTypeSet).join(',')).join(',');
         const jobs = await searchJobs(values);
         setJobsToShow(jobs)
-        let jobsEmpty = false;
-        if(jobs.length() == 0){jobsEmpty = true;}
+        // let jobsEmpty = false;
+        // if(jobs.length() == 0){jobsEmpty = true;}
     };
 
     async function searchJobs(values: any) {
@@ -196,7 +196,9 @@ export default function JobSearch() {
                             </div>
                         </div>
                     ))}
-                    {!jobsToShow && <p>There are no jobs matching your search</p>}
+                    {/* {!jobsToShow &&  */}
+                    {/* <p>There are no jobs matching your search</p> */}
+                    {/* } */}
                 </div>
             </div>
         </>

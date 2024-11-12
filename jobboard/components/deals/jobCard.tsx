@@ -2,7 +2,7 @@
 "use client"
 import React from "react"
 import { useState } from "react";
-import Candidates from "../candidates/page";
+import Candidates from "./candidates";
 import { useSession } from 'next-auth/react';
 
 //category description employerId experienceLevel field id location requirements salary status title type
@@ -37,13 +37,14 @@ function JobCard({ job }: any) {
                     <p>{job.experienceLevel}</p>
                     <p>salary : {job.salary}</p>
                     <button onClick={() => setIsCandidates(!isCandidates)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
-                   {isCandidates ? 'Hide Candidates' : 'Show Candidates'}
-                   </button>
-                   {/* <button onClick={() => setIsAvailable(!isAvailable)} className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"> */}
-                   {/* {isCandidates ? 'Job Available' : 'Job Not Available'} */}
-                   {/* </button> */}
-                   {isCandidates && <Candidates jobId={job.id} />}
-        
+                        {isCandidates ? 'Hide Candidates' : 'Show Candidates'}
+                    </button>
+                    {isCandidates && <Candidates jobId={job.id} />}
+                    {/* {!isCandidates &&
+                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                            <p className="flex justify-center items-center font-bold tracking-tight text-gray-400 sm:text-3xl">You don't have any candidares yet!</p>
+                        </div>} */}
+
                     {/* <button onClick={() => { setApllyJob(!apllyJob) }}
                                     className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Apply for a job</button> */}

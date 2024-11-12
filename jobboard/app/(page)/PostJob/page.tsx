@@ -57,7 +57,7 @@ export default function PostJobForm() {
         };
         console.log("level", values.experienceLevel)
         try {
-            const response = await fetch("http://localhost:3000/api/jobs/", {
+            const response = await fetch("http://localhost:3000/api/jobs", {
                 method: "POST",
                 body: JSON.stringify(values),
                 headers: {

@@ -2,12 +2,13 @@
 
 export default function Footer() {
     return (
-        <footer className="w-full">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 buttom-0">
-                <div className="py-7 border-t border-gray-200">
+        <footer className="bottom-0 left-0 w-full bg-white z-50">
+            {/* //w-full bg-white border-t border-gray-200 */}
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="py-4 border-t border-gray-200">
                     <div className="flex items-center justify-center flex-col lg:justify-between lg:flex-row">
-                        <span className="text-sm text-gray-500 ">©<a href="./home">jobBoard</a> 2024, All rights reserved.</span>
-                        <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0 ">
+                        <span className="text-sm text-gray-500">©<a href="./home">jobBoard</a> 2024, All rights reserved.</span>
+                        <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0">
                             <a href="javascript:;" className="w-8 h-8 rounded-full transition-all duration-500 flex justify-center items-center bg-[#33CCFF] hover:bg-gray-900">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                     <g id="Social Media">

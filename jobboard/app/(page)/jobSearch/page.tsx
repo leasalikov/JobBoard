@@ -1,11 +1,12 @@
 "use client"
 import { Select, SelectItem } from "@nextui-org/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonWithModal from '../../../components/jobs/ButtonWithModal'
 
 export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
+    
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
         setSelectedValues((prev: any) => ({
@@ -13,6 +14,20 @@ export default function JobSearch() {
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
         }));
     };
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/jobs`);
+                const data = await response.json();
+                setJobsToShow(data.jobs);
+                console.log(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+    
+        fetchData();
+    }, []);
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();

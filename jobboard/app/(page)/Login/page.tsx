@@ -39,7 +39,7 @@ export default function LoginForm() {
       email: target.email.value,
       password: target.password.value,
       name: target.username.value,
-      username:"",
+      username: "",
       phone: "",
       status: "",
       type: isJobSearcher ? "jobsearcher" : "employer"
@@ -66,6 +66,18 @@ export default function LoginForm() {
 
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  function signInWithGoogle() {    
+    try {
+      if (isLogin)
+        signIn("google", { callbackUrl: "/" })
+      else
+        signIn("google", { callbackUrl: "/Register" })
+    } catch (error) {
+      console.log(error);
+      alert("Can't login as " + isJobSearcher ? "job searcher" : "employer")
     }
   }
 
@@ -128,7 +140,7 @@ export default function LoginForm() {
         </form>
         <div className="flex w-full flex-col justify-center items-center gap-4">
           <button
-            onClick={() =>{isLogin ?signIn("google", { callbackUrl: "/" }):signIn("google", { callbackUrl: "/Register" })} }
+            onClick={signInWithGoogle}
             className="flex w-[80%] items-center justify-center bg-white
          dark:bg-gray-900 border border-gray-300 rounded-lg 
          shadow-md px-6 py-2 text-sm font-medium text-gray-800

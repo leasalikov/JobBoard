@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = ({ onClose, apply }) => {
     const session = useSession();
 
-
     const [CoverLetter, setCoverLetter] = useState('');
     const [Resume, setResume] = useState('');
     const [resumesSelect, setResumesSelect] = useState( [ ]);
@@ -14,6 +13,8 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
             try {
                 const response = await fetch(`http://localhost:3000/api/jobsearchers/${session.data?.user?.email}`);
                 const data = await response.json();
+                console.log("resume "+data);
+                
                 setResumesSelect(data.jobSearcher.resume);
                
             } catch (error) {
@@ -36,17 +37,17 @@ const Modal: React.FC<{ onClose: () => void, apply: (values: any) => void }> = (
         }
         const userEmail = session?.data?.user?.email;
 
-        e.preventDefault(); // מניעת ברירת מחדל
+        e.preventDefault(); 
         const values = {
             userEmail: userEmail,
             coverLetter: CoverLetter,
             resume: Resume
         };
 
-        console.log('values   ', values); // הדפסת הערכים לקונסולה
+        console.log('values   ', values); 
         apply(values);
 
-        onClose(); // סגירת המודל
+        onClose(); 
     };
 
 
@@ -172,7 +173,7 @@ export default function ButtonWithModal({ job }: any) {
                     rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none
                     focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="dialog"
                         aria-expanded="false" aria-controls="hs-modal-example" data-hs-overlay="#hs-modal-example"
-                    >Open Modal</button>
+                    >Apply</button>
 
                     {isModalOpen && <Modal onClose={handleCloseModal} apply={apply} />}
                 </div>

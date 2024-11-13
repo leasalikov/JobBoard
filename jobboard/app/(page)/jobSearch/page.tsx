@@ -2,13 +2,24 @@
 import { Select, SelectItem } from "@nextui-org/select";
 import { useState, useEffect } from "react";
 import ButtonWithModal from '../../../components/jobs/ButtonWithModal'
+import { Companies, Jobs } from "@prisma/client";
 
 export default function JobSearch() {
 
     const [jobsToShow, setJobsToShow] = useState([]);
-    
+
+    const [selectedValues, setSelectedValues] = useState({
+        keyword: "",
+        location: "",
+        category: [],
+        experienceLevel: [],
+        type: [],
+        salary: ""
+    });
+
 
     const handleSelectionChange = (key: string, selectedItems: any) => {
+        console.log(selectedItems);
         setSelectedValues((prev: any) => ({
             ...prev,
             [key]: Array.isArray(selectedItems) ? selectedItems : [selectedItems]
@@ -25,7 +36,7 @@ export default function JobSearch() {
                 console.error("Error fetching data:", error);
             }
         };
-    
+
         fetchData();
     }, []);
 
@@ -34,21 +45,20 @@ export default function JobSearch() {
         const formData = new FormData(event.target);
         const values = Object.fromEntries(formData.entries());
         console.log("values: ", values);
-        ///this log instead of be 
-        ///{keyword: '', location: '', salary: '', category: 'software', type: 'full-time', 'experienceLevel': 'junior'}
-        ///is:{keyword: '', location: '', salary: '', category: 'software', type: 'full-time'}
-        ///what shoud i do?
         values.category = selectedValues.category.map((categorySet: any) =>
             Array.from(categorySet).join(',')).join(',');
         values.type = selectedValues.type.map((jobTypeSet: any) =>
             Array.from(jobTypeSet).join(',')).join(',');
+        values.experienceLevel = selectedValues.experienceLevel.map((jobTypeSet: any) =>
+            Array.from(jobTypeSet).join('')).join('');
         const jobs = await searchJobs(values);
         setJobsToShow(jobs)
-        // let jobsEmpty = false;
-        // if(jobs.length() == 0){jobsEmpty = true;}
+
     };
 
     async function searchJobs(values: any) {
+        console.log(values);
+
         const queryString = Object.entries(values)
             .map(([key, value]) => value ?
                 `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`
@@ -67,15 +77,6 @@ export default function JobSearch() {
 
         return data.jobs;
     }
-
-    const [selectedValues, setSelectedValues] = useState({
-        keyword: "",
-        location: "",
-        category: [],
-        experienceLevel: "",
-        type: [],
-        salary: ""
-    });
 
 
     const categoryOptions = [
@@ -97,10 +98,10 @@ export default function JobSearch() {
     ];
 
     const experienceLevelOptions = [
-        { value: "junior", label: "junior" },
-        { value: "mid", label: "mid" },
-        { value: "senior", label: "senior" },
-        { value: "lead", label: "lead" },
+        { value: "No experience", label: "No experience" },
+        { value: "1-2 years", label: "1-2 years" },
+        { value: "3-5 years", label: "3-5 years" },
+        { value: "5+ years", label: "5+ years" },
     ];
 
     const jobTypeOptions = [
@@ -149,7 +150,8 @@ export default function JobSearch() {
                         {/* className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" */}
 
                         <Select
-                            label="Experience level"
+                            labelPlacement="outside-left"
+                            label="ExperienceLevel"
                             selectionMode="single"
                             placeholder="choose level"
                             onSelectionChange={(items: any) => handleSelectionChange('experienceLevel', items)}
@@ -185,10 +187,8 @@ export default function JobSearch() {
                     // style={{ display: 'flex', flexDirection: 'row' }}
                     className="mx-auto"
                 >
-                    {jobsToShow && jobsToShow.map((job: any) => (
-                        <div key={job.id}
-                            className="relative w-[800px] h-[300px] bg-white shadow-sm border border-slate-200 rounded-lg p-3 pb-6"
-                        >
+                    {jobsToShow && jobsToShow.map((job: Jobs & { company: Companies }) => (
+                        <div key={job.id} className="relative w-[800px] bg-white shadow-sm border border-slate-200 rounded-lg p-3 pb-6">
                             <div className="flex justify-center mb-4 mt-5">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10 text-purple-500">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
@@ -198,15 +198,14 @@ export default function JobSearch() {
                             <div className="flex justify-center mb-3">
                                 <h2 className="text-slate-800 text-2xl font-semibold">{job.title}</h2>
                             </div>
-                            <div className="p-3 mt-5 border-t border-slate-100 text-center max-h-60 overflow-y-auto [&::-webkit-scrollbar-thumb]:rounded-xl [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-xl [&::-webkit-scrollbar-track]:bg-slate-100">
-                                <p
-                                // className="block text-slate-600 leading-normal font-light mb-4 max-w-lg"
-                                >
-                                    {job.description}</p>
-                                <p className="block text-slate-600 leading-normal font-light mb-4 max-w-lg">
-                                    {job.location}</p>
-                                <p>{job.experienceLevel}</p>
-                                <p>salary : {job.salary}</p>
+                            <span>{job.company?.name || "company is confidential"} | </span>
+                            <span>{job.location} | </span>
+                            <span>{job.experienceLevel} | </span>
+                            <span>{job.type}</span>
+                            <div className="p-3 mt-5 border-t border-slate-100 text-center max-h-60 overflow-y-auto">
+                                <p>Description: {job.description}</p>
+                                <p>Requirements: {job.requirements}</p>
+                                <p>Salary: {job.salary}</p>
                                 <ButtonWithModal job={job} />
                             </div>
                         </div>
@@ -219,4 +218,3 @@ export default function JobSearch() {
         </>
     )
 }
-

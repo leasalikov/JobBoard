@@ -57,11 +57,11 @@ export const authOptions: NextAuthOptions = {
       if (!user || !user.email) return false;
       if (account?.provider === "google") {
         const type = getUserType()
-        // try {
+        try {
           await prisma.users.upsert({
             where: {
               email: user.email,
-              type: type
+              // type: type
             },
             update: {
               name: user.name,
@@ -76,9 +76,9 @@ export const authOptions: NextAuthOptions = {
               type: type,
             }
           })
-        // } catch (error) {
-        //   throw error
-        // }
+        } catch (error) {
+          throw error
+        }
       }
       return true;
     },

@@ -61,7 +61,7 @@ export async function GET(request: Request) {
                     in: types,
                 };
             } else {
-                whereConditions.location = {
+                whereConditions.type = {
                     equals: type,
                 };
             }
@@ -105,13 +105,26 @@ export async function GET(request: Request) {
 
         const jobs = await prisma.jobs.findMany({
             where: whereConditions,
+            include: {
+                employer: true
+            }
         });
 
-        console.log(jobs);
-
+        const updateJobs = await Promise.all(jobs.map(async (job) => {
+            try {
+                const company = await prisma.companies.findUnique({
+                    where: { id: job.employer.companyId }
+                });
+                return { ...job, company: company };
+            } catch (error) {
+                return job;
+            }
+        }));
+        
+        console.log(JSON.stringify(updateJobs));
 
         if (jobs.length > 0)
-            return NextResponse.json({ message: "Success: Found jobs", success: true, jobs });
+            return NextResponse.json({ message: "Success: Found jobs", success: true, jobs: updateJobs });
         else
             return NextResponse.json({ message: "There are no suitable jobs", success: false });
     } catch (error) {

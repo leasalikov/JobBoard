@@ -55,13 +55,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !user.email) return false;
+      const type = getUserType()
+
       if (account?.provider === "google") {
-        const type = getUserType()
         try {
-          await prisma.users.upsert({
+          const updateUser = await prisma.users.upsert({
             where: {
               email: user.email,
-              // type: type
             },
             update: {
               name: user.name,
@@ -76,9 +76,18 @@ export const authOptions: NextAuthOptions = {
               type: type,
             }
           })
+          if (updateUser.type != type)
+            return false
         } catch (error) {
           throw error
         }
+      }
+      else {
+        const userFound = await prisma.users.findUnique({
+          where: { email: user.email }
+        })
+        if (userFound?.type != type)
+          return false
       }
       return true;
     },

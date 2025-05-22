@@ -1,5 +1,6 @@
 import React from "react";
-import Nav from "@/components/section/Nav";
+// import Nav from "@/components/section/Nav";
+import Nav from "@/components/allTheTime/Nav";
 import Link from "next/link";
 import { Suspense } from "react";
 

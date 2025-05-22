@@ -16,7 +16,7 @@ export default function EmployerRegistration() {
     const session = useSession();
     const profileImg = session.data?.user?.image as string;
 
-    const specialization: String[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
+    const specialization: string[] = ["Accounting", "Finance", "Human Resource", "Sales", "Marketing", "Art", "Media", "Communications",
         "Services", "Retail", "Food & Beverages", "Hospitality", "Education"];
     const [companyImage, setCompanyImage] = useState<string>("https://images.unsplash.com/broken");
     const [userImg, setUserImg] = useState<string>(profileImg?profileImg:"https://images.unsplash.com/broken");

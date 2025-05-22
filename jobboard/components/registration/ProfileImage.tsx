@@ -9,7 +9,8 @@ export default function ProfileImage() {
     const session = useSession();
     const userImg = session.data?.user?.image as string;
     console.log("session: ", session)
-    const userType = session.data?.user?.type as string;
+    // const userType = session.data?.user?.type as string;
+    const userType = (session.data?.user as any)?.type;
     console.log("user type:", userType);    
 
     return (

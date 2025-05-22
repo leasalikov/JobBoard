@@ -30,7 +30,8 @@ export default function Nav() {
     if (session) {
         // let { type: userType = null } = session as User;
         // type = userType;
-        userType = session?.data?.user?.type as string;
+        // userType = session?.data?.user?.type as string;
+        userType = (session?.data?.user as { type?: string })?.type;
     }
     
     console.log("user type:", userType);

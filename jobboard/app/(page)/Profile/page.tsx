@@ -6,7 +6,8 @@ import { useSession } from 'next-auth/react';
 
 function Profile() {
   const session = useSession();
-  const userType = session?.data?.user?.type as string;
+  // const userType = session?.data?.user?.type as string;
+  const userType = (session?.data?.user as { type?: string })?.type;
   return (
     <>  {userType == "employer" ?<EmployerEditProfile />: userType=="jobsearcher"?<JobSearcherEditProfile/>:null
       }

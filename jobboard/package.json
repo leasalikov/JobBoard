@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+     "@netlify/next": "^1.4.9",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/select": "^2.2.7",
     "@paypal/react-paypal-js": "^8.7.0",

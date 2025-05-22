@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../prisma/client"
+// import prisma from "../../../prisma/client"
+import prisma from "@/prisma/client";
 import { Prisma } from "@prisma/client";
 
 

@@ -9,7 +9,7 @@ export default function MyDeals() {
     
     const showDeals = () => {
       // Handle the showDeals logic here
-      <ShowDeals id ={session.}></ShowDeals>
+      <ShowDeals id ={session.MyDeals}></ShowDeals>
       console.log('My Deals button clicked');
     };
   

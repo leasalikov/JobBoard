@@ -63,8 +63,6 @@ async function ShowDeals() {
     isHaveDeals = true;
   }
 
-  console.log("my session ", session)
-
   return (
     <div>
       <div className="bg-white py-24 sm:py-32">

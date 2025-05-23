@@ -3,7 +3,8 @@ import Nav from "@/components/allTheTime/Nav";
 import Link from "next/link";
 import { Suspense } from "react";
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/options"
+// import { authOptions } from "@/app/api/auth/[...nextauth]/options"
+import { authOptions } from "@/app/api/auth/options"
 export default async function HomePage() {
     const session = await getServerSession(authOptions);
     // console.log("my sessionמממממממ ", session)

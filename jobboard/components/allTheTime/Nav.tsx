@@ -15,10 +15,7 @@ import { useSession } from 'next-auth/react';
 //in layout
 export default function Nav() {
     // const session = await getServerSession(authOptions);
-    const session = useSession();
-
-    console.log("my session ", session);
-    
+    const session = useSession();    
     // type User = {
     //     name?: string | null;
     //     email?: string | null;

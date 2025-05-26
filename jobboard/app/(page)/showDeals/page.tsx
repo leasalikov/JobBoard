@@ -1,8 +1,8 @@
 import prisma from '../../../prisma/client';
 import JobCard from '../../../components/deals/jobCard';
 import { getServerSession } from "next-auth/next"
-// import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { authOptions } from "@/app/api/auth/options";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+// import { authOptions } from "@/app/api/auth/options";
 
 // const jobs=[{
 //   "jobId":"1",
